@@ -1,12 +1,34 @@
 import Signup from "./Pages/Signup"
 import Login from "./Pages/Login"
+import { Toaster } from 'react-hot-toast';
+import { createBrowserRouter , RouterProvider } from 'react-router-dom';
+import Home from "./Pages/Home";
 
 const App = () => {
+
+  const router = createBrowserRouter([
+    {
+      path: '/' ,
+      element: <Home />
+    }, 
+    {
+      path: '/signup' ,
+      element: <Signup />
+    },
+    {
+      path: '/login' , 
+      element: <Login />
+    }
+  ]); 
+
   return (
-    <div>
-      <Signup />
-      <Login />
-    </div>
+
+    <>
+      <RouterProvider router={router}/>
+
+      <Toaster />
+    </>
+
   )
 }
 
