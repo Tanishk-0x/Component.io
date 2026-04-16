@@ -25,6 +25,15 @@ const AuthContext = ({ children }: MainContextProps) => {
 
     const [userData , setUserData] = useState<any | null>(null); 
 
+    // --------- Extract Cookie (CSRF) ---------
+    const ExtractCookie = () => {
+        const csrfToken = document.cookie
+            .split('; ')
+            .find(row => row.startsWith('csrf_token='))
+            ?.split('=')[1] ; 
+
+        return csrfToken ; 
+    }
 
     // --------- Signup Handlers --------- 
     const Signup = async (formData: FormDataType) => {
@@ -119,6 +128,8 @@ const AuthContext = ({ children }: MainContextProps) => {
             console.log("Login Error!"); 
             console.dir(error);
             return false ; 
+
+            
         }
 
         finally{
@@ -134,10 +145,16 @@ const AuthContext = ({ children }: MainContextProps) => {
         }
         
         setIsRefreshing(true); 
+        const CSRF_TOKEN = ExtractCookie(); 
         try {
             const res = await axios.post( serverUrl + '/auth/refresh' , 
                 {},
-                { withCredentials: true }
+                {
+                    headers: {
+                        'x-csrf-token' : CSRF_TOKEN 
+                    },
+                    withCredentials: true
+                }
             ); 
 
             if( res.data.success ){
@@ -167,9 +184,15 @@ const AuthContext = ({ children }: MainContextProps) => {
                 return ; 
             }
             setGettingUserDetails(true); 
+            const CSRF_TOKEN = ExtractCookie(); 
             try {
                 const res = await axios.get( serverUrl + '/user/authme' , 
-                    { withCredentials: true }
+                    {
+                        headers: {
+                            'x-csrf-token' : CSRF_TOKEN
+                        },
+                        withCredentials: true
+                    }
                 ); 
 
                 if( res.data.success ){
@@ -187,9 +210,15 @@ const AuthContext = ({ children }: MainContextProps) => {
                     const isRefreshed = await RefreshToken(); 
 
                     if( isRefreshed ){
+                        const CSRF_TOKEN = ExtractCookie(); 
                         try {
                             const res = await axios.get( serverUrl + '/user/authme' , 
-                                { withCredentials: true } 
+                                {
+                                    headers: {
+                                        'x-csrf-token' : CSRF_TOKEN
+                                    },
+                                    withCredentials: true
+                                } 
                             ); 
 
                             if( res.data.success ){
