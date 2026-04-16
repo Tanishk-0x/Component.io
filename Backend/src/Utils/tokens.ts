@@ -4,16 +4,18 @@ import crypto from 'crypto';
 const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET || '' ; 
 const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET || '' ; 
 
-export function SetAccessToken (res: any , userId: string , role: string , maxAge: Number) {
+export function SetAccessToken (res: any , userId: string , role: string , maxAge: number) {
     // 1. Generate token 
     // 2. Set into cookies (httpOnly)
-    const MaxAge = 1 * 60 * 60 * 24 * 10000 ; 
+    const AccessTokenExpiry = Math.floor(maxAge / 1000);  
+
     const token = jwt.sign(
         { userId , role , type: 'access' },
         ACCESS_TOKEN_SECRET ,
-        { expiresIn: MaxAge }
+        { expiresIn: AccessTokenExpiry }
     ); 
 
+    
     res.cookie('access_token' , token , {
         httpOnly: true , 
         secure: true , 
@@ -23,14 +25,15 @@ export function SetAccessToken (res: any , userId: string , role: string , maxAg
 };
 
 
-export function SetRefreshToken (res: any , userId: string , role: string , maxAge: Number) {
+export function SetRefreshToken (res: any , userId: string , role: string , maxAge: number) {
     // 1. Generate token 
     // 2. Set into cookies (httpOnly)
-    const MaxAge = 1 * 60 * 60 * 24 * 10000 ; 
+    const RefreshTokenExpiry = Math.floor(maxAge / 1000);  
+
     const token = jwt.sign(
         { userId , role , type: 'refresh' },
         REFRESH_TOKEN_SECRET ,
-        { expiresIn: MaxAge }
+        { expiresIn: RefreshTokenExpiry }
     ); 
 
     res.cookie('refresh_token' , token , {
@@ -42,7 +45,7 @@ export function SetRefreshToken (res: any , userId: string , role: string , maxA
 };
 
 
-export function SetCsrfToken (res: any , maxAge: Number) {
+export function SetCsrfToken (res: any , maxAge: number) {
     // Generate CSRF Token 
     const csrfToken = crypto.randomBytes(32).toString('hex'); 
 

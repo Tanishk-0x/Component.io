@@ -2,6 +2,7 @@ import express, {Request , Response} from 'express';
 require('dotenv').config();
 import DbConnect  from './Configs/database'
 import authRoutes from './Routes/authRoutes'; 
+import userRoutes from './Routes/userRoutes'; 
 import cookieParser from 'cookie-parser'; 
 import cors from 'cors'; 
 const app = express(); 
@@ -30,6 +31,7 @@ app.use(cookieParser());
 
 // Mounting 
 app.use('/auth' , authRoutes);
+app.use('/user' , userRoutes); 
 
 
 app.get('/' , (req: Request , res: Response) => {
