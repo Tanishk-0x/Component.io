@@ -52,6 +52,7 @@ export const Signup = async (req: Request , res: Response) => {
         return res.status(500).json({
             success: false , 
             message: 'Error While Signup' , 
+            error
         }); 
     }
 }; 
@@ -100,6 +101,7 @@ export const Login = async (req: Request , res: Response) => {
         return res.status(500).json({
             success: false , 
             message: 'Error While Login' , 
+            error: error
         }); 
     }
 }
@@ -121,6 +123,7 @@ export const Logout = async (req: Request , res: Response) => {
         return res.status(500).json({
             success: false , 
             message: 'Error While Logout' , 
+            error: error
         }); 
     }
 }
