@@ -1,7 +1,7 @@
-import { createContext, useState } from "react"
+import { createContext, useEffect, useState } from "react"
 import type{ MainContextProps } from "../Types/Types";
 import toast from "react-hot-toast";
-import axios from 'axios'; 
+import axios, { AxiosError } from 'axios'; 
 import { mainUrlContext } from "./MainContext";
 import { useSafeContext } from "../Hooks/UseSafeContext";
 import type{ AuthContextType } from "../Types/Types";
@@ -20,6 +20,8 @@ const AuthContext = ({ children }: MainContextProps) => {
     // --------- UseStates ---------
     const [signupLoading , setSignupLoading] = useState(false); 
     const [loginLoading , setLoginLoading] = useState(false); 
+    const [gettingUserDetails , setGettingUserDetails] = useState(false); 
+    const [isRefreshing , setIsRefreshing] = useState(false); 
 
     const [userData , setUserData] = useState<any | null>(null); 
 
@@ -123,6 +125,99 @@ const AuthContext = ({ children }: MainContextProps) => {
             setLoginLoading(false); 
         }
     }
+
+
+    // ---------- Refresh Token ------------ 
+    const RefreshToken = async () => {
+        if( isRefreshing ){
+            return false ; 
+        }
+        
+        setIsRefreshing(true); 
+        try {
+            const res = await axios.post( serverUrl + '/auth/refresh' , 
+                {},
+                { withCredentials: true }
+            ); 
+
+            if( res.data.success ){
+                console.log("Token Refreshed!"); 
+                return true ; 
+            }
+        }
+        
+        catch (error) {
+            // Logout 
+            console.log("Refresh Token Expired!"); 
+            setUserData(null); 
+            return false ; 
+        }
+
+        finally{
+            setIsRefreshing(false); 
+        }
+    }
+
+
+    // --------- Auth (Get_User_Details) --------- 
+    useEffect(() => {
+        
+        const GetUserDetails = async () => {
+            if( gettingUserDetails ){
+                return ; 
+            }
+            setGettingUserDetails(true); 
+            try {
+                const res = await axios.get( serverUrl + '/user/authme' , 
+                    { withCredentials: true }
+                ); 
+
+                if( res.data.success ){
+                    setUserData(res.data?.user); 
+                }
+            }
+            
+            catch (error) {
+                const axiosError = error as AxiosError; 
+
+                if( axiosError?.response?.status === 401 ){
+                    setUserData(null);
+                    
+                    // ----- Refresh Token Logic -----
+                    const isRefreshed = await RefreshToken(); 
+
+                    if( isRefreshed ){
+                        try {
+                            const res = await axios.get( serverUrl + '/user/authme' , 
+                                { withCredentials: true } 
+                            ); 
+
+                            if( res.data.success ){
+                                setUserData(res?.data?.user); 
+                            }
+                        }
+                        catch (error) {
+                            setUserData(null); 
+                        }
+                    }
+                }
+
+                else{
+                    console.log("Authenticating Error!"); 
+                    console.dir(error);
+                }
+            }
+
+            finally{
+                setGettingUserDetails(false); 
+            }
+        }
+
+        GetUserDetails(); 
+
+    }, [serverUrl]);
+
+
 
     // Defining Values
     const value = {
