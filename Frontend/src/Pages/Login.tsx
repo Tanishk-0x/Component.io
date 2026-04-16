@@ -1,6 +1,16 @@
 import { FcGoogle } from "react-icons/fc";
+import { useSafeContext } from "../Hooks/UseSafeContext";
+import { authDataContext } from "../Context/AuthContext";
+import { useState } from "react";
 
 const Login = () => {
+
+    const { Login , loginLoading } = useSafeContext(authDataContext); 
+
+    const [formData , setFormData] = useState({
+        email: '',
+        password: ''
+    });
 
   return (
 
@@ -32,6 +42,11 @@ const Login = () => {
                 <div className="w-[90%] mt-2">
                     <label className="text-neutral-400 text-sm font-medium">Email Address</label>
                     <input
+                    onChange={(e) => {
+                        setFormData({...formData , email: e.target.value});
+                    }}
+                    name="email"
+                    value={formData.email}
                     type="email"
                     placeholder="name@example.com"
                     className="w-full bg-transparent border border-neutral-700 rounded-lg px-4 py-3 text-white text-sm placeholder:text-neutral-600 focus:outline-none focus:border-green-400 focus:ring-2 focus:ring-green-900 transition"
@@ -42,16 +57,25 @@ const Login = () => {
                 <div className="w-[90%] mt-2">
                     <label className="text-neutral-400 text-sm font-medium">Password</label>
                     <input
+                    onChange={(e) => {
+                        setFormData({...formData , password: e.target.value});
+                    }}
+                    name="password"
+                    value={formData.password}
                     type="password"
                     placeholder="••••••••"
                     className="w-full bg-transparent border border-neutral-700 rounded-lg px-4 py-3 text-white text-sm placeholder:text-neutral-600 focus:outline-none focus:border-green-400 focus:ring-2 focus:ring-green-900 transition pr-10"
                     />
                 </div>
 
-                {/* Create Account Button */}
-                <button
+                {/* Login Button */}
+                <button 
+                onClick={(e) => {
+                    e.preventDefault(); 
+                    Login(formData); 
+                }}
                 className="mt-6 w-[90%] bg-green-500 text-black text-[18px] py-3 rounded-lg font-semibold text-base hover:bg-green-400 transition duration-150 active:scale-[0.98] cursor-pointer">
-                    Login
+                    { loginLoading ? 'Loading..' : 'Login' }
                 </button>
                 
                 {/* Google Button */}

@@ -1,6 +1,18 @@
 import { FcGoogle } from "react-icons/fc";
+import { useSafeContext } from "../Hooks/UseSafeContext";
+import { useState } from "react";
+import { authDataContext } from "../Context/AuthContext";
 
 const Signup = () => {
+
+    const { Signup , signupLoading } = useSafeContext(authDataContext); 
+
+    // --------- FormData --------- 
+    const [ formData , setFormData ] = useState({
+        name: '',
+        email: '',
+        password: ''
+    });
 
   return (
 
@@ -32,6 +44,11 @@ const Signup = () => {
                 <div className="w-[90%]">
                     <label className="text-neutral-400 text-sm font-medium">Username</label>
                     <input
+                    onChange={(e) => {
+                        setFormData({ ...formData , name: e.target.value})
+                    }}
+                    name="name"
+                    value={formData.name}
                     type="text"
                     placeholder="E.g., Name"
                     className="w-full bg-transparent border border-neutral-700 rounded-lg px-4 py-3 text-white text-sm placeholder:text-neutral-600 focus:outline-none focus:border-green-400 focus:ring-2 focus:ring-green-900 transition"
@@ -42,6 +59,11 @@ const Signup = () => {
                 <div className="w-[90%] mt-2">
                     <label className="text-neutral-400 text-sm font-medium">Email Address</label>
                     <input
+                    onChange={(e) => {
+                        setFormData({ ...formData , email: e.target.value})
+                    }}
+                    name="email"
+                    value={formData.email}
                     type="email"
                     placeholder="name@example.com"
                     className="w-full bg-transparent border border-neutral-700 rounded-lg px-4 py-3 text-white text-sm placeholder:text-neutral-600 focus:outline-none focus:border-green-400 focus:ring-2 focus:ring-green-900 transition"
@@ -52,6 +74,11 @@ const Signup = () => {
                 <div className="w-[90%] mt-2">
                     <label className="text-neutral-400 text-sm font-medium">Password</label>
                     <input
+                    onChange={(e) => {
+                        setFormData({ ...formData , password: e.target.value})
+                    }}
+                    name="password"
+                    value={formData.password}
                     type="password"
                     placeholder="••••••••"
                     className="w-full bg-transparent border border-neutral-700 rounded-lg px-4 py-3 text-white text-sm placeholder:text-neutral-600 focus:outline-none focus:border-green-400 focus:ring-2 focus:ring-green-900 transition pr-10"
@@ -60,8 +87,12 @@ const Signup = () => {
 
                 {/* Create Account Button */}
                 <button
+                onClick={(e) => {
+                    e.preventDefault(); 
+                    Signup(formData); 
+                }}
                 className="mt-6 w-[90%] bg-green-500 text-black text-[18px] py-3 rounded-lg font-semibold text-base hover:bg-green-400 transition duration-150 active:scale-[0.98] cursor-pointer">
-                    Create Account
+                    { signupLoading ? 'Loading..' : 'Create Account' }
                 </button>
                 
                 {/* Google Button */}
