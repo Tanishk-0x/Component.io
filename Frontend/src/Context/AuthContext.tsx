@@ -13,6 +13,7 @@ export const authDataContext = createContext<AuthContextType | null>(null);
 
 const AuthContext = ({ children }: MainContextProps) => {
 
+
     // -------- UseContext ---------
     const { serverUrl }  = useSafeContext(mainUrlContext)
 
@@ -27,17 +28,17 @@ const AuthContext = ({ children }: MainContextProps) => {
     const Signup = async (formData: FormDataType) => {
         // Checks 
         if( signupLoading ){
-            return ; 
+            return false; 
         }
 
         if( !formData.name || !formData.email || !formData.password ){
             toast.error('Fields cannot be empty');
-            return ; 
+            return false; 
         }
 
         if( formData.password.length < 6 ){
             toast.error('Password must be atleast 6 character');
-            return ; 
+            return false; 
         }
 
         setSignupLoading(true); 
@@ -55,8 +56,9 @@ const AuthContext = ({ children }: MainContextProps) => {
             if( res.data.success ){
                 toast.success('Signup SuccessFully!'); 
                 setUserData(res.data?.user);
+                return true ; 
             }
-
+            return false ; 
         }
         
         catch (error: any) {
@@ -64,6 +66,7 @@ const AuthContext = ({ children }: MainContextProps) => {
             toast.error(errorMessage); 
             console.log("Signup Error!"); 
             console.dir(error); 
+            return false ; 
         }
 
         finally{
@@ -76,17 +79,17 @@ const AuthContext = ({ children }: MainContextProps) => {
     const Login = async (formData: FormDataType) => {
         // Checks 
         if( loginLoading ){
-            return ; 
+            return false ; 
         }
 
         if( !formData.email || !formData.password ){
             toast.error('Fields cannot be empty');
-            return ; 
+            return false ; 
         }
 
         if( formData.password.length < 6 ){
             toast.error('Password must be atleast 6 character'); 
-            return ; 
+            return false ; 
         }
 
         setLoginLoading(true); 
@@ -103,7 +106,9 @@ const AuthContext = ({ children }: MainContextProps) => {
             if( res.data.success ){
                 toast.success('Login SuccessFully!'); 
                 setUserData(res.data?.user); 
+                return true ; 
             }
+            return false ;
         }
         
         catch (error: any) {
@@ -111,6 +116,7 @@ const AuthContext = ({ children }: MainContextProps) => {
             toast.error(errorMessage); 
             console.log("Login Error!"); 
             console.dir(error);
+            return false ; 
         }
 
         finally{

@@ -2,8 +2,11 @@ import { FcGoogle } from "react-icons/fc";
 import { useSafeContext } from "../Hooks/UseSafeContext";
 import { authDataContext } from "../Context/AuthContext";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+
+    const navigate = useNavigate(); 
 
     const { Login , loginLoading } = useSafeContext(authDataContext); 
 
@@ -11,6 +14,14 @@ const Login = () => {
         email: '',
         password: ''
     });
+
+
+    const HandleLogin = async () => {
+        const isSuccess = await Login(formData);
+        if( isSuccess ){
+            navigate('/');
+        }
+    }; 
 
   return (
 
@@ -72,7 +83,7 @@ const Login = () => {
                 <button 
                 onClick={(e) => {
                     e.preventDefault(); 
-                    Login(formData); 
+                    HandleLogin();  
                 }}
                 className="mt-6 w-[90%] bg-green-500 text-black text-[18px] py-3 rounded-lg font-semibold text-base hover:bg-green-400 transition duration-150 active:scale-[0.98] cursor-pointer">
                     { loginLoading ? 'Loading..' : 'Login' }
@@ -87,7 +98,7 @@ const Login = () => {
             </form>
 
             <p className="text-neutral-400 text-center mt-4 text-md">
-            Don't have an account? <span className="text-green-400 font-medium hover:text-green-300 cursor-pointer"> Signup </span>
+            Don't have an account? <span onClick={() => navigate('/signup')} className="text-green-400 font-medium hover:text-green-300 cursor-pointer"> Signup </span>
             </p>
             
         </div>
