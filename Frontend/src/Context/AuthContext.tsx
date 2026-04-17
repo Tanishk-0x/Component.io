@@ -22,6 +22,7 @@ const AuthContext = ({ children }: MainContextProps) => {
     const [loginLoading , setLoginLoading] = useState(false); 
     const [gettingUserDetails , setGettingUserDetails] = useState(false); 
     const [isRefreshing , setIsRefreshing] = useState(false); 
+    const [isLogout , setIsLogout] = useState(false); 
 
     const [userData , setUserData] = useState<any | null>(null); 
 
@@ -237,6 +238,47 @@ const AuthContext = ({ children }: MainContextProps) => {
     }, [serverUrl]);
 
 
+    // --------- LogOut Handlers --------- 
+    const Logout = async () => {
+        if(isLogout){
+            return false; 
+        }
+        const CSRF_TOKEN = ExtractCookie(); 
+        setIsLogout(true);
+
+        try {
+            const res = await axios.post( serverUrl + '/auth/logout' , 
+                {},
+                {
+                    headers: {
+                        'x-csrf-token' : CSRF_TOKEN 
+                    },
+                    withCredentials: true
+                }
+            );
+
+            if( res.data.success ){
+                toast.success("Logout SuccessFully!");
+                setUserData(null);  
+                return true ; 
+            }
+            return false ;
+        }
+        
+        catch (error: any) {
+            const errorMessage = error?.response?.data?.message ; 
+            toast.error(errorMessage); 
+            console.log("Logout Error!"); 
+            console.dir(error); 
+            setUserData(null); 
+            return false ;
+        }
+
+        finally{
+            setIsLogout(false); 
+        }
+    }
+
 
     // Defining Values
     const value = {
@@ -246,6 +288,8 @@ const AuthContext = ({ children }: MainContextProps) => {
         loginLoading , 
         userData , 
         setUserData ,
+        Logout , 
+        isLogout ,
     }; 
 
     return (

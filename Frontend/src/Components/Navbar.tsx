@@ -14,7 +14,17 @@ const Navbar = () => {
   // --------- UserData ---------
   const { userData } = useSafeContext(authDataContext); 
 
+  const { Logout , isLogout } = useSafeContext(authDataContext); 
+
   const [isOpen, setIsOpen] = useState(false);
+
+  // --------- Logout Handler ----------
+  const LogoutHandler = async () => {
+    const isLoggedOut = await Logout(); 
+    if( isLoggedOut ){
+      navigate('/'); 
+    }
+  }
 
 
   return (
@@ -75,11 +85,23 @@ const Navbar = () => {
           </button>
         }
         {
-          userData && 
-          <button onClick={() => navigate('/')}
-          className="text-emerald-500 text-[36px] cursor-pointer hover:text-emerald-400 transition-all active:scale-95 hidden sm:block">
-            <FaCircleUser />
-          </button>
+          userData && (
+            <>
+            <button onClick={() => navigate('/')}
+            className="text-emerald-500 text-[36px] cursor-pointer hover:text-emerald-400 transition-all active:scale-95 hidden sm:block">
+              <FaCircleUser />
+            </button>
+
+            <button onClick={(e) => {
+              e.preventDefault();
+              LogoutHandler(); 
+            }}
+            className="bg-emerald-500 text-neutral-950 px-5 py-1.5 font-bold rounded-lg cursor-pointer hover:bg-emerald-400 hover:shadow-[0_0_15px_rgba(52,211,153,0.4)] transition-all active:scale-95 hidden sm:block">
+              { isLogout ? 'Loading..' : 'Logout' }
+            </button> 
+            </>
+          )
+          
         }
 
         

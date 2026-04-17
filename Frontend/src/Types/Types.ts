@@ -21,6 +21,9 @@ export interface AuthContextType {
 
     userData: any; 
     setUserData: Dispatch<SetStateAction<any>> ; 
+
+    Logout: () => Promise<boolean>;
+    isLogout: boolean; 
 }
 
 
@@ -29,5 +32,5 @@ export interface OtpContextType {
     sendingOtp: boolean;
     isOtpSend: boolean; 
     VerifyOtp: (email: string , otp: string) => Promise<boolean | undefined> ; 
-    verifyingOtp: boolean
+    verifyingOtp: boolean;  
 }
