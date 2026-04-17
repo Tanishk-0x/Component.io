@@ -8,7 +8,7 @@ const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET || '' ;
 
 // Token Configs (MaxAge)
 const Config = {
-    AccessMaxAge:  15*1000,
+    AccessMaxAge:  15*60*1000,
     RefreshMaxAge:  60*60*1000, 
     CsrfMaxAge:  60*60*1000, 
 }
