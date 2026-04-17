@@ -22,3 +22,12 @@ export interface AuthContextType {
     userData: any; 
     setUserData: Dispatch<SetStateAction<any>> ; 
 }
+
+
+export interface OtpContextType {
+    SendOtp: (email: string) => Promise<void>;
+    sendingOtp: boolean;
+    isOtpSend: boolean; 
+    VerifyOtp: (email: string , otp: string) => Promise<boolean | undefined> ; 
+    verifyingOtp: boolean
+}

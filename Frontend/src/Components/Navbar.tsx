@@ -54,6 +54,12 @@ const Navbar = () => {
             <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-emerald-400 transition-all duration-300 group-hover:w-full"></span>
           </li>
 
+          <li onClick={() => navigate('/verify')} 
+          className="relative text-neutral-400 hover:text-emerald-400 font-mono text-[16px] cursor-pointer transition-all duration-200 group">
+            Verify
+            <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-emerald-400 transition-all duration-300 group-hover:w-full"></span>
+          </li>
+
         </ul>
       </nav>
 

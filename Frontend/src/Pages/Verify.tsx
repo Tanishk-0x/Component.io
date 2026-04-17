@@ -1,9 +1,22 @@
 import { useRef, useState } from "react";
+import { useSafeContext } from "../Hooks/UseSafeContext";
+import { otpDataContext } from "../Context/OtpContext";
+import { authDataContext } from "../Context/AuthContext";
+import { useNavigate } from "react-router-dom";
 // import toast from "react-hot-toast";
 // import { FcGoogle } from "react-icons/fc";
 
 
 const Verify = () => {
+
+    const navigate = useNavigate(); 
+
+    const { SendOtp , sendingOtp , isOtpSend , VerifyOtp , verifyingOtp } = useSafeContext(otpDataContext);
+    
+    const { userData } = useSafeContext(authDataContext); 
+
+    // ---------- UseStates ----------- 
+    const [email , setEmail] = useState(userData?.email); 
 
     const [otp , setOtp] = useState(new Array(6).fill("")); 
 
@@ -30,7 +43,18 @@ const Verify = () => {
         }
     };
 
-    const FinalOtp = otp.join(""); 
+    
+
+
+    const HandleverifyOtp = async () => {
+        const TempFinalOtp = otp.join(""); 
+        
+        const isVerified = await VerifyOtp(email , TempFinalOtp); 
+        if( isVerified ){
+            navigate('/'); 
+        }
+    }
+
 
 
   return (
@@ -54,7 +78,7 @@ const Verify = () => {
                 Email Verification 
             </h1>
             <p className="text-gray-400 text-[12px] md:text-[14px] text-center">
-                Please enter your registered email to receive a verification code.   
+                Verify your email to get your free <span className="text-green-500 font-semibold">100</span> creadits   
             </p>
 
             <form className="w-full flex justify-center items-center flex-col mt-3">
@@ -63,6 +87,12 @@ const Verify = () => {
                 <div className="w-[90%] mt-2">
                     <label className="text-green-400 text-sm font-medium">Email Address</label>
                     <input
+                    onChange={(e) => {
+                        e.preventDefault(); 
+                        setEmail(e.target.value)
+                    }}
+                    name="email"
+                    value={email}
                     type="email"
                     placeholder="name@example.com"
                     className="w-full bg-transparent border border-neutral-700 rounded-lg px-4 py-3 text-white text-sm placeholder:text-neutral-600 focus:outline-none focus:border-green-400 focus:ring-2 focus:ring-green-900 transition"
@@ -71,11 +101,11 @@ const Verify = () => {
 
                 {/* Send Otp */}
                 <button onClick={(e) => {
-                    e.preventDefault(); 
-                    console.log("FinalOTP: " , FinalOtp); 
+                    e.preventDefault();
+                    SendOtp(email); 
                 }}
                 className="mt-4 w-[90%] bg-green-500 text-black text-[18px] py-2.5 rounded-lg font-semibold text-base hover:bg-green-400 transition duration-150 active:scale-[0.98] cursor-pointer">
-                    Send Otp
+                    { sendingOtp ? 'Loading..' : 'Send Otp' }
                 </button>
 
                 <div className="bg-neutral-800 h-0.5 mt-4 w-[90%] "></div>
@@ -106,9 +136,16 @@ const Verify = () => {
                 </div>
 
                 {/* Verify Otp */}
-                <button
-                className="mt-4 w-[90%] text-green-500 border border-green-500 text-[18px] py-2.5 rounded-lg font-semibold text-base hover:bg-green-500 hover:text-black transition duration-150 active:scale-[0.98] cursor-pointer">
-                    Verify Otp
+                <button disabled={!isOtpSend}
+                onClick={(e) => {
+                    e.preventDefault(); 
+                    HandleverifyOtp(); 
+                }}
+                className={
+                    `${ isOtpSend ? 'border-green-500 text-green-500 hover:bg-green-500 hover:text-black' : 'border-red-500 text-red-500 hover:bg-red-500 hover:text-black' } 
+                    mt-4 w-[90%] border  text-[18px] py-2.5 rounded-lg font-semibold text-base  transition duration-150 active:scale-[0.98] cursor-pointer`
+                }>
+                    { verifyingOtp ? 'Loading..' : 'Verify Otp' }
                 </button>
 
             </form>
