@@ -6,7 +6,7 @@ import { mainUrlContext } from "./MainContext";
 import { useSafeContext } from "../Hooks/UseSafeContext";
 import type{ AuthContextType } from "../Types/Types";
 import type{ FormDataType } from "../Types/Types";
-
+import { ExtractCookie } from "../Utils/Cookie";
 
 // Creating Context 
 export const authDataContext = createContext<AuthContextType | null>(null); 
@@ -25,15 +25,6 @@ const AuthContext = ({ children }: MainContextProps) => {
 
     const [userData , setUserData] = useState<any | null>(null); 
 
-    // --------- Extract Cookie (CSRF) ---------
-    const ExtractCookie = () => {
-        const csrfToken = document.cookie
-            .split('; ')
-            .find(row => row.startsWith('csrf_token='))
-            ?.split('=')[1] ; 
-
-        return csrfToken ; 
-    }
 
     // --------- Signup Handlers --------- 
     const Signup = async (formData: FormDataType) => {
@@ -128,8 +119,6 @@ const AuthContext = ({ children }: MainContextProps) => {
             console.log("Login Error!"); 
             console.dir(error);
             return false ; 
-
-            
         }
 
         finally{
@@ -185,6 +174,7 @@ const AuthContext = ({ children }: MainContextProps) => {
             }
             setGettingUserDetails(true); 
             const CSRF_TOKEN = ExtractCookie(); 
+            
             try {
                 const res = await axios.get( serverUrl + '/user/authme' , 
                     {
