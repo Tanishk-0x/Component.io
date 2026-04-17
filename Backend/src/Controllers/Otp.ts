@@ -100,6 +100,7 @@ export const VerifyOtp = async (req: Request, res: Response) => {
         }
 
         user.isVerified = true ; 
+        user.credits += 100 ; 
         await user.save(); 
 
         await OTP.deleteMany({email});

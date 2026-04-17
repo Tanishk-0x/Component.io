@@ -11,8 +11,8 @@ router.post('/logout' , Logout);
 
 router.post('/refresh' , requireCSRF , RefreshToken); 
 
-router.post('/sendotp' , AuthMe , SendOtp); 
-router.post('/verify' , AuthMe , VerifyOtp); 
+router.post('/sendotp', requireCSRF , AuthMe , SendOtp); 
+router.post('/verify' , requireCSRF , AuthMe , VerifyOtp); 
 
 
 export default router ; 
