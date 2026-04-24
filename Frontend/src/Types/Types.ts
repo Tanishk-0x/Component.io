@@ -24,6 +24,9 @@ export interface AuthContextType {
 
     Logout: () => Promise<boolean>;
     isLogout: boolean; 
+
+    GetUserDetails: () => Promise<void>; 
+    gettingUserDetails: boolean;
 }
 
 
@@ -33,4 +36,12 @@ export interface OtpContextType {
     isOtpSend: boolean; 
     VerifyOtp: (email: string , otp: string) => Promise<boolean | undefined> ; 
     verifyingOtp: boolean;  
+}
+
+export interface ComponentContextType {
+    ResolveComponent: (prompt: string) => Promise<void> ; 
+    componentData: any ;
+    isLoading: boolean ; 
+    errorMessage: any ;
+    source: any ; 
 }
