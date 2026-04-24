@@ -4,6 +4,7 @@ import { Toaster } from 'react-hot-toast';
 import { createBrowserRouter , RouterProvider } from 'react-router-dom';
 import Home from "./Pages/Home";
 import Verify from "./Pages/Verify";
+import Lab from "./Pages/Lab";
 
 const App = () => {
 
@@ -23,6 +24,10 @@ const App = () => {
     {
       path: '/verify' ,
       element: <Verify />
+    },
+    {
+      path: '/lab' ,
+      element: <Lab />
     }
   ]); 
 
