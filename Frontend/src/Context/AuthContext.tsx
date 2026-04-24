@@ -167,71 +167,72 @@ const AuthContext = ({ children }: MainContextProps) => {
 
 
     // --------- Auth (Get_User_Details) --------- 
-    useEffect(() => {
-        
-        const GetUserDetails = async () => {
-            if( gettingUserDetails ){
-                return ; 
-            }
-            setGettingUserDetails(true); 
-            const CSRF_TOKEN = ExtractCookie(); 
+
+    const GetUserDetails = async () => {
+        if( gettingUserDetails ){
+            return ; 
+        }
+        setGettingUserDetails(true); 
+        const CSRF_TOKEN = ExtractCookie(); 
             
-            try {
-                const res = await axios.get( serverUrl + '/user/authme' , 
-                    {
-                        headers: {
-                            'x-csrf-token' : CSRF_TOKEN
-                        },
-                        withCredentials: true
-                    }
-                ); 
-
-                if( res.data.success ){
-                    setUserData(res.data?.user); 
+        try {
+            const res = await axios.get( serverUrl + '/user/authme' , 
+                {
+                    headers: {
+                        'x-csrf-token' : CSRF_TOKEN
+                    },
+                    withCredentials: true
                 }
-            }
-            
-            catch (error) {
-                const axiosError = error as AxiosError; 
+            ); 
 
-                if( axiosError?.response?.status === 401 ){
-                    setUserData(null);
-                    
-                    // ----- Refresh Token Logic -----
-                    const isRefreshed = await RefreshToken(); 
-
-                    if( isRefreshed ){
-                        const CSRF_TOKEN = ExtractCookie(); 
-                        try {
-                            const res = await axios.get( serverUrl + '/user/authme' , 
-                                {
-                                    headers: {
-                                        'x-csrf-token' : CSRF_TOKEN
-                                    },
-                                    withCredentials: true
-                                } 
-                            ); 
-
-                            if( res.data.success ){
-                                setUserData(res?.data?.user); 
-                            }
-                        }
-                        catch (error) {
-                            setUserData(null); 
-                        }
-                    }
-                }
-
-                else{
-                    console.log("Authenticating Error!"); 
-                    console.dir(error);
-                }
-            }
-
-            finally{
-                setGettingUserDetails(false); 
+            if( res.data.success ){
+                setUserData(res.data?.user); 
             }
         }
+            
+        catch (error) {
+            const axiosError = error as AxiosError; 
+
+            if( axiosError?.response?.status === 401 ){
+                setUserData(null);
+                    
+                // ----- Refresh Token Logic -----
+                const isRefreshed = await RefreshToken(); 
+
+                if( isRefreshed ){
+                    const CSRF_TOKEN = ExtractCookie(); 
+                    try {
+                        const res = await axios.get( serverUrl + '/user/authme' , 
+                            {
+                                headers: {
+                                    'x-csrf-token' : CSRF_TOKEN
+                                },
+                                withCredentials: true
+                            } 
+                        ); 
+
+                        if( res.data.success ){
+                            setUserData(res?.data?.user); 
+                        }
+                    }
+                    catch (error) {
+                        setUserData(null); 
+                    }
+                }
+            }
+
+            else{
+                console.log("Authenticating Error!"); 
+                console.dir(error);
+            }
+        }
+
+        finally{
+            setGettingUserDetails(false); 
+        }
+    }
+
+    useEffect(() => {
 
         GetUserDetails(); 
 
@@ -290,6 +291,9 @@ const AuthContext = ({ children }: MainContextProps) => {
         setUserData ,
         Logout , 
         isLogout ,
+        gettingUserDetails , 
+        GetUserDetails
+    
     }; 
 
     return (
