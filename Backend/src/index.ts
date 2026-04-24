@@ -3,6 +3,8 @@ require('dotenv').config();
 import DbConnect  from './Configs/database'
 import authRoutes from './Routes/authRoutes'; 
 import userRoutes from './Routes/userRoutes'; 
+import compRoutes from './Routes/compRoutes';
+import testRoutes from './Routes/testRoutes'; 
 import cookieParser from 'cookie-parser'; 
 import cors from 'cors'; 
 const app = express(); 
@@ -32,6 +34,8 @@ app.use(cookieParser());
 // Mounting 
 app.use('/auth' , authRoutes);
 app.use('/user' , userRoutes); 
+app.use('/comp' , compRoutes); 
+app.use('/text' , testRoutes); 
 
 
 app.get('/' , (req: Request , res: Response) => {
