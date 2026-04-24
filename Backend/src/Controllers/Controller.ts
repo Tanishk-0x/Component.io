@@ -81,8 +81,14 @@ const ResolveComponent = async(req: AuthenticatedRequest , res: Response) => {
                 $match: {
                     "score" : { '$gt' : 0.90 }
                 }
+            },
+            {
+                $project: {
+                    embedding: 0 ,
+                    __v: 0
+                }
             }
-        ]); 
+        ]);  
 
         // ---- CACHE MISSED ---- 
         if( !component || component.length === 0 ){
@@ -109,7 +115,11 @@ const ResolveComponent = async(req: AuthenticatedRequest , res: Response) => {
                 prompt , 
                 code: response ,
                 embedding: embeddings.values
-            }); 
+            });  
+
+            // -- Removing Embedding --
+            const newObj = comp.toObject(); 
+            const { embedding , ...safeComponent } = newObj ;  
 
             // -- Deduct Credits --
             user.credits -= 20 ; 
@@ -122,10 +132,7 @@ const ResolveComponent = async(req: AuthenticatedRequest , res: Response) => {
                 info: 'Cache Missed (Not Found In DB)!' ,
                 source: 'AI_Generated' ,
                 prompt: prompt ,
-                user: user ,
-                componentId: comp._id ,
-                component: comp ,
-                embedding: embeddings.values
+                component: safeComponent ,
             });
         }
 
@@ -152,10 +159,7 @@ const ResolveComponent = async(req: AuthenticatedRequest , res: Response) => {
                 matchedPrompt: component[0].prompt ,
                 matchedScore: Math.round((component[0].score) * 100)+'%' ,
                 source: 'DataBase' ,
-                user: user ,
-                componentId: component[0]._id ,
                 component: component , 
-                embedding: embeddings.values
             });
         }
 
