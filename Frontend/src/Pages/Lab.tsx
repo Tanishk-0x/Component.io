@@ -15,12 +15,17 @@ import {
   SandpackPreview 
 } from "@codesandbox/sandpack-react";
 import { sandpackDark } from "@codesandbox/sandpack-themes";
-import { DummyCode1 } from "../Constants/Dummy";
+import { RiSaveLine } from "react-icons/ri";
+import { IoMdArrowBack } from "react-icons/io";
+import { FaSave } from "react-icons/fa";
+import { BiRefresh } from "react-icons/bi";
+import { DummyCode3 } from "../Constants/Dummy";
+
 
 const Lab = () => {
 
     // ----- Dummy Code -----
-    const AiCode = DummyCode1; 
+    const AiCode = DummyCode3 ; 
 
     // ----- Contexts -----
     const { ResolveComponent, isLoading, errorMessage } = useSafeContext(componentDataContext);
@@ -170,7 +175,37 @@ const Lab = () => {
                     </SandpackLayout>
 
                 </SandpackProvider>
-                
+
+                </div>
+
+            </div>
+
+            {/* ------ Options Button ----- */}
+            <div className="bg-[#001008] rounded-lg w-full h-25 flex justify-between items-center px-4">
+    
+                <div className="h-full flex flex-row gap-2 sm:gap-4 justify-center items-center">
+                    <div className="bg-emerald-950 text-emerald-500 text-[16px] sm:text-[18px] font-semibold border-2 border-emerald-900 rounded-lg px-3 py-2">
+                        Source: <span className="text-emerald-400">DataBase</span>
+                    </div>
+                    <button className="bg-emerald-600 text-emerald-950 font-semibold px-3 py-2 rounded-lg cursor-pointer text-[16px] sm:text-[18px] flex justify-center items-center border border-emerald-900 flex-row gap-1 hover:border-emerald-700 hover:bg-emerald-500 transition-all">
+                        <RiSaveLine /> 
+                        <span className="hidden xs:block">Save Component</span>
+                        <span className="xs:hidden">Save</span>
+                    </button>
+                </div>
+
+                <div className="hidden sm:flex h-full flex-row justify-center items-center gap-2 lg:gap-4">
+                    <button className="bg-emerald-900 text-emerald-500 px-3 py-2 rounded-lg font-semibold cursor-pointer flex justify-center items-center flex-row gap-1 hover:bg-emerald-950 transition-colors">
+                        <IoMdArrowBack /> Back
+                    </button>
+                    
+                    <button className="bg-emerald-900 text-emerald-500 px-3 py-2 rounded-lg font-semibold cursor-pointer flex justify-center items-center flex-row gap-1 hover:bg-emerald-950 transition-colors">
+                        <BiRefresh /> Generate New
+                    </button>
+                    
+                    <button className="bg-emerald-900 text-emerald-500 px-3 py-2 rounded-lg font-semibold cursor-pointer flex justify-center items-center flex-row gap-1 hover:bg-emerald-950 transition-colors">
+                        <FaSave /> Saved Component
+                    </button>
                 </div>
 
             </div>
