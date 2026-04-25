@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import User from "../Models/userModel";
 import Component from "../Models/componentModel";
 import EmbeddingContent from "../Provider/ai.embedding";
-import GenerateContent from "../Provider/ai.generate";
+import { ManageGeneration } from "../Utils/swapModel";
 
 /*
 1. Take prompt from request 
@@ -21,15 +21,19 @@ interface AuthenticatedRequest extends Request {
     userId?: string 
 }; 
 
+
+// Resolve Component 
 const ResolveComponent = async(req: AuthenticatedRequest , res: Response) => {
     try {
         const prompt = req.body.prompt ; 
+        const model = req.body.model ; 
+
         const userId = req.userId ; 
 
-        if( !prompt ){
+        if( !prompt || !model ){
             return res.status(404).json({
                 success: false , 
-                message: 'Prompt Cannot Be Empty!'
+                message: 'Prompt Or Model Cannot Be Empty!'
             }); 
         }
 
@@ -61,6 +65,7 @@ const ResolveComponent = async(req: AuthenticatedRequest , res: Response) => {
             });
         }
 
+
         // ---- Vector Search ---- 
         const component: any = await Component.aggregate([
             {
@@ -79,7 +84,7 @@ const ResolveComponent = async(req: AuthenticatedRequest , res: Response) => {
             },
             {
                 $match: {
-                    "score" : { '$gt' : 0.90 }
+                    "score" : { '$gt' : 0.95 }
                 }
             },
             {
@@ -101,7 +106,7 @@ const ResolveComponent = async(req: AuthenticatedRequest , res: Response) => {
                 });
             }
 
-            const response: any = await GenerateContent( prompt ); 
+            const response: any = await ManageGeneration( model , prompt );  
 
             if( !response ){
                 return res.status(404).json({
@@ -131,6 +136,7 @@ const ResolveComponent = async(req: AuthenticatedRequest , res: Response) => {
                 message: 'Component Resolved SuccessFully!' , 
                 info: 'Cache Missed (Not Found In DB)!' ,
                 source: 'AI_Generated' ,
+                model: model ,
                 prompt: prompt ,
                 component: safeComponent ,
             });
@@ -159,7 +165,7 @@ const ResolveComponent = async(req: AuthenticatedRequest , res: Response) => {
                 matchedPrompt: component[0].prompt ,
                 matchedScore: Math.round((component[0].score) * 100)+'%' ,
                 source: 'DataBase' ,
-                component: component , 
+                component: component[0] , 
             });
         }
 
