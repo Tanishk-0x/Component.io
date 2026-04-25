@@ -23,14 +23,14 @@ const CompContext = ({children}: MainContextProps) => {
     const [errorMessage , setErrorMessage] = useState(''); 
 
     // ----- Function To Resolve Component ------
-    const ResolveComponent = async (prompt: string) => {
+    const ResolveComponent = async (prompt: string , model: string) => {
         
         if( isLoading ){
             return ; 
         }
 
-        if( !prompt ){
-            toast.error('Please Provide Prompt!'); 
+        if( !prompt || !model ){
+            toast.error('Please Provide Prompt Or Model!'); 
             return ; 
         }
 
@@ -39,7 +39,7 @@ const CompContext = ({children}: MainContextProps) => {
 
         try {
             const res = await axios.post(serverUrl + '/comp/resolve' , 
-                { prompt: prompt } , 
+                { prompt: prompt , model: model } , 
                 {
                     headers: {
                         'x-csrf-token' : CSRF_TOKEN
