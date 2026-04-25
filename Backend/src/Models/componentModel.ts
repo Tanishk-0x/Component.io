@@ -1,7 +1,11 @@
-import mongoose from 'mongoose'; 
+import mongoose, { trusted } from 'mongoose'; 
 
 const ComponentSchema = new mongoose.Schema({
 
+    title: {
+        type: String , 
+        default: 'Untitled Component'
+    },
     prompt: {
         type: String , 
         required: true
@@ -9,6 +13,20 @@ const ComponentSchema = new mongoose.Schema({
     code: {
         type: String ,
         required: true
+    },
+
+    modelUsed: {
+        type: String , 
+        requird: trusted
+    },
+    status: {
+        type: String , 
+        enum: ["Created" , "Public"] , 
+        default: "Created"
+    },
+    copyCount: {
+        type: Number , 
+        default: 0
     },
 
     
