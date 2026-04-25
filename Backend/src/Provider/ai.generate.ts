@@ -12,7 +12,7 @@ const Instruction = SystemInstruction ;
 
 
 // ---- Function For Generating ----
-const GenerateContent = async ( prompt: string ) => {
+const GenerateViaGemini = async ( prompt: string ) => {
     try {
         const response = await genAI.models.generateContent({
             model: 'gemini-2.5-flash-lite' ,  
@@ -38,4 +38,4 @@ const GenerateContent = async ( prompt: string ) => {
     }
 };
 
-export default GenerateContent ; 
+export default GenerateViaGemini ; 
