@@ -5,13 +5,16 @@ import App from './App.tsx'
 import MainContext from './Context/MainContext.tsx'
 import AuthContext from './Context/AuthContext.tsx'
 import OtpContext from './Context/OtpContext.tsx'
+import CompContext from './Context/CompContext.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <MainContext>
         <AuthContext>
           <OtpContext>
-            <App />
+            <CompContext>
+              <App />
+            </CompContext>
           </OtpContext>
         </AuthContext>
     </MainContext>

@@ -28,7 +28,7 @@ const App = () => {
     {
       path: '/lab' ,
       element: <Lab />
-    }
+    },
   ]); 
 
   return (
