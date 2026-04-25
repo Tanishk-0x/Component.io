@@ -19,6 +19,9 @@ import { RiSaveLine } from "react-icons/ri";
 import { IoMdArrowBack } from "react-icons/io";
 import { FaSave } from "react-icons/fa";
 import { BiRefresh } from "react-icons/bi";
+import { SiGooglegemini } from "react-icons/si";
+import { BsNvidia } from "react-icons/bs";
+import { SiMeta } from "react-icons/si";
 import { DummyCode3 } from "../Constants/Dummy";
 
 
@@ -28,13 +31,24 @@ const Lab = () => {
     const AiCode = DummyCode3 ; 
 
     // ----- Contexts -----
-    const { ResolveComponent, isLoading, errorMessage } = useSafeContext(componentDataContext);
+    const { ResolveComponent, isLoading, errorMessage , componentData , source } = useSafeContext(componentDataContext);
     const { userData } = useSafeContext(authDataContext);
 
     // ----- UseStates -----
     const [prompt, setPrompt] = useState("");
     const [showCode, setShowCode] = useState(false);
     const [showPreview, setShowPreview] = useState(true);
+
+    
+    // ------ Swap Models ---------
+    const [selectedModel, setSelectedModel] = useState("gemini-2.5-flash-lite");
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+    const AI_MODELS = [
+        { id: "llama-3.3-70b-versatile", name: "Llama 3 (Meta)", icon: <SiMeta /> },
+        { id: "gemini-2.5-flash-lite", name: "Flash (Gemini)", icon: <SiGooglegemini /> },
+        { id: "nvidia/nemotron-3-super-120b-a12b:free", name: "Nemotron (NVIDIA)", icon: <BsNvidia /> },
+    ];
 
   return (
 
@@ -102,18 +116,62 @@ const Lab = () => {
                         <span className="text-[11px] text-slate-600 font-bold uppercase tracking-wider">to generate</span>
                     </div>
 
-                    <button 
-                        onClick={() => ResolveComponent(prompt)}
-                        className="absolute bottom-3 right-3 md:bottom-4 md:right-4 flex items-center gap-2 bg-emerald-500 hover:bg-emerald-400 text-emerald-950 px-5 py-2 md:px-6 md:py-3 rounded-xl font-bold text-sm md:text-base transition-all active:scale-95 shadow-[0_0_20px_rgba(16,185,129,0.3)] cursor-pointer"
-                    >
-                        <FiZap className="fill-current hidden xs:block" />
-                        { isLoading ? 'Loading..' : 'Generate' }
-                    </button>
+                    <div className="absolute bottom-3 right-3 md:bottom-4 md:right-4 flex justify-center items-center flex-row gap-2">
+                        
+                        {/* --------- Model Selection ------- */}
+                        <div className="w-full flex justify-end relative z-20">
+                            <div className="relative w-full max-w-62.5">
+                                {/* Selected Value Button */}
+                                <button 
+                                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                                    className="w-full flex items-center justify-between outline-none border-2 border-emerald-800/50 rounded-xl bg-[#00140a]  text-emerald-100 backdrop-blur-xl px-4 py-2.5 text-sm font-medium hover:border-emerald-500/40 gap-2 transition-all shadow-lg cursor-pointer"
+                                >
+                                    <div className="flex items-center gap-2">
+                                        <span>{AI_MODELS.find(m => m.id === selectedModel)?.icon}</span>
+                                        <span>{AI_MODELS.find(m => m.id === selectedModel)?.name}</span>
+                                    </div>
+                                    <span className={`text-[10px] text-emerald-500 transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`}>
+                                        ▼
+                                    </span>
+                                </button>
+
+                                {/* Dropdown Options List */}
+                                {isDropdownOpen && (
+                                    <div className="absolute top-full left-0 right-0 mt-2 bg-[#00140a] border border-emerald-800/50 rounded-xl shadow-[0_0_20px_rgba(16,185,129,0.15)] overflow-hidden flex flex-col z-50 backdrop-blur-xl animate-fade-in-down">
+                                        {AI_MODELS.map((model) => (
+                                            <button
+                                                key={model.id}
+                                                onClick={() => {
+                                                    setSelectedModel(model.id);
+                                                    setIsDropdownOpen(false);
+                                                }}
+                                                className={`flex items-center gap-2 px-4 py-3 text-sm font-medium transition-all text-left w-full hover:bg-emerald-900/30 ${selectedModel === model.id ? 'text-emerald-400 bg-emerald-950/20' : 'text-slate-300'}`}
+                                            >
+                                                <span>{model.icon}</span>
+                                                <span>{model.name}</span>
+                                            </button>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                        
+                        <button 
+                            onClick={() => ResolveComponent(prompt , selectedModel)}
+                            className="flex items-center gap-2 bg-emerald-500 hover:bg-emerald-400 text-emerald-950 px-5 py-2 md:px-6 md:py-3 rounded-xl font-bold text-sm md:text-base transition-all active:scale-95 shadow-[0_0_20px_rgba(16,185,129,0.3)] cursor-pointer"
+                        >
+                            <FiZap className="fill-current hidden xs:block" />
+                            { isLoading ? 'Loading..' : 'Generate' }
+                        </button>
+                    </div>
+
+                    
                 </div>
 
             </div>
 
             {/* ----- Output Section ----- */}
+            { componentData && !isLoading && 
             <div className="w-full h-137.5 md:h-162.5 mt-2 flex flex-col items-center border-2 border-emerald-800/40 rounded-2xl bg-[#000a05]/80 backdrop-blur-xl overflow-hidden shadow-2xl">
             
                 {/* ------ Tabs ------ */}
@@ -147,7 +205,7 @@ const Lab = () => {
                 <SandpackProvider
                     template="react"
                     theme={sandpackDark}
-                    files={{ "/App.js": AiCode || '<h2>Component.io!</h2>' }}
+                    files={{ "/App.js": componentData?.code || '<h2>Component.io!</h2>' }}
                     options={{
                     externalResources: ["https://cdn.tailwindcss.com"],
                     }}
@@ -179,13 +237,15 @@ const Lab = () => {
                 </div>
 
             </div>
+            }
 
             {/* ------ Options Button ----- */}
+            { !isLoading && componentData && 
             <div className="bg-[#001008] rounded-lg w-full h-25 flex justify-between items-center px-4">
     
                 <div className="h-full flex flex-row gap-2 sm:gap-4 justify-center items-center">
                     <div className="bg-emerald-950 text-emerald-500 text-[16px] sm:text-[18px] font-semibold border-2 border-emerald-900 rounded-lg px-3 py-2">
-                        Source: <span className="text-emerald-400">DataBase</span>
+                        Source: <span className="text-emerald-400">{source || null}</span>
                     </div>
                     <button className="bg-emerald-600 text-emerald-950 font-semibold px-3 py-2 rounded-lg cursor-pointer text-[16px] sm:text-[18px] flex justify-center items-center border border-emerald-900 flex-row gap-1 hover:border-emerald-700 hover:bg-emerald-500 transition-all">
                         <RiSaveLine /> 
@@ -209,16 +269,17 @@ const Lab = () => {
                 </div>
 
             </div>
+            }
 
             {/* ------ Loading Section ------ */}
-            {isLoading && (
+            {isLoading && !componentData && (
                 <div className="w-full h-25 flex justify-center items-start md:min-h-60 mt-18 bg-[#000a05]/80 backdrop-blur-xl overflow-hidden shadow-2xl">
                     <Loader />
                 </div>
             )}
 
             {/* ------ Error Section ------ */}
-            {errorMessage && (
+            {errorMessage && !isLoading && !componentData && (
                 <div className="w-full h-25 flex justify-center items-start md:min-h-60 mt-18 bg-[#000a05]/80 backdrop-blur-xl overflow-hidden shadow-2xl">
                     <div className="text-red-700 font-semibold text-[16px] flex justify-center items-center flex-col gap-1 text-center">
                         <TbFaceIdError className="text-[30px] font-semibold text-red-800"/>
