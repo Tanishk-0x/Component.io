@@ -22,10 +22,13 @@ import { BiRefresh } from "react-icons/bi";
 import { SiGooglegemini } from "react-icons/si";
 import { BsNvidia } from "react-icons/bs";
 import { SiMeta } from "react-icons/si";
+import { useNavigate } from "react-router-dom";
+import { AiFillCheckCircle } from "react-icons/ai";
 
 
 const Lab = () => {
 
+    const navigate = useNavigate(); 
 
     // ----- Contexts -----
     const { 
@@ -34,7 +37,9 @@ const Lab = () => {
         errorMessage , 
         componentData , 
         source , 
-        compTitle ,
+        isSaved , 
+        isSaving , 
+        SaveComponent , 
     } = useSafeContext(componentDataContext);
     const { userData } = useSafeContext(authDataContext);
 
@@ -182,7 +187,7 @@ const Lab = () => {
                 <div className="w-full h-16 border-b border-emerald-900/40 px-4 md:px-6 flex justify-between items-center bg-emerald-950/20">
                     <div className="text-emerald-600 text-sm md:text-2xl font-bold flex items-center gap-2">
                         <RxComponent2 className="text-2xl md:text-3xl" />
-                        <span className="tracking-tight uppercase"> {compTitle || 'Generated Component'} </span>
+                        <span className="tracking-tight uppercase"> {componentData?.title || 'Generated Component'} </span>
                     </div>
 
                     <div className="bg-emerald-950/80 p-1 rounded-xl border border-emerald-800/50 flex items-center gap-1">
@@ -251,26 +256,41 @@ const Lab = () => {
                     <div className="bg-emerald-950 text-emerald-500 text-[16px] sm:text-[18px] font-semibold border-2 border-emerald-900 rounded-lg px-3 py-2">
                         Source: <span className="text-emerald-400">{source || null}</span>
                     </div>
-                    <button className="bg-emerald-600 text-emerald-950 font-semibold px-3 py-2 rounded-lg cursor-pointer text-[16px] sm:text-[18px] flex justify-center items-center border border-emerald-900 flex-row gap-1 hover:border-emerald-700 hover:bg-emerald-500 transition-all">
+                    { !isSaved && 
+                    <button onClick={() => SaveComponent(componentData._id)}
+                    className="bg-emerald-600 text-emerald-950 font-semibold px-3 py-2 rounded-lg cursor-pointer text-[16px] sm:text-[18px] flex justify-center items-center border border-emerald-900 flex-row gap-1 hover:border-emerald-700 hover:bg-emerald-500 transition-all">
                         <RiSaveLine /> 
-                        <span className="hidden xs:block">Save Component</span>
-                        <span className="xs:hidden">Save</span>
+                        <span className="hidden xs:block"> { isSaving ? 'Saving..' : 'Save Component' } </span>
+                        <span className="xs:hidden"> { isSaving ? 'Saving..' : 'Save' } </span>
                     </button>
+                    }
+                    { isSaved && 
+                    <button
+                    className="bg-emerald-950 text-emerald-600 font-semibold px-3 py-2 rounded-lg cursor-pointer text-[16px] sm:text-[18px] flex justify-center items-center border border-emerald-600 flex-row gap-1 transition-all">
+                        <AiFillCheckCircle />
+                        Saved
+                    </button> 
+                    }
                 </div>
 
+                { !isSaving && isSaved && 
                 <div className="hidden sm:flex h-full flex-row justify-center items-center gap-2 lg:gap-4">
-                    <button className="bg-emerald-900 text-emerald-500 px-3 py-2 rounded-lg font-semibold cursor-pointer flex justify-center items-center flex-row gap-1 hover:bg-emerald-950 transition-colors">
+                    <button onClick={() => navigate('/')}
+                    className="bg-emerald-900 text-emerald-500 px-3 py-2 rounded-lg font-semibold cursor-pointer flex justify-center items-center flex-row gap-1 hover:bg-emerald-950 transition-colors">
                         <IoMdArrowBack /> Back
                     </button>
                     
-                    <button className="bg-emerald-900 text-emerald-500 px-3 py-2 rounded-lg font-semibold cursor-pointer flex justify-center items-center flex-row gap-1 hover:bg-emerald-950 transition-colors">
+                    <button onClick={() => setPrompt('')}
+                    className="bg-emerald-900 text-emerald-500 px-3 py-2 rounded-lg font-semibold cursor-pointer flex justify-center items-center flex-row gap-1 hover:bg-emerald-950 transition-colors">
                         <BiRefresh /> Generate New
                     </button>
                     
-                    <button className="bg-emerald-900 text-emerald-500 px-3 py-2 rounded-lg font-semibold cursor-pointer flex justify-center items-center flex-row gap-1 hover:bg-emerald-950 transition-colors">
+                    <button onClick={() => navigate('/profile')}
+                    className="bg-emerald-900 text-emerald-500 px-3 py-2 rounded-lg font-semibold cursor-pointer flex justify-center items-center flex-row gap-1 hover:bg-emerald-950 transition-colors">
                         <FaSave /> Saved Component
                     </button>
                 </div>
+                }
 
             </div>
             }

@@ -19,9 +19,10 @@ const CompContext = ({children}: MainContextProps) => {
     // -------------- UseStates --------------
     const [source , setSource] = useState(null); 
     const [componentData , setComponentData] = useState(null); 
-    const [compTitle , setCompTitle] = useState(''); 
     const [isLoading , setIsLoading] = useState(false); 
     const [errorMessage , setErrorMessage] = useState(''); 
+    const [isSaving , setIsSaving] = useState(false); 
+    const [isSaved , setIsSaved] = useState(false); 
 
     // ----- Function To Resolve Component ------
     const ResolveComponent = async (prompt: string , model: string) => {
@@ -53,19 +54,6 @@ const CompContext = ({children}: MainContextProps) => {
                 setComponentData(res.data.component); 
                 setSource(res.data.source) ; 
                 GetUserDetails(); 
-
-                // ------ TITLE -------
-                const code = res?.data?.component?.code ; 
-                const declarationMatch = code.match(/(?:const|function|class)\s+([A-Z][a-zA-Z0-9_]*)\s*(?:=|\(|extends)/);
-                const exportMatch = code.match(/export\s+default\s+([A-Z][a-zA-Z0-9_]*)/);
-
-                const componentName = declarationMatch?.[1] || exportMatch?.[1] ; 
-
-                if( componentName ){
-                    const finalName = componentName.replace(/([A-Z])/g, ' $1').trim(); 
-                    setCompTitle(finalName); 
-                    console.log("Component Name: " , finalName); 
-                }
             }
         }
         
@@ -82,13 +70,57 @@ const CompContext = ({children}: MainContextProps) => {
         }
     }
 
+    // ----- Function To Save Component ------
+    const SaveComponent = async ( CompId: string ) => {
+
+        if( isSaving ){
+            return ; 
+        }
+        if( !CompId ){
+            return ; 
+        }
+        const CSRF_TOKEN = ExtractCookie(); 
+        setIsSaving(true); 
+
+        try {
+            const res = await axios.post( serverUrl + `/comp/save/${CompId}` ,
+                { } , 
+                {
+                    headers: {
+                        'x-csrf-token' : CSRF_TOKEN
+                    },
+                    withCredentials: true
+                }
+            ); 
+            
+            if(res.data.success ){
+                toast.success("Component Saved!"); 
+                setIsSaved(true); 
+            }
+        }
+        
+        catch (error: any) {
+            const errorMessage = error?.response?.data?.message ; 
+            setErrorMessage(errorMessage); 
+            toast.error(errorMessage); 
+            console.log("Component Save Error!"); 
+            console.dir(error);
+        }
+
+        finally{
+            setIsSaving(false); 
+        }
+    }
+
     const value = {
         ResolveComponent ,
         componentData ,
         isLoading , 
         errorMessage ,
         source , 
-        compTitle , 
+        SaveComponent ,
+        isSaving , 
+        isSaved , 
     }; 
 
     return (
