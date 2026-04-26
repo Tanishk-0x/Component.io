@@ -1,4 +1,4 @@
-import { createContext, useState } from "react"
+import { createContext, useEffect, useState } from "react"
 import axios from "axios";
 import toast from "react-hot-toast";
 import type{ ComponentContextType, MainContextProps } from "../Types/Types";
@@ -23,6 +23,11 @@ const CompContext = ({children}: MainContextProps) => {
     const [errorMessage , setErrorMessage] = useState(''); 
     const [isSaving , setIsSaving] = useState(false); 
     const [isSaved , setIsSaved] = useState(false); 
+    const [components , setCompnents] = useState(null); 
+    const [isGetting , setIsGetting] = useState(false); 
+    const [isLiking , setIsLiking] = useState(false); 
+    const [isLiked , setIsLiked] = useState(false); 
+    const [likesCount , setLikesCount] = useState(null); 
 
     // ----- Function To Resolve Component ------
     const ResolveComponent = async (prompt: string , model: string) => {
@@ -112,6 +117,83 @@ const CompContext = ({children}: MainContextProps) => {
         }
     }
 
+    // ----- Function To Get Components ------
+    const GetComponents = async () => {
+
+        if( isGetting ){
+            return ; 
+        }
+        setIsGetting(true); 
+        try {
+            const res = await axios.get( serverUrl + '/comp/getcomponents' ,
+                { withCredentials: true }
+            ); 
+
+            if( res.data.success ){
+                if( res.data.components.length > 0 ){
+                    setCompnents(res.data.components); 
+                    console.log("COMPONENTS: " , res.data.components); 
+                    toast.success("Components Fetched!"); 
+                }
+            }
+        }
+        
+        catch (error: any) {
+            const errorMessage = error?.response?.data?.message ; 
+            setErrorMessage(errorMessage); 
+            toast.error(errorMessage); 
+            console.log("Get Components Error!"); 
+            console.dir(error);
+        }
+
+        finally{
+            setIsGetting(false); 
+        }
+    }
+
+    // ----- CALLING TO GET COMPONENTS ------
+    useEffect(() => {
+        GetComponents(); 
+    },[]); 
+
+
+    // ---- Function To Like Component -----
+    const LikeComponent = async ( Id: string ) => {
+        if( isLiking ){
+            return ; 
+        }
+        if( isLiked ){
+            return ; 
+        }
+
+        setIsLiking(true); 
+        try {
+            const res = await axios.post( serverUrl + `/comp/likecomponent/${Id}` ,
+                { } , 
+                { withCredentials: true }
+            ); 
+
+            if( res.data.success ){
+                setIsLiked(true); 
+                setLikesCount(res.data.likeCount); 
+                toast.success("Liked!"); 
+            }
+        }
+        
+        catch (error: any) {
+            const errorMessage = error?.response?.data?.message ; 
+            setErrorMessage(errorMessage); 
+            toast.error(errorMessage); 
+            console.log("Like Components Error!"); 
+            console.dir(error);
+        }
+
+        finally{
+            setIsLiking(false); 
+        }
+    }
+
+
     const value = {
         ResolveComponent ,
         componentData ,
@@ -121,6 +203,10 @@ const CompContext = ({children}: MainContextProps) => {
         SaveComponent ,
         isSaving , 
         isSaved , 
+        components , 
+        LikeComponent , 
+        isLiked , 
+        likesCount
     }; 
 
     return (

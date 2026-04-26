@@ -44,5 +44,11 @@ export interface ComponentContextType {
     isLoading: boolean ; 
     errorMessage: any ;
     source: any ; 
-    compTitle: string ; 
+    isSaving: boolean ;
+    SaveComponent: (CompId: string) => Promise<void> ; 
+    isSaved: boolean ; 
+    components: any ; 
+    LikeComponent: (Id: string) => Promise<void> ; 
+    isLiked: boolean ; 
+    likesCount: any ; 
 }
