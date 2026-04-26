@@ -7,6 +7,6 @@ const router = express.Router();
 // -------------------------------------------------
 router.post('/resolve' , requireCSRF , AuthMe , Component.ResolveComponent); 
 // ------------------------------------------------
-router.post('/save/:id' , requireCSRF , AuthMe , Component.SaveComponent);
+router.post('/save/:id' , requireCSRF , AuthMe , Component.SaveComponent ); 
 
 export default router ; 

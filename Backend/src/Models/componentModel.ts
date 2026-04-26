@@ -6,6 +6,10 @@ const ComponentSchema = new mongoose.Schema({
         type: String , 
         default: 'Untitled Component'
     },
+    category: {
+        type: String , 
+        default: 'Uncategorized'
+    },
     prompt: {
         type: String , 
         required: true

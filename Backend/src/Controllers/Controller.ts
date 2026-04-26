@@ -3,6 +3,7 @@ import User from "../Models/userModel";
 import Component from "../Models/componentModel";
 import EmbeddingContent from "../Provider/ai.embedding";
 import { ManageGeneration } from "../Utils/swapModel";
+import { ParseComponentData } from "../Utils/parseData";
 
 /*
 1. Take prompt from request 
@@ -115,10 +116,15 @@ const ResolveComponent = async(req: AuthenticatedRequest , res: Response) => {
                 }); 
             }
 
+            // -- Cleaning Data --
+            const ParsedData = await ParseComponentData( response ); 
+
             // -- Save IN DB --
             const comp = await Component.create({
+                title: ParsedData.title ,
+                category: ParsedData.category ,
                 prompt: prompt , 
-                code: response ,
+                code: ParsedData.cleanCode ,
                 modelUsed: model ,
                 embedding: embeddings.values
             });  
@@ -139,6 +145,9 @@ const ResolveComponent = async(req: AuthenticatedRequest , res: Response) => {
                 source: 'AI_Generated' ,
                 model: model ,
                 prompt: prompt ,
+                title: ParsedData.title , 
+                category: ParsedData.category ,
+                code: ParsedData.cleanCode ,
                 component: safeComponent ,
             });
         }
@@ -192,6 +201,13 @@ const SaveComponent = async(req: AuthenticatedRequest , res: Response) => {
             return res.status(404).json({
                 success: false , 
                 message: 'Component Id Not Found!'
+            });
+        }
+
+        if( !userId ){
+            return res.status(401).json({
+                success: false , 
+                message: 'UnAuthorized!'
             });
         }
 
