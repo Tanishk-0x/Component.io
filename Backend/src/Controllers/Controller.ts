@@ -117,8 +117,9 @@ const ResolveComponent = async(req: AuthenticatedRequest , res: Response) => {
 
             // -- Save IN DB --
             const comp = await Component.create({
-                prompt , 
+                prompt: prompt , 
                 code: response ,
+                modelUsed: model ,
                 embedding: embeddings.values
             });  
 
@@ -181,4 +182,48 @@ const ResolveComponent = async(req: AuthenticatedRequest , res: Response) => {
 }; 
 
 
-export default ResolveComponent ; 
+// Save Component 
+const SaveComponent = async(req: AuthenticatedRequest , res: Response) => {
+    try {
+        const { id } = req.params ; 
+        const userId = req.userId ; 
+
+        if( !id ){
+            return res.status(404).json({
+                success: false , 
+                message: 'Component Id Not Found!'
+            });
+        }
+
+        const user = await User.findByIdAndUpdate(userId,
+            {
+                $addToSet: { savedComponents: id }
+            },
+            { new: true }
+        ); 
+
+        if( !user ){
+            return res.status(404).json({
+                success: false , 
+                message: 'User Not Found!'
+            }); 
+        }
+
+        return res.status(200).json({
+            success: true , 
+            message: 'Component Saved SuccessFully!' , 
+            user: user
+        }); 
+    }
+    
+    catch (error: any) {
+        return res.status(500).json({
+            success: false , 
+            message: 'Error While Saving Component!' , 
+            error: error.message 
+        });
+    }
+};
+
+
+export default {ResolveComponent , SaveComponent}; 

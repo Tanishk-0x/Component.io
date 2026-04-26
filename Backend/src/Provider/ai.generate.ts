@@ -1,10 +1,10 @@
 import { GoogleGenAI } from '@google/genai' ; 
 import { SystemInstruction } from '../Constants/instructions';
 
-const GEMINI_API_KEY3 = process.env.GEMINI_API_KEY5 ; 
+const GEMINI_API_KEY2 = process.env.GEMINI_API_KEY2 ; 
 
 const genAI = new GoogleGenAI({
-    apiKey: GEMINI_API_KEY3
+    apiKey: GEMINI_API_KEY2
 }); 
 
 // ------- Instruction -------- 
