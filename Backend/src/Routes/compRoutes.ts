@@ -8,5 +8,9 @@ const router = express.Router();
 router.post('/resolve' , requireCSRF , AuthMe , Component.ResolveComponent); 
 // ------------------------------------------------
 router.post('/save/:id' , requireCSRF , AuthMe , Component.SaveComponent ); 
+// ------------------------------------------------
+router.get('/getcomponents' , Component.GetComponents); 
+// ------------------------------------------------
+router.post('/likecomponent/:id' , Component.LikeComponent); 
 
 export default router ; 

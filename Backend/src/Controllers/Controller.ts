@@ -242,4 +242,75 @@ const SaveComponent = async(req: AuthenticatedRequest , res: Response) => {
 };
 
 
-export default {ResolveComponent , SaveComponent}; 
+// Get All Components 
+const GetComponents = async (req: AuthenticatedRequest , res: Response) => {
+    try {
+        const components = await Component.find({}).select('-embedding').lean({}); 
+
+        if( !components || components.length === 0 ){
+            return res.status(404).json({
+                success: false , 
+                message: 'Components Not Found!'
+            });
+        }
+
+        return res.status(200).json({
+            success: true , 
+            message: 'Components Fetched SuccessFully!' , 
+            components: components
+        }); 
+    }
+    
+    catch (error: any) {
+        return res.status(500).json({
+            success: false , 
+            message: 'Error While Saving Component!' , 
+            error: error.message 
+        });
+    }
+}; 
+
+
+// Like Component 
+const LikeComponent = async (req: AuthenticatedRequest , res: Response) => {
+    try {
+        const {id} = req.params ; 
+
+        if( !id ){
+            return res.status(403).json({
+                success: false ,
+                message: 'Component Id Missing!'
+            });
+        }
+
+        const component: any = await Component.findByIdAndUpdate(
+            id , 
+            { $inc: { likeCount: 1 } } , 
+            { new: true }
+        );
+
+        if( !component ){
+            return res.status(404).json({
+                success: false ,
+                message: 'Component Not Found!'
+            });
+        }
+
+        return res.status(200).json({
+            success: true , 
+            message: 'Component Liked!' , 
+            likeCount: component.likeCount , 
+        }); 
+    }
+    
+    catch (error: any) {
+        return res.status(500).json({
+            success: false , 
+            message: 'Error While Like Component!' , 
+            error: error.message 
+        });
+    }
+};
+
+
+export default {ResolveComponent , SaveComponent, GetComponents , LikeComponent}; 
