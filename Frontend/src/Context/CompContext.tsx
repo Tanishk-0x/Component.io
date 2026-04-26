@@ -19,6 +19,7 @@ const CompContext = ({children}: MainContextProps) => {
     // -------------- UseStates --------------
     const [source , setSource] = useState(null); 
     const [componentData , setComponentData] = useState(null); 
+    const [compTitle , setCompTitle] = useState(''); 
     const [isLoading , setIsLoading] = useState(false); 
     const [errorMessage , setErrorMessage] = useState(''); 
 
@@ -52,6 +53,19 @@ const CompContext = ({children}: MainContextProps) => {
                 setComponentData(res.data.component); 
                 setSource(res.data.source) ; 
                 GetUserDetails(); 
+
+                // ------ TITLE -------
+                const code = res?.data?.component?.code ; 
+                const declarationMatch = code.match(/(?:const|function|class)\s+([A-Z][a-zA-Z0-9_]*)\s*(?:=|\(|extends)/);
+                const exportMatch = code.match(/export\s+default\s+([A-Z][a-zA-Z0-9_]*)/);
+
+                const componentName = declarationMatch?.[1] || exportMatch?.[1] ; 
+
+                if( componentName ){
+                    const finalName = componentName.replace(/([A-Z])/g, ' $1').trim(); 
+                    setCompTitle(finalName); 
+                    console.log("Component Name: " , finalName); 
+                }
             }
         }
         
@@ -74,6 +88,7 @@ const CompContext = ({children}: MainContextProps) => {
         isLoading , 
         errorMessage ,
         source , 
+        compTitle , 
     }; 
 
     return (

@@ -7,11 +7,13 @@ import { SiHackthebox } from "react-icons/si";
 import { IoAddCircle } from "react-icons/io5";
 import { PiSparkle } from "react-icons/pi";
 import { IoArrowForwardOutline } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
 
 
 const Home = () => {
 
   const { userData } = useSafeContext(authDataContext);
+  const navigate = useNavigate(); 
 
   return (
 
@@ -55,10 +57,12 @@ const Home = () => {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 md:gap-6 w-full sm:w-auto">
-               <button className="w-full flex justify-center items-center flex-row gap-1 cursor-pointer sm:w-auto bg-[#10b981] text-black px-8 md:px-12 py-4 md:py-5 font-semibold text-[16px] md:text-[18px] transition-all rounded-lg active:scale-95">
+               <button onClick={() => navigate('/components')}
+               className="w-full flex justify-center items-center flex-row gap-1 cursor-pointer sm:w-auto bg-[#10b981] text-black px-8 md:px-12 py-4 md:py-5 font-semibold text-[16px] md:text-[18px] transition-all rounded-lg active:scale-95">
                   COMPONENTS <IoArrowForwardOutline className="text-[20px] font-semibold"/>
                </button>
-               <button className="w-full flex justify-center items-center flex-row gap-1 cursor-pointer sm:w-auto border border-[#10b981] text-[#10b981] px-8 md:px-12 py-4 md:py-5 font-bold uppercase rounded-lg text-sm hover:bg-[#10b98110] active:scale-95 transition-all">
+               <button onClick={() => navigate('/lab')}
+                className="w-full flex justify-center items-center flex-row gap-1 cursor-pointer sm:w-auto border border-[#10b981] text-[#10b981] px-8 md:px-12 py-4 md:py-5 font-bold uppercase rounded-lg text-sm hover:bg-[#10b98110] active:scale-95 transition-all">
                   <PiSparkle className="text-[20px] font-semibold"/> AI_LAB
                </button>
             </div>

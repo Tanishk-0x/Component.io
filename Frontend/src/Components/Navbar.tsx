@@ -46,27 +46,27 @@ const Navbar = () => {
       <nav className="hidden md:block absolute left-1/2 -translate-x-1/2">
         <ul className="flex flex-row items-center gap-8">
           
-          <li onClick={() => navigate('/')}
+          <li onClick={() => navigate('/componentcard')}
           className="relative text-neutral-400 hover:text-emerald-400 font-mono text-[16px] cursor-pointer transition-all duration-200 group">
             Components
             <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-emerald-400 transition-all duration-300 group-hover:w-full"></span>
           </li>
 
-          <li onClick={() => navigate('/lab')}
+          <li onClick={() => navigate('/admin')}
           className="relative text-neutral-400 hover:text-emerald-400 font-mono text-[16px] cursor-pointer transition-all duration-200 group">
-            AiLab
+            Admin
             <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-emerald-400 transition-all duration-300 group-hover:w-full"></span>
           </li>
 
-          <li onClick={() => navigate('/')} 
+          <li onClick={() => navigate('/profile')} 
           className="relative text-neutral-400 hover:text-emerald-400 font-mono text-[16px] cursor-pointer transition-all duration-200 group">
-            Upgrade
+            Profile
             <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-emerald-400 transition-all duration-300 group-hover:w-full"></span>
           </li>
 
-          <li onClick={() => navigate('/verify')} 
+          <li onClick={() => navigate('/top')} 
           className="relative text-neutral-400 hover:text-emerald-400 font-mono text-[16px] cursor-pointer transition-all duration-200 group">
-            Verify
+            Top
             <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-emerald-400 transition-all duration-300 group-hover:w-full"></span>
           </li>
 

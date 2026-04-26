@@ -39,9 +39,10 @@ export interface OtpContextType {
 }
 
 export interface ComponentContextType {
-    ResolveComponent: (prompt: string) => Promise<void> ; 
+    ResolveComponent: (prompt: string , model: string) => Promise<void> ; 
     componentData: any ;
     isLoading: boolean ; 
     errorMessage: any ;
     source: any ; 
+    compTitle: string ; 
 }

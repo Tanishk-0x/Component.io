@@ -5,6 +5,11 @@ import { createBrowserRouter , RouterProvider } from 'react-router-dom';
 import Home from "./Pages/Home";
 import Verify from "./Pages/Verify";
 import Lab from "./Pages/Lab";
+import Components from "./Pages/Components";
+import Profile from "./Pages/Profile";
+import Top from "./Pages/Top";
+import ComponentCards from "./Pages/ComponentCards";
+import Admin from "./Pages/Admin";
 
 const App = () => {
 
@@ -28,6 +33,26 @@ const App = () => {
     {
       path: '/lab' ,
       element: <Lab />
+    },
+    {
+      path: '/components' ,
+      element: <Components />
+    },
+    {
+      path: '/profile' ,
+      element: <Profile />
+    },
+    {
+      path: '/top' ,
+      element: <Top />
+    },
+    {
+      path: '/componentcard' ,
+      element: <ComponentCards />
+    },
+    {
+      path: '/admin' ,
+      element: <Admin />
     },
   ]); 
 

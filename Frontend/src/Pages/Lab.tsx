@@ -22,16 +22,20 @@ import { BiRefresh } from "react-icons/bi";
 import { SiGooglegemini } from "react-icons/si";
 import { BsNvidia } from "react-icons/bs";
 import { SiMeta } from "react-icons/si";
-import { DummyCode3 } from "../Constants/Dummy";
 
 
 const Lab = () => {
 
-    // ----- Dummy Code -----
-    const AiCode = DummyCode3 ; 
 
     // ----- Contexts -----
-    const { ResolveComponent, isLoading, errorMessage , componentData , source } = useSafeContext(componentDataContext);
+    const { 
+        ResolveComponent,
+        isLoading,
+        errorMessage , 
+        componentData , 
+        source , 
+        compTitle ,
+    } = useSafeContext(componentDataContext);
     const { userData } = useSafeContext(authDataContext);
 
     // ----- UseStates -----
@@ -178,7 +182,7 @@ const Lab = () => {
                 <div className="w-full h-16 border-b border-emerald-900/40 px-4 md:px-6 flex justify-between items-center bg-emerald-950/20">
                     <div className="text-emerald-600 text-sm md:text-2xl font-bold flex items-center gap-2">
                         <RxComponent2 className="text-2xl md:text-3xl" />
-                        <span className="tracking-tight uppercase">Generated Component</span>
+                        <span className="tracking-tight uppercase"> {compTitle || 'Generated Component'} </span>
                     </div>
 
                     <div className="bg-emerald-950/80 p-1 rounded-xl border border-emerald-800/50 flex items-center gap-1">
