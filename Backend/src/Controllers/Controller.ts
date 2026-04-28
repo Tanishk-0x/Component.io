@@ -245,7 +245,8 @@ const SaveComponent = async(req: AuthenticatedRequest , res: Response) => {
 // Get All Components 
 const GetComponents = async (req: AuthenticatedRequest , res: Response) => {
     try {
-        const components = await Component.find({}).select('-embedding').lean({}); 
+        const components = await Component.find({})
+        .select('-embedding').lean({}); 
 
         if( !components || components.length === 0 ){
             return res.status(404).json({
