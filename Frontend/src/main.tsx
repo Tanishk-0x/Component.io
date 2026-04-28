@@ -7,6 +7,7 @@ import AuthContext from './Context/AuthContext.tsx'
 import OtpContext from './Context/OtpContext.tsx'
 import CompContext from './Context/CompContext.tsx'
 import PublishContext from './Context/PublishContext.tsx'
+import AdminContext from './Context/AdminContext.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -15,7 +16,9 @@ createRoot(document.getElementById('root')!).render(
           <OtpContext>
             <CompContext>
               <PublishContext>
-                <App />  
+                <AdminContext>
+                  <App />  
+                </AdminContext>  
               </PublishContext>
             </CompContext>
           </OtpContext>

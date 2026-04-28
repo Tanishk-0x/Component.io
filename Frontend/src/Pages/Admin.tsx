@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useSafeContext } from '../Hooks/UseSafeContext';
+import { adminDataContext } from '../Context/AdminContext';
 
 // ----- Dummy Data For Admin -----
 const INITIAL_QUEUE = [
@@ -21,6 +23,19 @@ const INITIAL_QUEUE = [
 
 
 const Admin = () => {
+
+    // -------- UseContexts ---------
+    const {
+        isGettingData ,
+        GetAdminDashboardData ,
+        totalUsers , 
+        componentCount , 
+        requestedComponents , 
+        users , 
+        components , 
+        currentPage ,
+    } = useSafeContext(adminDataContext); 
+
 
     // --------- UseStates ---------
     const [queue, setQueue] = useState(INITIAL_QUEUE);

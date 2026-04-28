@@ -57,4 +57,22 @@ export interface PublishContextType {
     RequestToPublish: (Id: string) => Promise<void> ; 
     requested: boolean ; 
     isRequesting: boolean ; 
+    AcceptRequest: (Id: string) => Promise<void> ; 
+    isAccepting: boolean ; 
+    accepted: boolean ; 
+    RejectRequest: (Id: string) => Promise<void> ; 
+    isRejecting: boolean ;  
+    rejected: boolean ;  
+}; 
+
+
+export interface AdminContextType {
+    isGettingData: boolean ;  
+    GetAdminDashboardData: (page: number) => Promise<void> ;  
+    totalUsers: number ;  
+    componentCount: object ;   
+    requestedComponents: any ;    
+    users: any ; 
+    components: any ;
+    currentPage: any ; 
 }; 
