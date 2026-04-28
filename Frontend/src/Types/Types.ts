@@ -52,3 +52,9 @@ export interface ComponentContextType {
     isLiked: boolean ; 
     likesCount: any ; 
 }
+
+export interface PublishContextType {
+    RequestToPublish: (Id: string) => Promise<void> ; 
+    requested: boolean ; 
+    isRequesting: boolean ; 
+}; 

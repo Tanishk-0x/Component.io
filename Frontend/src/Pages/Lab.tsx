@@ -25,6 +25,7 @@ import { SiMeta } from "react-icons/si";
 import { useNavigate } from "react-router-dom";
 import { AiFillCheckCircle } from "react-icons/ai";
 import { MdPublish } from "react-icons/md";
+import { publishDataContext } from "../Context/PublishContext";
 
 
 const Lab = () => {
@@ -43,6 +44,8 @@ const Lab = () => {
         SaveComponent , 
     } = useSafeContext(componentDataContext);
     const { userData } = useSafeContext(authDataContext);
+
+    const { RequestToPublish , requested , isRequesting } = useSafeContext(publishDataContext); 
 
     // ----- UseStates -----
     const [prompt, setPrompt] = useState("");
@@ -273,11 +276,18 @@ const Lab = () => {
                     </button> 
                     }
                     {/* ------- REQUEST TO PUBLISH -------- */}
-                    { !isSaved && 
-                    <button
+                    { !requested &&  
+                    <button onClick={() => RequestToPublish(componentData._id)}
                     className="bg-emerald-600 text-emerald-950 font-semibold px-3 py-2 rounded-lg cursor-pointer text-[16px] sm:text-[18px] flex justify-center items-center border border-emerald-900 flex-row gap-1 hover:border-emerald-700 hover:bg-emerald-500 transition-all">
                         <MdPublish />
-                        Request To Publish
+                        { isRequesting ? 'Requesting..' : 'Request To Publish' }
+                    </button> 
+                    }
+                    { requested && !isRequesting && 
+                    <button
+                    className="bg-emerald-950 text-emerald-600 font-semibold px-3 py-2 rounded-lg cursor-pointer text-[16px] sm:text-[18px] flex justify-center items-center border border-emerald-600 flex-row gap-1 transition-all">
+                        <AiFillCheckCircle />
+                        Requested
                     </button> 
                     }
                 </div>
