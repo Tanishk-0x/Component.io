@@ -1,7 +1,7 @@
 import express from 'express' ;
-import GetAdminData from '../Controllers/Admin';
+import GetAdminDashboardData from '../Controllers/Admin';
 const router = express.Router(); 
 
-router.get('/getadmindata' , GetAdminData); 
+router.get('/getadmindata' , GetAdminDashboardData); 
 
 export default router ; 
