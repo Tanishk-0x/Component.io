@@ -16,10 +16,15 @@ const PublishContext = ({children}: MainContextProps) => {
     // ------- UseStates ----------- 
     const [isRequesting , setIsRequesting] = useState(false); 
     const [requested , setRequested] = useState(false); 
+    const [isAccepting , setIsAccepting] = useState(false); 
+    const [accepted , setAccepted] = useState(false); 
+    const [rejected , setRejected] = useState(false); 
+    const [isRejecting , setIsRejecting] = useState(false); 
 
 
     // ------ Handlers ------------
 
+    // Request Publish 
     const RequestToPublish = async(Id: string) => {
 
         if( isRequesting ){
@@ -60,10 +65,99 @@ const PublishContext = ({children}: MainContextProps) => {
         }
     }
 
+    // Accept Request 
+    const AcceptRequest = async(Id: string) => {
+
+        if( isAccepting ){
+            return ; 
+        }
+        if( !Id ){
+            return ; 
+        }
+        const CSRF_TOKEN = ExtractCookie(); 
+        setIsAccepting(true); 
+
+        try {
+            const res = await axios.post( serverUrl + `/publish/acceptrequest/${Id}` , 
+                {} , 
+                { 
+                    headers: {
+                        'x-csrf-token' : CSRF_TOKEN
+                    },
+                    withCredentials: true
+                }
+            ); 
+
+            if( res.data.success ){
+                toast.success("Accepted!"); 
+                setAccepted(true);  
+            }
+        }
+        
+        catch (error: any) {
+            const errorMessage = error?.response?.data?.message ;  
+            toast.error(errorMessage); 
+            console.log("Accepting Request Error!"); 
+            console.dir(error);
+        }
+
+        finally{
+            setIsAccepting(false); 
+        }
+    }
+
+
+    // Reject Request 
+    const RejectRequest = async(Id: string) => {
+
+        if( isRejecting ){
+            return ; 
+        }
+        if( !Id ){
+            return ; 
+        }
+        const CSRF_TOKEN = ExtractCookie(); 
+        setIsRejecting(true); 
+
+        try {
+            const res = await axios.post( serverUrl + `/publish/rejectrequest/${Id}` , 
+                {} , 
+                {
+                    headers: {
+                        'x-csrf-token' : CSRF_TOKEN
+                    },
+                    withCredentials: true
+                }
+            ); 
+
+            if( res.data.success ){
+                toast.success("Rejected!"); 
+                setRejected(true); 
+            }
+        }
+        
+        catch (error: any) {
+            const errorMessage = error?.response?.data?.message ;  
+            toast.error(errorMessage); 
+            console.log("Rejecting Request Error!"); 
+            console.dir(error);
+        }
+
+        finally{
+            setIsRejecting(false); 
+        }
+    }
+
     const value = {
         RequestToPublish , 
         isRequesting , 
         requested ,
+        AcceptRequest , 
+        isAccepting , 
+        accepted , 
+        RejectRequest , 
+        isRejecting , 
+        rejected , 
     }; 
 
     return (
