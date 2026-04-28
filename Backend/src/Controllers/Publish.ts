@@ -152,5 +152,59 @@ const AcceptRequest = async(req: Request , res: Response) => {
 }
 
 
+// Reject Request 
+const RejectRequest = async(req: Request , res: Response) => {
+    try {
+        const { id } = req.params ; 
 
-export default {RequestToPublish , AcceptRequest} ; 
+        if( !id ){
+            return res.status(400).json({
+                success: false , 
+                message: 'Component Id Missing!'
+            });
+        }
+
+        const component = await Component.findById(id).select('-embedding'); 
+
+        if( !component ){
+            return res.status(404).json({
+                success: false , 
+                message: 'Component Not Found!'
+            });
+        }
+
+        if( component.status === "Public" ){
+            return res.status(400).json({
+                success: false , 
+                message: 'Cannot Reject Public Component!'
+            });
+        }
+
+        if( component.status !== "Requested" ){
+            return res.status(400).json({
+                success: false , 
+                message: 'Only Requested Component Can be Reject!'
+            });
+        }
+
+        component.status = "Rejected" ; 
+        await component.save(); 
+
+        return res.status(200).json({
+            success: true , 
+            message: 'Request Rejected!' , 
+            component: component 
+        }); 
+    }
+    
+    catch (error: any) {
+       return res.status(500).json({
+            success: false , 
+            message: 'Error While Rejecting Request!' , 
+            error: error.message 
+        }); 
+    }
+}
+
+
+export default {RequestToPublish , AcceptRequest , RejectRequest} ; 

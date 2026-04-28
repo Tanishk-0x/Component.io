@@ -31,7 +31,7 @@ const ComponentSchema = new mongoose.Schema({
     },
     status: {
         type: String , 
-        enum: ["Created" , "Public" , "Requested"] , 
+        enum: ["Created" , "Public" , "Requested" , "Rejected"] , 
         default: "Created"
     },
     copyCount: {
