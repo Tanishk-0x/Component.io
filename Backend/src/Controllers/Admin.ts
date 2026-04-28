@@ -6,7 +6,7 @@ import Component from "../Models/componentModel";
 // Get-Admin-Dashboard-Data 
 const GetAdminDashboardData = async(req: Request , res: Response) => {
     try {
-        const page = parseInt(req.body.page) || 1 ; 
+        const page = parseInt(req.query.page as any) || 1 ; 
         const limit = 10 ; 
         const skip = (page - 1) * limit ; 
 
