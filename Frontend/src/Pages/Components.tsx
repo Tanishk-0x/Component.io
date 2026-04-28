@@ -76,6 +76,11 @@ const Components = () => {
                     <span className="text-xs text-slate-500">{comp?.category || 'UnCategorized'}</span>
                     </button>
                 ))}
+
+                {/* ------ LOAD_MORE --------- */}
+                <button className='px-4 py-2 bg-emerald-950 border-2 border-emerald-800 text-emerald-600 font-semibold text-[18px] rounded-lg cursor-pointer hover:border-emerald-600 hover:text-emerald-500'>
+                    LoadMore
+                </button>
             </div>
 
         </aside>
