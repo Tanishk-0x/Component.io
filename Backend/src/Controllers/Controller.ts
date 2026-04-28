@@ -121,6 +121,7 @@ const ResolveComponent = async(req: AuthenticatedRequest , res: Response) => {
 
             // -- Save IN DB --
             const comp = await Component.create({
+                author: req.userId ,
                 title: ParsedData.title ,
                 category: ParsedData.category ,
                 prompt: prompt , 

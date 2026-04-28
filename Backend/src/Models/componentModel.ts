@@ -19,13 +19,19 @@ const ComponentSchema = new mongoose.Schema({
         required: true
     },
 
+    author: {
+        type: mongoose.Schema.Types.ObjectId , 
+        ref: "User" , 
+        required: true
+    },
+
     modelUsed: {
         type: String , 
         requird: trusted
     },
     status: {
         type: String , 
-        enum: ["Created" , "Public"] , 
+        enum: ["Created" , "Public" , "Requested"] , 
         default: "Created"
     },
     copyCount: {
