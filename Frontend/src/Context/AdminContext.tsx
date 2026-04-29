@@ -1,5 +1,5 @@
 import { createContext, useState } from "react"
-import type { AdminContextType, MainContextProps } from "../Types/Types";
+import type { AdminContextType, ComponentCounts, MainContextProps } from "../Types/Types";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useSafeContext } from "../Hooks/UseSafeContext";
@@ -16,7 +16,7 @@ const AdminContext = ({children}: MainContextProps) => {
     // --------- UseStates ------------
     const [isGettingData , setIsGettingData] = useState(false); 
     const [totalUsers , setTotalUsers] = useState(0); 
-    const [componentCount , setComponentCount] = useState({}); 
+    const [componentCount , setComponentCount] = useState<ComponentCounts | null>(null); 
     const [requestedComponents , setRequestedComponents] = useState(null); 
     const [users , setUsers] = useState(null); 
     const [components , setComponents] = useState(null); 

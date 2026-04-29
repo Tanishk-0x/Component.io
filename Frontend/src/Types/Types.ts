@@ -65,7 +65,9 @@ export interface PublishContextType {
     accepted: boolean ; 
     RejectRequest: (Id: string) => Promise<void> ; 
     isRejecting: boolean ;  
-    rejected: boolean ;  
+    rejected: boolean ; 
+    showPopup: boolean
+    setShowPopup: any ;  
 }; 
 
 
@@ -73,9 +75,49 @@ export interface AdminContextType {
     isGettingData: boolean ;  
     GetAdminDashboardData: (page: number) => Promise<void> ;  
     totalUsers: number ;  
-    componentCount: object ;   
+    componentCount: any ;   
     requestedComponents: any ;    
     users: any ; 
     components: any ;
     currentPage: any ; 
+}; 
+
+
+export interface ComponentCounts {
+    users: number ; 
+    components: {
+        Total: number ; 
+        Public: number ; 
+        Created: number ; 
+        Requested: number ; 
+        Rejected: number
+    }
+}; 
+
+export interface ReviewItemType {
+  _id: string;
+  title: string;
+  category: string;
+  code: string;
+  prompt: string;
+  status: string;
+  viewCount: number;
+  likeCount: number;
+  copyCount: number;
+  modelUsed: string;
+  author?: {
+    _id: string ; 
+    name: string ;
+    email: string
+  }
+};
+
+
+export interface ManagingComponentType {
+    title: string ; 
+    category: string ; 
+    status: string ; 
+    code: string ; 
+    _id: string ; 
+    author: any ; 
 }; 

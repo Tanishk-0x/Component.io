@@ -5,13 +5,15 @@ import toast from 'react-hot-toast';
 import axios from 'axios';
 import { useSafeContext } from '../Hooks/UseSafeContext';
 import { mainUrlContext } from './MainContext';
+import { adminDataContext } from './AdminContext';
 
 // Creating Context 
 export const publishDataContext = createContext<PublishContextType | null>(null); 
 
 const PublishContext = ({children}: MainContextProps) => {
 
-    const { serverUrl } = useSafeContext(mainUrlContext);  
+    const { serverUrl } = useSafeContext(mainUrlContext); 
+    const { GetAdminDashboardData } = useSafeContext(adminDataContext); 
 
     // ------- UseStates ----------- 
     const [isRequesting , setIsRequesting] = useState(false); 
@@ -20,6 +22,7 @@ const PublishContext = ({children}: MainContextProps) => {
     const [accepted , setAccepted] = useState(false); 
     const [rejected , setRejected] = useState(false); 
     const [isRejecting , setIsRejecting] = useState(false); 
+    const [showPopup , setShowPopup] = useState(false); 
 
 
     // ------ Handlers ------------
@@ -89,8 +92,10 @@ const PublishContext = ({children}: MainContextProps) => {
             ); 
 
             if( res.data.success ){
+                await GetAdminDashboardData(1);
                 toast.success("Accepted!"); 
-                setAccepted(true);  
+                setAccepted(true); 
+                setShowPopup(false);     
             }
         }
         
@@ -130,9 +135,11 @@ const PublishContext = ({children}: MainContextProps) => {
                 }
             ); 
 
-            if( res.data.success ){
+            if( res.data.success ){ 
+                await GetAdminDashboardData(1); 
                 toast.success("Rejected!"); 
                 setRejected(true); 
+                setShowPopup(false);
             }
         }
         
@@ -158,6 +165,8 @@ const PublishContext = ({children}: MainContextProps) => {
         RejectRequest , 
         isRejecting , 
         rejected , 
+        showPopup ,
+        setShowPopup
     }; 
 
     return (

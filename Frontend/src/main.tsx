@@ -15,11 +15,11 @@ createRoot(document.getElementById('root')!).render(
         <AuthContext>
           <OtpContext>
             <CompContext>
-              <PublishContext>
                 <AdminContext>
+                  <PublishContext>
                   <App />  
-                </AdminContext>  
-              </PublishContext>
+                  </PublishContext>
+                </AdminContext>   
             </CompContext>
           </OtpContext>
         </AuthContext>
