@@ -315,4 +315,54 @@ const LikeComponent = async (req: AuthenticatedRequest , res: Response) => {
 };
 
 
-export default {ResolveComponent , SaveComponent, GetComponents , LikeComponent}; 
+// Remove From Saved 
+const RemoveSaved = async(req: AuthenticatedRequest, res: Response) => {
+    try {
+        const { id } = req.params ; 
+        const userId = req.userId ; 
+
+        if( !id ){
+            return res.status(403).json({
+                success: false , 
+                message: 'Component Id Missing!'
+            }); 
+        }
+
+        if( !userId ){
+            return res.status(401).json({
+                success: false , 
+                message: 'UnAuthorized!'
+            }); 
+        }
+
+        const user = await User.findByIdAndUpdate( userId , 
+            { $pull: { savedComponents: id } } , 
+            { new: true }
+        ).select('-password');
+
+        if( !user ){
+            return res.status(404).json({
+                success: false , 
+                message: 'User Not Found!'
+            }); 
+        }
+
+        return res.status(200).json({
+            success: true , 
+            message: 'Removed SuccessFully!' , 
+            user: user 
+        }); 
+        
+    }
+    
+    catch (error: any) {
+       return res.status(500).json({
+            success: false , 
+            message: 'Error While Removing Saved Component!' , 
+            error: error.message 
+        }); 
+    }
+}
+
+
+export default {ResolveComponent , SaveComponent, GetComponents , LikeComponent , RemoveSaved}; 
