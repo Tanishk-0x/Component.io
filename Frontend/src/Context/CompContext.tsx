@@ -14,7 +14,7 @@ export const componentDataContext = createContext<ComponentContextType | null>(n
 const CompContext = ({children}: MainContextProps) => {
 
     const { serverUrl } = useSafeContext(mainUrlContext); 
-    const { GetUserDetails } = useSafeContext(authDataContext); 
+    const { GetUserDetails , setUserData } = useSafeContext(authDataContext); 
 
     // -------------- UseStates --------------
     const [source , setSource] = useState(null); 
@@ -28,6 +28,8 @@ const CompContext = ({children}: MainContextProps) => {
     const [isLiking , setIsLiking] = useState(false); 
     const [isLiked , setIsLiked] = useState(false); 
     const [likesCount , setLikesCount] = useState(null); 
+    const [isRemoving , setIsRemoving] = useState(false); 
+    const [removed , setRemoved] = useState(false); 
 
     // ----- Function To Resolve Component ------
     const ResolveComponent = async (prompt: string , model: string) => {
@@ -193,6 +195,46 @@ const CompContext = ({children}: MainContextProps) => {
         }
     }
 
+    // ---- Function To Remove Component -----
+    const RemoveSaved = async(Id: string) => {
+        if( isRemoving ){
+            return ; 
+        }
+        if( !Id ){
+            return ; 
+        }
+        const CSRF_TOKEN = ExtractCookie(); 
+        setIsRemoving(true); 
+
+        try {
+            const res = await axios.post( serverUrl + `/comp/remove/${Id}` , 
+                {} , 
+                {
+                    headers: {
+                        'x-csrf-token' : CSRF_TOKEN
+                    },
+                    withCredentials: true
+                }
+            ); 
+
+            if( res.data.success ){
+                toast.success("Removed!"); 
+                setRemoved(true); 
+                setUserData(res.data.user); 
+            }
+        }
+        
+        catch (error: any) {
+            const errorMessage = error?.response?.data?.message ; 
+            toast.error(errorMessage); 
+            console.log("Remove Saved Error!"); 
+            console.dir(error);
+        }
+
+        finally{
+            setIsRemoving(false); 
+        }
+    }
 
     const value = {
         ResolveComponent ,
@@ -206,7 +248,10 @@ const CompContext = ({children}: MainContextProps) => {
         components , 
         LikeComponent , 
         isLiked , 
-        likesCount
+        likesCount , 
+        RemoveSaved , 
+        isRemoving , 
+        removed ,
     }; 
 
     return (

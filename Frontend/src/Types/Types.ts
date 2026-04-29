@@ -51,13 +51,16 @@ export interface ComponentContextType {
     LikeComponent: (Id: string) => Promise<void> ; 
     isLiked: boolean ; 
     likesCount: any ; 
+    RemoveSaved: (Id: string) => Promise<void> ;
+    isRemoving: boolean ;   
+    removed: boolean ;  
 }
 
 export interface PublishContextType {
     RequestToPublish: (Id: string) => Promise<void> ; 
     requested: boolean ; 
     isRequesting: boolean ; 
-    AcceptRequest: (Id: string) => Promise<void> ; 
+    AcceptRequest: (Id: any) => Promise<void> ; 
     isAccepting: boolean ; 
     accepted: boolean ; 
     RejectRequest: (Id: string) => Promise<void> ; 

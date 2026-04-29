@@ -10,6 +10,7 @@ import Profile from "./Pages/Profile";
 import Top from "./Pages/Top";
 import ComponentCards from "./Pages/ComponentCards";
 import Admin from "./Pages/Admin";
+import AddComponent from "./Pages/AddComponent";
 
 const App = () => {
 
@@ -53,6 +54,10 @@ const App = () => {
     {
       path: '/admin' ,
       element: <Admin />
+    },
+    {
+      path: '/addcomponent' ,
+      element: <AddComponent />
     },
   ]); 
 

@@ -4,6 +4,7 @@ import { authDataContext } from '../Context/AuthContext';
 import { useNavigate } from 'react-router-dom'; 
 import { SandpackProvider, SandpackLayout, SandpackPreview, SandpackCodeEditor } from '@codesandbox/sandpack-react';
 import { sandpackDark } from "@codesandbox/sandpack-themes";
+import { componentDataContext } from '../Context/CompContext';
 
 
 const Profile = () => {
@@ -11,6 +12,7 @@ const Profile = () => {
     const navigate = useNavigate(); 
 
     const { userData , Logout } = useSafeContext(authDataContext); 
+    const { RemoveSaved , removed , isRemoving } = useSafeContext(componentDataContext); 
 
     // ----------- UseStates -------------
     const [activeComponent, setActiveComponent] = useState(userData.savedComponents[0]);
@@ -158,10 +160,21 @@ const Profile = () => {
                             <button className="p-2 rounded-lg bg-white/5 border border-white/10 text-slate-300 hover:text-emerald-400 hover:border-emerald-500/50 transition-all tooltip-trigger" title="Copy Code">
                                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
                             </button>
-                            <button className="px-4 py-1.5 rounded-lg bg-rose-500/10 text-rose-400 border border-rose-500/20 hover:bg-rose-500/20 text-sm font-medium transition-all flex items-center gap-2">
+
+                            { !removed && 
+                            <button onClick={() => RemoveSaved(activeComponent._id)}
+                            className="px-4 py-1.5 rounded-lg bg-rose-500/10 text-rose-400 border border-rose-500/20 hover:bg-rose-500/20 text-sm font-medium transition-all flex items-center gap-2">
                                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                                <span className="hidden sm:inline">Remove</span>
+                                <span className="hidden sm:inline"> { isRemoving ? 'Removing..' : 'Remove' } </span>
                             </button>
+                            }
+                            { removed && !isRemoving && 
+                            <button
+                            className="px-4 py-1.5 rounded-lg bg-rose-500/10 text-rose-400 border border-rose-500/20 hover:bg-rose-500/20 text-sm font-medium transition-all flex items-center gap-2">
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                <span className="hidden sm:inline"> Removed </span>
+                            </button>
+                            }
                         </div>
                     </header>
 

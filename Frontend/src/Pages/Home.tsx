@@ -32,7 +32,7 @@ const Home = () => {
         <section className="w-full flex justify-center items-center flex-col md:flex-row gap-10 md:gap-1 max-w-7xl px-4 md:px-6 pt-16 md:pt-24 pb-20 md:pb-24 relative">
           
           <div className="hidden sm:block absolute top-0 right-0 p-4 text-[10px] opacity-40 font-bold uppercase tracking-widest text-right">
-            [ Email: tanishk000@gmail.com ] <br /> [ Name: Tanishk ] <br /> [ Verified ]
+            [ Email: {userData?.email || 'developer@dev'} ] <br /> [ Name: {userData?.name || 'developer'} ] <br /> [ Verified ]
           </div>
 
           {/* --------- SIDE TEXT SECTION ---------- */}
