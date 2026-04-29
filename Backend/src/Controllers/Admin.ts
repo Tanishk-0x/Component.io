@@ -1,7 +1,11 @@
 import type { Request , Response } from "express";
 import User from "../Models/userModel";
 import Component from "../Models/componentModel";
+import EmbeddingContent from "../Provider/ai.embedding";
 
+interface AuthenticatedRequest extends Request {
+    userId: string ; 
+}; 
 
 // Get-Admin-Dashboard-Data 
 const GetAdminDashboardData = async(req: Request , res: Response) => {
@@ -103,4 +107,72 @@ const GetAdminDashboardData = async(req: Request , res: Response) => {
     }
 }
 
-export default GetAdminDashboardData ; 
+// Add-Component
+const AddComponents = async(req: Request , res: Response) => {
+    try {
+
+        const userId = ( req as AuthenticatedRequest ).userId  ; 
+
+        if( !userId ){
+            return res.status(401).json({
+                success: false , 
+                message: 'UnAuthorized!'
+            }); 
+        }
+        
+        const { 
+            title , category , prompt , code  
+        } = req.body ; 
+
+        if( !title || !category || !code || !prompt ){
+            return res.status(400).json({
+                success: false , 
+                message: 'Provide All Fields!'
+            }); 
+        }
+
+        // ----- Embedding -----
+        const embeddings: any = await EmbeddingContent( prompt );
+        
+        if( !embeddings || embeddings.values.length === 0 ){
+            return res.status(404).json({
+                success: false , 
+                message: 'Failed To Genarate Embeddings'
+            });
+        }
+
+        // Creating Component 
+        const component: any = await Component.create({
+            title: title , 
+            category: category , 
+            prompt: prompt || 'Default' , 
+            author:  userId , 
+            status: "Public" , 
+            code: JSON.stringify(code) ,
+            embedding: embeddings.values 
+        });
+
+        if( !component ){
+            return res.status(400).json({
+                success: false , 
+                message: 'Unable To Create Component!'
+            }); 
+        }
+
+        return res.status(200).json({
+            success: true , 
+            message: 'Component Created!' , 
+            component: component 
+        }); 
+    }
+    
+    catch (error: any) {
+        return res.status(500).json({
+            success: false , 
+            message: 'Error While Adding Component!' , 
+            error: error.message 
+        }); 
+    }
+}
+
+export default {GetAdminDashboardData , AddComponents} ; 

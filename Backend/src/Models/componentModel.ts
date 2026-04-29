@@ -27,7 +27,6 @@ const ComponentSchema = new mongoose.Schema({
 
     modelUsed: {
         type: String , 
-        requird: trusted
     },
     status: {
         type: String , 
