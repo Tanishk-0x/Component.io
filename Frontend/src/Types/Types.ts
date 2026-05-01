@@ -80,6 +80,16 @@ export interface AdminContextType {
     users: any ; 
     components: any ;
     currentPage: any ; 
+    AddComponent: () => Promise<void> ;   
+    formData: {
+        title: string ; 
+        category: string ; 
+        prompt: string ; 
+        code: string
+    }; 
+    setFormData: any ;   
+    isAdding: boolean ;   
+    added: boolean   
 }; 
 
 
@@ -121,3 +131,4 @@ export interface ManagingComponentType {
     _id: string ; 
     author: any ; 
 }; 
+

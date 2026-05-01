@@ -12,7 +12,7 @@ import { sandpackDark } from "@codesandbox/sandpack-themes";
 import { AiOutlineAppstoreAdd } from "react-icons/ai";
 import { VscPreview } from "react-icons/vsc";
 import { IoCodeSlashSharp } from "react-icons/io5";
-
+import { MdFileDownloadDone } from "react-icons/md";
 
 
 // ----- Auto Sync Code ------
@@ -36,7 +36,7 @@ const SyncCode = ({ setFormData, currentCode }: any) => {
 
 const AddComponent = () => {
 
-  const { AddComponent, formData, setFormData, isAdding } = useSafeContext(adminDataContext); 
+  const { AddComponent, formData, setFormData, isAdding , added } = useSafeContext(adminDataContext); 
   
   const [activeTab, setActiveTab] = useState('preview');
 
@@ -50,7 +50,9 @@ const AddComponent = () => {
         <div className="w-[90%] mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           
           <div className="flex items-center gap-4">
-            <div className="p-2.5 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-xl shadow-[0_0_20px_rgba(16,185,129,0.05)]">
+
+            <div onClick={() => console.log("FormData: " , formData)}
+            className="p-2.5 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-xl shadow-[0_0_20px_rgba(16,185,129,0.05)]">
               <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
                 <line x1="3" y1="9" x2="21" y2="9"/>
@@ -64,11 +66,20 @@ const AddComponent = () => {
             </div>
           </div>
           
-          <button 
+          { !added ? (
+          <button onClick={() => AddComponent()}
             className="w-full flex justify-center items-center flex-row gap-1 md:w-auto cursor-pointer bg-emerald-500 hover:bg-emerald-400 disabled:opacity-50 disabled:cursor-not-allowed text-[#020604] font-semibold text-sm py-3 px-8 rounded-xl transition-all duration-300 shadow-[0_8px_30px_rgb(16,185,129,0.15)] active:scale-95"
           >
             <AiOutlineAppstoreAdd /> Add Component
           </button>
+          ) : (
+          <button
+            className="w-full flex justify-center items-center flex-row gap-1 md:w-auto cursor-pointer bg-emerald-900 text-emerald-400 disabled:opacity-50 disabled:cursor-not-allowed border-2 border-emerald-600 font-semibold text-sm py-3 px-8 rounded-xl transition-all duration-300 shadow-[0_8px_30px_rgb(16,185,129,0.15)] active:scale-95"
+          >
+            <MdFileDownloadDone /> Added
+          </button>
+          )
+          }
           
         </div>
       </header>

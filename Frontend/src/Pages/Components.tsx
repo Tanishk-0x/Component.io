@@ -139,7 +139,7 @@ const Components = () => {
 
                 {/* -------- Render Area --------- */}
                 {/* -------- Code & Preview ------ */}
-                <div className="w-full flex-1 flex flex-col overflow-hidden custom-sandpack">
+                <div className="bg-pink-500 w-full flex-1 flex flex-col overflow-hidden custom-sandpack">
                     
                     {/* --- Background Effect --- */}
                     {activeTab === 'preview' && (
@@ -162,7 +162,7 @@ const Components = () => {
                     {/* ------- Preview Area ------ */}
                     {/* ---- Component Preview ---- */}
                     {activeTab === 'preview' && (
-                        <div className="relative z-10 w-full h-full flex items-center justify-center p-4 md:p-8 overflow-auto">
+                        <div className="relative z-10 w-full h-full flex items-center justify-center p-4 md:p-1 overflow-auto">
                             <SandpackPreview 
                             showRefreshButton={true}
                             showOpenInCodeSandbox={false}
