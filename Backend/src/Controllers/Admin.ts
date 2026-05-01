@@ -42,7 +42,8 @@ const GetAdminDashboardData = async(req: Request , res: Response) => {
             .select('-embedding')
             .sort({ createdAt: -1 })
             .skip(skip)
-            .limit(limit) , 
+            .limit(limit)
+            , 
 
             // 4. Recent Users 
             User.find()
@@ -52,7 +53,7 @@ const GetAdminDashboardData = async(req: Request , res: Response) => {
             .limit(limit),
 
             // 5. All Components 
-            Component.find()
+            Component.find({ status: "Public" })
             .populate('author' , 'name email')
             .select('title category code status likeCount viewCount createdAt')
             .sort({ createdAt: -1 })
@@ -122,7 +123,7 @@ const AddComponents = async(req: Request , res: Response) => {
         
         const { 
             title , category , prompt , code  
-        } = req.body ; 
+        } = req.body.formData ; 
 
         if( !title || !category || !code || !prompt ){
             return res.status(400).json({
@@ -148,7 +149,7 @@ const AddComponents = async(req: Request , res: Response) => {
             prompt: prompt || 'Default' , 
             author:  userId , 
             status: "Public" , 
-            code: JSON.stringify(code) ,
+            code: code ,
             embedding: embeddings.values 
         });
 

@@ -6,6 +6,7 @@ import userRoutes from './Routes/userRoutes';
 import compRoutes from './Routes/compRoutes';
 import testRoutes from './Routes/testRoutes'; 
 import adminRoutes from './Routes/adminRoutes'; 
+import publishRoutes from './Routes/publishRoutes'; 
 import cookieParser from 'cookie-parser'; 
 import cors from 'cors'; 
 const app = express(); 
@@ -38,6 +39,7 @@ app.use('/user' , userRoutes);
 app.use('/comp' , compRoutes); 
 app.use('/text' , testRoutes); 
 app.use('/admin' , adminRoutes); 
+app.use('/publish' , publishRoutes); 
 
 
 app.get('/' , (req: Request , res: Response) => {

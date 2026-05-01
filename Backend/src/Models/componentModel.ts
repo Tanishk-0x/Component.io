@@ -54,7 +54,7 @@ const ComponentSchema = new mongoose.Schema({
         required: true
     }
 
-}); 
+}, {timestamps: true}); 
 
 const Component = mongoose.model("Component" , ComponentSchema); 
 export default Component ; 
