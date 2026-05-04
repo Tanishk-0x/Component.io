@@ -246,8 +246,13 @@ const SaveComponent = async(req: AuthenticatedRequest , res: Response) => {
 // Get All Components 
 const GetComponents = async (req: AuthenticatedRequest , res: Response) => {
     try {
+        const page = parseInt(req.query.page as any) || 1 ; 
+        const limit = 10 ; 
+        const skip = (page - 1) * limit ; 
+
         const components = await Component.find({})
-        .select('-embedding').lean({}); 
+        .select('-embedding').skip(skip).limit(limit)
+        .sort({ createdAt: -1}).lean({}); 
 
         if( !components || components.length === 0 ){
             return res.status(404).json({

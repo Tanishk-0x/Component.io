@@ -6,5 +6,7 @@ const router = express.Router();
 
 router.get('/getadmindata' , Admin.GetAdminDashboardData); 
 router.post('/addcomponent', requireCSRF , AuthMe , Admin.AddComponents); 
+router.post('/deletecomponent/:id', requireCSRF , AuthMe , Admin.DeleteComponent);
+router.post('/updatecomponent/:id', requireCSRF , AuthMe , Admin.UpdateComponent);
 
 export default router ; 

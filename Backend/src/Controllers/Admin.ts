@@ -2,6 +2,8 @@ import type { Request , Response } from "express";
 import User from "../Models/userModel";
 import Component from "../Models/componentModel";
 import EmbeddingContent from "../Provider/ai.embedding";
+import mongoose, { mongo } from "mongoose";
+import { truncate } from "node:fs";
 
 interface AuthenticatedRequest extends Request {
     userId: string ; 
@@ -55,7 +57,7 @@ const GetAdminDashboardData = async(req: Request , res: Response) => {
             // 5. All Components 
             Component.find({ status: "Public" })
             .populate('author' , 'name email')
-            .select('title category code status likeCount viewCount createdAt')
+            .select('title category code prompt status likeCount viewCount createdAt')
             .sort({ createdAt: -1 })
             .skip(skip)
             .limit(limit)
@@ -176,4 +178,101 @@ const AddComponents = async(req: Request , res: Response) => {
     }
 }
 
-export default {GetAdminDashboardData , AddComponents} ; 
+// Delete Component 
+const DeleteComponent = async(req: Request , res: Response) => {
+    try {
+        const { id } = req.params as { id: string } ; 
+
+        if( !id ){
+            return res.status(403).json({
+                success: false , 
+                message: 'Component ID Missing!'
+            }); 
+        }
+
+        if( !mongoose.Types.ObjectId.isValid(id) ){
+            return res.status(403).json({
+                success: false , 
+                message: 'Invalid Component ID!'
+            }); 
+        }
+
+        const component = await Component.findById(id); 
+
+        if( !component ){
+            return res.status(404).json({
+                success: false , 
+                message: 'Component Not Found!'
+            }); 
+        }
+
+        // Deleting Component 
+        await Component.findByIdAndDelete(id);  
+
+        const newId = new mongoose.Types.ObjectId(id);
+
+        // Pulling from users 
+        await User.updateMany(
+            { savedComponents: newId },
+            { $pull: { savedComponents: newId }}
+        ); 
+
+        return res.status(200).json({
+            success: true , 
+            message: 'Component Deleted SuccessFully!'
+        }); 
+    } 
+
+    catch(error: any){
+        return res.status(500).json({
+            success: false , 
+            message: 'Error While Deleting Component!' , 
+            error: error.message 
+        }); 
+    }
+}
+
+// Update Component 
+const UpdateComponent = async(req: Request , res: Response) => {
+    try {
+        const { id } = req.params ; 
+        const { title, category, prompt, code } = req.body.formData ; 
+
+        if( !id ){
+            return res.status(403).json({
+                success: false , 
+                message: 'Component ID Missing!'
+            }); 
+        }
+
+        let component = await Component.findById(id) ; 
+
+        if( !component ){
+            return res.status(404).json({
+                success: false , 
+                message: 'Component Not Found!'
+            });
+        }
+
+        component = await Component.findByIdAndUpdate( id , 
+            { title, category, prompt, code } , 
+            { new: true }
+        );
+
+        return res.status(200).json({
+            success: true , 
+            message: 'Component Updated SuccessFully!'
+        }); 
+
+    }
+    
+    catch (error: any) {
+        return res.status(500).json({
+            success: false , 
+            message: 'Error While Updating Component!' , 
+            error: error.message 
+        }); 
+    }
+}
+
+export default {GetAdminDashboardData , AddComponents , DeleteComponent , UpdateComponent} ; 
