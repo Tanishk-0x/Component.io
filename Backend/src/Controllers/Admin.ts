@@ -275,4 +275,57 @@ const UpdateComponent = async(req: Request , res: Response) => {
     }
 }
 
-export default {GetAdminDashboardData , AddComponents , DeleteComponent , UpdateComponent} ; 
+// Delete User / Transfer Ownership to Admin
+const DeleteUser = async(req: Request , res: Response) => {
+    try {
+        const { id } = req.params ; 
+        const AuthRequest = req as AuthenticatedRequest ; 
+        const AdminID = AuthRequest.userId ; 
+
+        if( !id ){
+            return res.status(403).json({
+                success: false , 
+                message: 'User ID Missing!'
+            }); 
+        }
+
+        if( !AdminID ){
+            return res.status(403).json({
+                success: false , 
+                message: 'Admin ID Missing!'
+            });
+        }
+
+        const user = await User.findById(id) ; 
+
+        if( !user ){
+            return res.status(404).json({
+                success: false , 
+                message: 'User Not Found!'
+            }); 
+        }
+
+        // Transfer Ownership 
+        await Component.updateMany(
+            { author: id } , 
+            { author: AdminID }
+        ); 
+
+        await User.findByIdAndDelete( id ); 
+
+        return res.status(200).json({
+            success: true , 
+            message: 'User Deleted/Ownership Transferred!'
+        }); 
+    }
+    
+    catch (error: any) {
+        return res.status(500).json({
+            success: false , 
+            message: 'Error While Updating Component!' , 
+            error: error.message 
+        });     
+    }
+}
+
+export default {GetAdminDashboardData , AddComponents , DeleteComponent , UpdateComponent , DeleteUser} ; 

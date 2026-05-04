@@ -8,5 +8,6 @@ router.get('/getadmindata' , Admin.GetAdminDashboardData);
 router.post('/addcomponent', requireCSRF , AuthMe , Admin.AddComponents); 
 router.post('/deletecomponent/:id', requireCSRF , AuthMe , Admin.DeleteComponent);
 router.post('/updatecomponent/:id', requireCSRF , AuthMe , Admin.UpdateComponent);
+router.post('/deleteuser/:id', requireCSRF , AuthMe , Admin.DeleteUser);
 
 export default router ; 
