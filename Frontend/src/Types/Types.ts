@@ -100,6 +100,9 @@ export interface AdminContextType {
     DeleteComponent: ( id: string ) => Promise<boolean | undefined>  ;   
     isDeleting: boolean ;  
     deleted: boolean ;   
+    DeleteUser: ( id: string ) => Promise<void> ;  
+    isDeletingUser: boolean ;
+    userDeleted: boolean ; 
 }; 
 
 

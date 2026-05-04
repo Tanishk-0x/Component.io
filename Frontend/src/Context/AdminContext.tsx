@@ -89,6 +89,8 @@ const AdminContext = ({children}: MainContextProps) => {
     const [updated , setUpdated] = useState(false); 
     const [isDeleting , setIsDeleting] = useState(false); 
     const [deleted , setDeleted] = useState(false); 
+    const [isDeletingUser , setIsDeletingUser] = useState(false); 
+    const [userDeleted , setUserDeleted] = useState(false); 
 
     // ---------- Handlers -------------
     const GetAdminDashboardData = async (page: number) => {
@@ -260,6 +262,44 @@ const AdminContext = ({children}: MainContextProps) => {
         }
     }
 
+    // ---------- Handlers --------------
+    const DeleteUser = async ( id: string ) => {
+
+        if( isDeletingUser ){
+            return ; 
+        }
+        const CSRF_TOKEN = ExtractCookie(); 
+        setIsDeletingUser(true); 
+
+        try {
+            const res = await axios.post( serverUrl + `/admin/deleteuser/${id}` , 
+                {} , 
+                { 
+                    headers: {
+                        'x-csrf-token' : CSRF_TOKEN
+                    }, 
+                    withCredentials: true
+                }
+            ); 
+
+            if( res.data.success ){
+                toast.success("User Deleted!"); 
+                setUserDeleted(true); 
+            }
+        }
+        
+        catch (error: any) {
+            const errorMessage = error?.response?.data?.message ; 
+            toast.error(errorMessage); 
+            console.log("Deleting Component Error!"); 
+            console.dir(error);
+        }
+
+        finally{
+            setIsDeletingUser(false); 
+        }
+    }
+
     const value = {
         isGettingData ,
         GetAdminDashboardData ,
@@ -280,6 +320,9 @@ const AdminContext = ({children}: MainContextProps) => {
         DeleteComponent , 
         isDeleting , 
         deleted , 
+        DeleteUser , 
+        isDeletingUser , 
+        userDeleted , 
     }; 
 
     return (

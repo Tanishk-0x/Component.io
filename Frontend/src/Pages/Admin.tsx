@@ -73,6 +73,9 @@ const Admin = () => {
         DeleteComponent , 
         isDeleting ,
         deleted , 
+        DeleteUser , 
+        isDeletingUser , 
+        userDeleted ,
     } = useSafeContext(adminDataContext); 
 
     const { 
@@ -518,10 +521,10 @@ const Admin = () => {
                         {/* ----- Action Button ------ */}
                         <div className="col-span-1 md:col-span-2 flex justify-end items-center">
                             <button 
-                                onClick={() => setReviewingItem(item)}
-                                className="w-full md:w-auto px-4 py-2 bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500 hover:text-[#000502] rounded-lg text-sm font-bold transition-all flex items-center justify-center gap-2"
+                                onClick={() => DeleteUser(item._id)}
+                                className="w-full md:w-auto px-4 py-2 bg-rose-500/10 text-rose-400 border border-rose-500/30 hover:bg-rose-500 hover:text-[#000502] rounded-lg text-sm font-bold transition-all flex items-center justify-center gap-2 cursor-pointer"
                             >
-                                Manage <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                { isDeletingUser ? 'Deleting..' : 'Delete'} <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
                             </button>
                         </div>
 
