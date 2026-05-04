@@ -30,6 +30,7 @@ const CompContext = ({children}: MainContextProps) => {
     const [likesCount , setLikesCount] = useState(null); 
     const [isRemoving , setIsRemoving] = useState(false); 
     const [removed , setRemoved] = useState(false); 
+    const [currentPage , setCurrentPage] = useState(1); 
 
     // ----- Function To Resolve Component ------
     const ResolveComponent = async (prompt: string , model: string) => {
@@ -120,14 +121,14 @@ const CompContext = ({children}: MainContextProps) => {
     }
 
     // ----- Function To Get Components ------
-    const GetComponents = async () => {
+    const GetComponents = async ( page: number ) => {
 
         if( isGetting ){
             return ; 
         }
         setIsGetting(true); 
         try {
-            const res = await axios.get( serverUrl + '/comp/getcomponents' ,
+            const res = await axios.get( serverUrl + `/comp/getcomponents?page=${page}` ,
                 { withCredentials: true }
             ); 
 
@@ -155,8 +156,8 @@ const CompContext = ({children}: MainContextProps) => {
 
     // ----- CALLING TO GET COMPONENTS ------
     useEffect(() => {
-        GetComponents(); 
-    },[]); 
+        GetComponents(currentPage); 
+    },[currentPage]); 
 
 
     // ---- Function To Like Component -----
@@ -252,6 +253,10 @@ const CompContext = ({children}: MainContextProps) => {
         RemoveSaved , 
         isRemoving , 
         removed ,
+        GetComponents , 
+        currentPage , 
+        setCurrentPage , 
+        isGetting , 
     }; 
 
     return (

@@ -70,7 +70,7 @@ const AddComponent = () => {
           <button onClick={() => AddComponent()}
             className="w-full flex justify-center items-center flex-row gap-1 md:w-auto cursor-pointer bg-emerald-500 hover:bg-emerald-400 disabled:opacity-50 disabled:cursor-not-allowed text-[#020604] font-semibold text-sm py-3 px-8 rounded-xl transition-all duration-300 shadow-[0_8px_30px_rgb(16,185,129,0.15)] active:scale-95"
           >
-            <AiOutlineAppstoreAdd /> Add Component
+            <AiOutlineAppstoreAdd /> { isAdding ? 'Adding..' : 'Add Component' }
           </button>
           ) : (
           <button

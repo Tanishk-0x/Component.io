@@ -18,7 +18,16 @@ import { BiSolidLike } from "react-icons/bi";
 
 const Components = () => {
 
-    const { components , LikeComponent , isLiked , likesCount } = useSafeContext(componentDataContext); 
+    const { 
+        components ,
+        LikeComponent ,
+        isLiked ,
+        likesCount , 
+        isGetting , 
+        GetComponents , 
+        currentPage , 
+        setCurrentPage ,
+     } = useSafeContext(componentDataContext); 
 
     // ------------- UseStates ---------------
     const [activeComponent, setActiveComponent] = useState(components[0]);
@@ -78,8 +87,12 @@ const Components = () => {
                 ))}
 
                 {/* ------ LOAD_MORE --------- */}
-                <button className='px-4 py-2 bg-emerald-950 border-2 border-emerald-800 text-emerald-600 font-semibold text-[18px] rounded-lg cursor-pointer hover:border-emerald-600 hover:text-emerald-500'>
-                    LoadMore
+                <button onClick={() => {
+                    GetComponents(currentPage + 1); 
+                    setCurrentPage(currentPage + 1); 
+                }}
+                className='px-4 py-2 bg-emerald-950 border-2 border-emerald-800 text-emerald-600 font-semibold text-[18px] rounded-lg cursor-pointer hover:border-emerald-600 hover:text-emerald-500'>
+                    { isGetting ? 'Loading..' : 'Load More' }
                 </button>
             </div>
 

@@ -5,12 +5,33 @@ import {
   SandpackProvider, 
   SandpackLayout, 
   SandpackCodeEditor, 
-  SandpackPreview 
+  SandpackPreview ,
+  useSandpack
 } from "@codesandbox/sandpack-react";
 import { sandpackDark } from "@codesandbox/sandpack-themes";
 import type { ManagingComponentType, ReviewItemType } from '../Types/Types';
 import { publishDataContext } from '../Context/PublishContext';
 import { useNavigate } from 'react-router-dom';
+import { MdFileDownloadDone } from "react-icons/md";
+
+// ----- Auto Sync Code ------
+const SyncCode = ({ setFormData, currentCode }: any) => {
+  const { sandpack } = useSandpack();
+  
+  useEffect(() => {
+    const codeInEditor = sandpack.files[sandpack.activeFile].code;
+    
+    if (codeInEditor !== currentCode) {
+      const timer = setTimeout(() => {
+        setFormData((prev: any) => ({ ...prev, code: codeInEditor }));
+      }, 500); 
+      
+      return () => clearTimeout(timer);
+    }
+  }, [sandpack.files, sandpack.activeFile]);
+
+  return null;
+};
 
 // ----- Dummy Data For Admin -----
 const INITIAL_QUEUE = [
@@ -46,6 +67,12 @@ const Admin = () => {
         users , 
         components , 
         currentPage ,
+        UpdateComponent , 
+        isUpdating , 
+        updated ,
+        DeleteComponent , 
+        isDeleting ,
+        deleted , 
     } = useSafeContext(adminDataContext); 
 
     const { 
@@ -63,14 +90,40 @@ const Admin = () => {
     // --------- UseStates ---------
     const [queue, setQueue] = useState(INITIAL_QUEUE);
     const [reviewingItem, setReviewingItem] = useState<ReviewItemType | null>(null); 
-    const [managingItem , setManagingItem] = useState<ManagingComponentType | null>(null)
+    const [managingItem , setManagingItem] = useState<ManagingComponentType | null>(null);
     const [showManagingPopUp , setShowManagingPopUp] = useState(false); 
     const [modalTab, setModalTab] = useState('preview'); 
     const [workType , setWorkType] = useState('reviews_queue'); 
 
+    const [formData , setFormData ] = useState({
+        title: managingItem?.title || 'Unknown' , 
+        category: managingItem?.category || 'Unknown' , 
+        prompt: managingItem?.prompt || 'Unknown' , 
+        code: managingItem?.code || 'Unknown'
+    }); 
+
     useEffect(() => {
         GetAdminDashboardData(1); 
     }, []); 
+
+    useEffect(() => {
+        if( managingItem ){
+           setFormData({
+            title: managingItem.title || '',
+            category: managingItem.category || '',
+            prompt: managingItem.prompt || '',
+            code: managingItem.code || ''
+        }); 
+        }
+    }, [managingItem]); 
+
+    const HandleDeleteComponent = async (id: any) => {
+        const res = await DeleteComponent( id ); 
+        if( res ){
+            setShowManagingPopUp(false); 
+            GetAdminDashboardData(1); 
+        }
+    }
 
   return (
 
@@ -523,7 +576,7 @@ const Admin = () => {
                 </div>
                 <div className="bg-white/5 border border-white/10 rounded-2xl p-4 md:p-5 flex flex-col relative overflow-hidden">
                     <span className="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-2">Total Created</span>
-                    <span className="text-3xl font-black text-white">{componentCount?.Created || 0}</span>
+                    <span className="text-3xl font-black text-white">{componentCount?.Total || 0}</span>
                     <span className="text-cyan-400 text-[10px] font-bold mt-2 bg-cyan-500/10 w-fit px-2 py-0.5 rounded">All Created</span>
                 </div>
             </section>
@@ -533,7 +586,7 @@ const Admin = () => {
                 <div className="flex items-center justify-between mb-4 clear-both">
                     <h2 className="text-lg font-bold text-slate-200">Action Required</h2>
                     <button onClick={() => GetAdminDashboardData(1)}
-                    className="text-sm text-emerald-400 hover:text-emerald-300 font-medium transition-colors">Refresh Queue</button>
+                    className="text-sm text-emerald-400 hover:text-emerald-300 font-medium transition-colors cursor-pointer">Refresh</button>
                 </div>
 
                 {/* --------- Items Listed Section -------- */}
@@ -602,7 +655,14 @@ const Admin = () => {
                         <div className="col-span-1 md:col-span-2 flex justify-end items-center">
                             <button 
                                 onClick={() => {
+                                    console.log("MANAGING ITEM:" , item)
                                     setManagingItem(item);
+                                    setFormData({
+                                        title: item.title || '',
+                                        category: item.category || '',
+                                        prompt: item.prompt || '',
+                                        code: item.code || ''
+                                    });
                                     setShowManagingPopUp(true); 
                                 }}
                                 className="w-full md:w-auto px-4 py-2 bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500 hover:text-[#000502] rounded-lg text-sm font-bold transition-all flex items-center justify-center gap-2"
@@ -638,23 +698,50 @@ const Admin = () => {
             
             <div className="bg-[#00140a] border border-white/10 rounded-3xl w-full max-w-5xl h-full max-h-[95vh] flex flex-col overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)] animate-in fade-in zoom-in-95 duration-200">
                 
-                {/* ----- PopUp Header ----- */}
-                <header className="p-4 md:p-5 border-b border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white/2 shrink-0">
-                    <div>
-                        <div className="flex items-center gap-2 mb-1">
-                            <span className="bg-yellow-500/20 text-yellow-500 border border-yellow-500/30 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-sm">{managingItem?.status || 'N/A'}</span>
-                            <span className="text-xs text-slate-500 font-mono">ID: {managingItem?._id}</span>
-                        </div>
-                        <h2 className="text-xl md:text-2xl font-bold text-slate-100">{managingItem?.title}</h2>
-                        <p className="text-sm text-slate-400 mt-1">Generated by <span className="text-emerald-400">@{managingItem?.author?.name || 'Unknown'}</span></p>
-                    </div>
                 
+                <header className="p-4 md:p-5 border-b border-white/5 flex flex-col lg:flex-row lg:items-center justify-between gap-6 bg-white/2 shrink-0 relative">  
+                    
+                    <div className="flex flex-col gap-2 min-w-75">
+                        <div className="flex items-center gap-3">
+                            <span className="bg-yellow-500/10 rounded-lg text-yellow-500 flex justify-center items-center h-7 px-3 border border-yellow-500/20">
+                                <input type="text" 
+                                onChange={(e) => setFormData((prev) => ({ ...prev , category: e.target.value }))}
+                                value={formData.category}
+                                className='bg-transparent w-full h-full outline-none text-[10px] font-bold uppercase tracking-widest'
+                                />
+                            </span>
+                            <span className="text-[10px] text-slate-500 font-mono">ID: {managingItem?._id}</span>
+                        </div>
+
+                        <input type="text" 
+                        onChange={(e) => setFormData((prev) => ({ ...prev , title: e.target.value }))}
+                        value={formData?.title}
+                        className='bg-transparent border border-emerald-950 hover:bg-white/5 focus:bg-white/5 rounded-lg px-2 -ml-2 w-full outline-none transition-all text-xl md:text-2xl font-bold text-slate-100 placeholder:text-slate-700'
+                        placeholder="Component Title"
+                        />
+
+                        <p className="text-sm text-slate-400 ml-1">Generated by <span className="text-emerald-400">@{managingItem?.author?.name || 'Unknown'}</span></p>
+                    </div>
+                    
+                    <div className="flex-1 flex flex-col gap-2 w-full">
+                        <div className="flex items-center gap-2 ml-1">
+                            <svg className="w-3 h-3 text-emerald-500" fill="currentColor" viewBox="0 0 20 20"><path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"></path><path fillRule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clipRule="evenodd"></path></svg>
+                            <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Generation Context / AI Prompt</label>
+                        </div>
+                        <textarea 
+                        onChange={(e) => setFormData((prev) => ({ ...prev , prompt: e.target.value }))}
+                        value={formData.prompt}
+                        className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-xs text-slate-400 outline-none focus:border-emerald-500/40 focus:bg-emerald-500/5 transition-all resize-none min-h-20"
+                        />
+                    </div>
+                    
                     <button 
                         onClick={() => setShowManagingPopUp(false)}
                         className="cursor-pointer absolute sm:relative top-4 right-4 sm:top-auto sm:right-auto p-2 bg-white/5 hover:bg-white/10 rounded-full text-slate-400 hover:text-white transition-colors"
                     >
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                     </button>
+
                 </header>
 
                 {/* ----- Code / Preview Section ------- */}
@@ -670,9 +757,10 @@ const Admin = () => {
                     {/* ----- Main WorkSpace ----- */}
                     <div className="w-full flex-1 flex flex-col overflow-hidden custom-sandpack">
                         <SandpackProvider
+                            key={managingItem?._id}
                             template="react"
                             theme={sandpackDark}
-                            files={{ "/App.js": managingItem?.code ||  '<h2>Component.io!</h2>' }}
+                            files={{ "/App.js": formData.code ||  '<h2>Component.io!</h2>' }}
                             options={{
                             externalResources: ["https://cdn.tailwindcss.com"],
                             }}
@@ -706,6 +794,8 @@ const Admin = () => {
                         </div>
                         )}
                         </SandpackLayout>
+                        {/* ----- Syncing Code ----- */}
+                        <SyncCode setFormData={setFormData} currentCode={formData.code}/>
                         </SandpackProvider>
                     </div>
 
@@ -716,16 +806,28 @@ const Admin = () => {
                     <p className="text-xs text-slate-500 text-center sm:text-left">By deleting, this component will not be able to visible on any page.</p>
                 
                     <div className="flex items-center gap-3 w-full sm:w-auto">
-                        <button 
-                        onClick={() => {
-                            console.log("Reviewing Item:: " , reviewingItem); 
-                            if( reviewingItem?._id ){
-                                RejectRequest(reviewingItem._id)
-                            }
+                        { !updated ? 
+                        (<button onClick={() => {
+                            UpdateComponent( managingItem?._id , formData );
+                        }}
+                        className="cursor-pointer flex-1 sm:flex-none px-6 py-2.5 rounded-xl bg-yellow-500 text-white border border-yellow-500/30 hover:bg-yellow-500/30 hover:text-yellow-500 font-bold text-sm"
+                        >
+                            Update
+                        </button>) 
+                        : 
+                        (<button 
+                        className="flex flex-row gap-1 justify-center items-center cursor-pointer flex-1 sm:flex-none px-6 py-2.5 rounded-xl bg-yellow-500/30 text-yellow-500 border-yellow-500/30  font-bold text-sm"
+                        >
+                            <MdFileDownloadDone /> Updated
+                        </button>)
+                        }
+                        
+                        <button onClick={() => {
+                            HandleDeleteComponent( managingItem?._id )
                         }}
                         className="cursor-pointer flex-1 sm:flex-none px-6 py-2.5 rounded-xl bg-rose-500 text-white border border-rose-500/30 hover:bg-rose-500/30 hover:text-rose-500 font-bold text-sm"
                         >
-                            Reject & Delete
+                            { isDeleting ? 'Deleting..' : 'Delete' }
                         </button>
                     </div>
                 </footer>

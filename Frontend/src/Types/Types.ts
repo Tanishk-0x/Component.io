@@ -54,6 +54,10 @@ export interface ComponentContextType {
     RemoveSaved: (Id: string) => Promise<void> ;
     isRemoving: boolean ;   
     removed: boolean ;  
+    GetComponents: (page: number) => Promise<void> ; 
+    currentPage: number ;   
+    setCurrentPage: any ;   
+    isGetting: boolean ; 
 }
 
 export interface PublishContextType {
@@ -89,7 +93,13 @@ export interface AdminContextType {
     }; 
     setFormData: any ;   
     isAdding: boolean ;   
-    added: boolean   
+    added: boolean ; 
+    UpdateComponent: (id: any , formData: object) => Promise<void> ;   
+    isUpdating: boolean ;   
+    updated: boolean ; 
+    DeleteComponent: ( id: string ) => Promise<boolean | undefined>  ;   
+    isDeleting: boolean ;  
+    deleted: boolean ;   
 }; 
 
 
@@ -130,5 +140,6 @@ export interface ManagingComponentType {
     code: string ; 
     _id: string ; 
     author: any ; 
+    prompt: any ; 
 }; 
 

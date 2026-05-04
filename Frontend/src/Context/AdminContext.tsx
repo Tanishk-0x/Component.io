@@ -85,6 +85,10 @@ const AdminContext = ({children}: MainContextProps) => {
         code: dummyCode 
     }); 
 
+    const [isUpdating , setIsUpdating] = useState(false); 
+    const [updated , setUpdated] = useState(false); 
+    const [isDeleting , setIsDeleting] = useState(false); 
+    const [deleted , setDeleted] = useState(false); 
 
     // ---------- Handlers -------------
     const GetAdminDashboardData = async (page: number) => {
@@ -174,6 +178,87 @@ const AdminContext = ({children}: MainContextProps) => {
             setIsAdding(false); 
         }
     }
+    
+
+    // --------- Handlers --------------
+    const UpdateComponent = async ( id: string , formData: object ) => {
+
+        if( isUpdating ){
+            return ; 
+        }
+        if( updated ){
+            return ; 
+        }
+        const CSRF_TOKEN = ExtractCookie(); 
+        setIsUpdating(true); 
+
+        try {
+            const res = await axios.post( serverUrl + `/admin/updatecomponent/${id}` ,
+                { formData } , 
+                {
+                    headers: {
+                        'x-csrf-token' : CSRF_TOKEN
+                    },
+                    withCredentials: true 
+                }
+            ); 
+
+            if( res.data.success ){
+                toast.success("Component Updated!"); 
+                setUpdated(true); 
+            }
+        }
+        
+        catch (error: any) {
+            const errorMessage = error?.response?.data?.message ; 
+            toast.error(errorMessage); 
+            console.log("Updating Component Error!"); 
+            console.dir(error);
+        }
+
+        finally{
+            setIsUpdating(false); 
+        }
+    }
+
+    // --------- Handlers --------------
+    const DeleteComponent = async ( id: string ) => {
+        if( isDeleting ){
+            return false; 
+        }
+        const CSRF_TOKEN = ExtractCookie(); 
+        setIsDeleting(true); 
+
+        try {
+            const res = await axios.post( serverUrl + `/admin/deletecomponent/${id}` , 
+                {} , 
+                {
+                    headers: {
+                        'x-csrf-token' : CSRF_TOKEN
+                    },
+                    withCredentials: true
+                }
+            ); 
+
+            if( res.data.success ){
+                toast.success("Component Deleted!"); 
+                setDeleted(true); 
+                return true ; 
+            }
+        }
+        
+        catch (error: any) {
+            const errorMessage = error?.response?.data?.message ; 
+            toast.error(errorMessage); 
+            console.log("Deleting Component Error!"); 
+            console.dir(error);
+            return false ; 
+        }
+
+        finally{
+            setIsDeleting(false); 
+        }
+    }
 
     const value = {
         isGettingData ,
@@ -189,6 +274,12 @@ const AdminContext = ({children}: MainContextProps) => {
         setFormData , 
         isAdding , 
         added , 
+        UpdateComponent , 
+        isUpdating , 
+        updated , 
+        DeleteComponent , 
+        isDeleting , 
+        deleted , 
     }; 
 
     return (
