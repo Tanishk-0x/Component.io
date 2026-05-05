@@ -87,7 +87,7 @@ const Navbar = () => {
         {
           userData && (
             <>
-            <button onClick={() => navigate('/')}
+            <button onClick={() => navigate('/profile')}
             className="text-emerald-500 text-[36px] cursor-pointer hover:text-emerald-400 transition-all active:scale-95 hidden sm:block">
               <FaCircleUser />
             </button>
@@ -127,9 +127,9 @@ const Navbar = () => {
       {isOpen && (
         <div className="absolute top-18 left-0 w-full bg-neutral-900 border border-neutral-800 rounded-xl p-4 flex flex-col gap-4 md:hidden shadow-2xl animate-in fade-in slide-in-from-top-2">
           <ul className="flex flex-col gap-4">
-            <li className="text-white hover:text-emerald-400 font-mono text-[18px]">Components</li>
-            <li className="text-white hover:text-emerald-400 font-mono text-[18px]">AiLab</li>
-            <li className="text-white hover:text-emerald-400 font-mono text-[18px]">Upgrade</li>
+            <li onClick={() => navigate('/components')} className="text-white hover:text-emerald-400 font-mono text-[18px]">Components</li>
+            <li onClick={() => navigate('/lab')}  className="text-white hover:text-emerald-400 font-mono text-[18px]">AiLab</li>
+            <li onClick={() => navigate('/admin')}  className="text-white hover:text-emerald-400 font-mono text-[18px]">Admin</li>
             
             <li>
               {
@@ -141,7 +141,7 @@ const Navbar = () => {
               }
               {
                 userData && 
-                <button onClick={() => navigate('/')}
+                <button onClick={() => navigate('/profile')}
                 className="w-full bg-emerald-500 text-neutral-950 py-2 font-bold rounded-lg">
                   Profile
                 </button>
