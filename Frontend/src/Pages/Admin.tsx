@@ -13,6 +13,10 @@ import type { ManagingComponentType, ReviewItemType } from '../Types/Types';
 import { publishDataContext } from '../Context/PublishContext';
 import { useNavigate } from 'react-router-dom';
 import { MdFileDownloadDone } from "react-icons/md";
+import { PiCheckFatLight } from "react-icons/pi";
+import { PiCheckFatFill } from "react-icons/pi";
+import { RxCross2 } from "react-icons/rx";
+{/* <PiCheckFatFill /> */}
 
 // ----- Auto Sync Code ------
 const SyncCode = ({ setFormData, currentCode }: any) => {
@@ -187,8 +191,8 @@ const Admin = () => {
         <main className="flex-1 overflow-y-auto p-4 md:p-8 z-10 relative custom-scrollbar">
             
             <header className="mb-8">
-                <h1 className="text-2xl md:text-3xl font-bold text-slate-100">Component Review Hub</h1>
-                <p className="text-slate-400 text-sm mt-1">Review user-generated components before they go live on the public explore page.</p>
+                <h1 className="text-2xl md:text-3xl font-bold text-slate-100">All Components Hub</h1>
+                <p className="text-slate-400 text-sm mt-1">Manage, organize, and control the entire catalog of platform components.</p>
             </header>
 
             {/* ---- Stats Options ---- */}
@@ -200,7 +204,7 @@ const Admin = () => {
                     <span className="text-emerald-400 text-[10px] font-bold mt-2 bg-emerald-500/10 w-fit px-2 py-0.5 rounded">Publicly Available</span>
                 </div>
                 <div className="bg-emerald-500/10 border border-emerald-500/30 shadow-[inset_0_0_20px_rgba(16,185,129,0.05)] rounded-2xl p-4 md:p-5 flex flex-col relative overflow-hidden">
-                    <span className="text-emerald-400 text-xs font-semibold uppercase tracking-wider mb-2 flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Pending Review</span>
+                    <span className="text-emerald-400 text-xs font-semibold uppercase tracking-wider mb-2 flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>Publish Requested</span>
                     <span className="text-3xl font-black text-white">{componentCount?.Requested || 0}</span>
                     <span className="text-slate-400 text-[10px] font-medium mt-2">Requires your attention</span>
                 </div>
@@ -210,9 +214,9 @@ const Admin = () => {
                     <span className="text-rose-400 text-[10px] font-bold mt-2 bg-rose-500/10 w-fit px-2 py-0.5 rounded">Did not meet UI standards</span>
                 </div>
                 <div className="bg-white/5 border border-white/10 rounded-2xl p-4 md:p-5 flex flex-col relative overflow-hidden">
-                    <span className="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-2">Total AI Calls</span>
-                    <span className="text-3xl font-black text-white">N/A</span>
-                    <span className="text-cyan-400 text-[10px] font-bold mt-2 bg-cyan-500/10 w-fit px-2 py-0.5 rounded">All time usage</span>
+                    <span className="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-2">Total Created</span>
+                    <span className="text-3xl font-black text-white">{componentCount?.Total || 0}</span>
+                    <span className="text-cyan-400 text-[10px] font-bold mt-2 bg-cyan-500/10 w-fit px-2 py-0.5 rounded">All Created</span>
                 </div>
             </section>
 
@@ -220,18 +224,19 @@ const Admin = () => {
             <section>
                 <div className="flex items-center justify-between mb-4 clear-both">
                     <h2 className="text-lg font-bold text-slate-200">Action Required</h2>
-                    <button onClick={() => GetAdminDashboardData(1)} 
-                    className="text-sm cursor-pointer text-emerald-400 hover:text-emerald-300 font-medium transition-colors">Refresh Queue</button>
+                    <button onClick={() => GetAdminDashboardData(1)}
+                    className="text-sm text-emerald-400 hover:text-emerald-300 font-medium transition-colors cursor-pointer">Refresh</button>
                 </div>
 
                 {/* --------- Items Listed Section -------- */}
                 <div className="bg-[#000a05] border border-white/10 rounded-2xl overflow-hidden shadow-2xl">
                     
-                    {/* ---------- Table Header (Fixed Grid 5+3+2+2 = 12) ----------- */}
+                    {/* ---------- Table Header (Fixed Grid 3+3+2+2+2 = 12) ----------- */}
                     <div className="hidden md:grid grid-cols-12 gap-4 p-4 border-b border-white/5 text-[11px] font-bold text-slate-500 uppercase tracking-wider bg-white/[0.02]">
-                        <div className="col-span-5">Component Details</div>
+                        <div className="col-span-3">Component Details</div>
                         <div className="col-span-3">Author</div>
                         <div className="col-span-2">Date Generated</div>
+                        <div className="col-span-2">Status</div>
                         <div className="col-span-2 text-right">Action</div>
                     </div>
 
@@ -240,19 +245,23 @@ const Admin = () => {
                     {requestedComponents?.length > 0 ? requestedComponents.map((item: any) => (
                     <div key={item._id || item.id} className="grid grid-cols-1 md:grid-cols-12 gap-4 p-4 border-b border-white/5 hover:bg-white/5 transition-colors items-center">
                         
-                        {/* Mobile Label & Details */}
-                        <div className="col-span-1 md:col-span-5 flex items-center gap-4 overflow-hidden">
+                        {/* Mobile Label & Details / Column 1 */}
+                        <div className="col-span-1 md:col-span-3 flex items-center gap-4 overflow-hidden">
                             <div className="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-gradient-to-tr from-slate-800 to-slate-700 border border-white/10 flex items-center justify-center shrink-0">
+                                {/* Component Icon */}
                                 <svg className="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
                             </div>
                             <div className="min-w-0 flex-1">
-                                <h3 className="text-sm md:text-base font-bold text-slate-200 truncate">{item?.title || 'Unknown'}</h3>
+                                <h3 className="text-sm md:text-base font-bold text-slate-200 truncate">{item?.title || 'Untitled Component'}</h3>
                                 <p className="text-[10px] text-slate-500 font-mono truncate">ID: {item?._id || item?.id || 'N/A'}</p>
                                 
+                                {/* Mobile Info Stack */}
                                 <div className="flex md:hidden items-center gap-2 mt-1">
-                                    <span className="text-xs text-slate-400 truncate max-w-[100px]">{item.author?.name || 'Unknown'}</span>
+                                    <span className="text-xs text-slate-400 truncate max-w-[100px]">{item?.author?.name || item?.author || 'Unknown'}</span>
                                     <span className="w-1 h-1 bg-slate-600 rounded-full shrink-0"></span>
-                                    <span className="text-xs text-slate-500 shrink-0">{item?.createdAt?.split('T')[0] || 'N/A'}</span>
+                                    <span className="text-xs text-emerald-400 font-medium shrink-0">{item?.status}</span>
+                                    <span className="w-1 h-1 bg-slate-600 rounded-full shrink-0"></span>
+                                    <span className="text-xs text-slate-500 shrink-0">{item?.createdAt?.split('T')[0] || item?.date || 'N/A'}</span>
                                 </div>
                             </div>
                         </div>
@@ -260,25 +269,38 @@ const Admin = () => {
                         {/* --- Author --- */}
                         <div className="hidden md:flex col-span-3 items-center min-w-0">
                             <span className="text-sm text-slate-300 bg-white/5 px-3 py-1.5 rounded-lg border border-white/5 truncate w-fit max-w-full">
-                                @{item?.author?.name || 'Unknown'}
+                                {item?.author?.name || item?.author || 'Unknown'}
                             </span>
                         </div>
 
                         {/* --- Date --- */}
                         <div className="hidden md:flex col-span-2 items-center text-sm font-mono text-slate-400">
-                            {item?.createdAt?.split('T')[0] || 'N/A'}
+                            {item?.createdAt?.split('T')[0] || item?.date || 'N/A'}
+                        </div>
+
+                        {/* --- Status --- */}
+                        <div className="hidden md:flex col-span-2 items-center">
+                            <span className={`text-[10px] uppercase tracking-wider font-bold px-2.5 py-0.5 rounded-sm border ${
+                                item?.status === 'Public' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 
+                                item?.status === 'Requested' ? 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20' : 
+                                item?.status === 'Rejected' ? 'bg-rose-500/10 text-rose-400 border-rose-500/20' : 
+                                'bg-slate-500/10 text-slate-400 border-slate-500/20'
+                            }`}>
+                                {item?.status || 'Draft'}
+                            </span>
                         </div>
 
                         {/* ----- Action Button ------ */}
                         <div className="col-span-1 md:col-span-2 flex justify-end items-center">
                             <button 
                                 onClick={() => {
-                                    setReviewingItem(item) ;
+                                    console.log("Reviewing Item: " , item);
+                                    setReviewingItem(item);
                                     setShowPopup(true); 
                                 }}
-                                className="w-full md:w-auto px-4 py-2 bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500 hover:text-[#000502] rounded-lg text-sm font-bold transition-all flex items-center justify-center gap-2"
+                                className="w-full md:w-auto px-4 py-2 bg-emerald-500/10 text-sky-400 border border-sky-500/30 hover:bg-sky-500 hover:text-[#000502] rounded-lg text-sm font-bold transition-all flex items-center justify-center gap-2 cursor-pointer"
                             >
-                                Open Review <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                Review <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
                             </button>
                         </div>
 
@@ -288,10 +310,10 @@ const Admin = () => {
 
                     <div className="p-12 text-center flex flex-col items-center">
                         <div className="w-16 h-16 bg-emerald-500/10 rounded-full flex items-center justify-center mb-4 text-emerald-400">
-                            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
+                            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
                         </div>
-                        <h3 className="text-xl font-bold text-slate-200">Queue is Empty</h3>
-                        <p className="text-slate-500 text-sm mt-1">All components have been reviewed. Great job admin!</p>
+                        <h3 className="text-xl font-bold text-slate-200">No Components Found</h3>
+                        <p className="text-slate-500 text-sm mt-1">The component database is currently empty.</p>
                     </div>
 
                     )}
@@ -307,25 +329,43 @@ const Admin = () => {
         {showPopup && (
         <div className="fixed inset-0 z-50 bg-[#000502]/90 backdrop-blur-md flex items-center justify-center p-4 sm:p-6 md:p-8">
             
-            <div className="bg-[#00140a] border border-white/10 rounded-3xl w-full max-w-5xl h-full max-h-[95vh] flex flex-col overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)] animate-in fade-in zoom-in-95 duration-200">
+            <div className="bg-[#00140a] border border-white/10 rounded-3xl w-full max-w-5xl h-full max-h-[95vh] flex flex-col overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)] animate-in fade-in zoom-in-95 duration-200">        
                 
-                {/* ----- PopUp Header ----- */}
-                <header className="p-4 md:p-5 border-b border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white/2 shrink-0">
-                    <div>
-                        <div className="flex items-center gap-2 mb-1">
-                            <span className="bg-yellow-500/20 text-yellow-500 border border-yellow-500/30 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-sm">{reviewingItem?.status || 'N/A'}</span>
-                            <span className="text-xs text-slate-500 font-mono">ID: {reviewingItem?._id}</span>
+                <header className="p-4 md:p-5 border-b border-white/5 flex flex-col lg:flex-row lg:items-center justify-between gap-6 bg-white/2 shrink-0 relative">  
+                    
+                    <div className="flex flex-col gap-2 min-w-75">
+                        <div className="flex items-center gap-3">
+                            <span className="bg-yellow-500/10 rounded-lg text-yellow-500 flex justify-center items-center h-7 px-3 border border-yellow-500/20">
+                                { reviewingItem?.category || 'Unknown' }
+                            </span>
+                            <span className="text-[10px] text-slate-500 font-mono">ID: { reviewingItem?._id || 'N/A' }</span>
                         </div>
-                        <h2 className="text-xl md:text-2xl font-bold text-slate-100">{reviewingItem?.title}</h2>
-                        <p className="text-sm text-slate-400 mt-1">Generated by <span className="text-emerald-400">@{reviewingItem?.author?.name || 'Unknown'}</span></p>
+
+                        <p className='bg-transparent px-2 truncate -ml-2 w-full outline-none transition-all text-xl md:text-2xl font-bold text-slate-100 placeholder:text-slate-700'>
+                            { reviewingItem?.title || 'Unknown' }
+                        </p>
+
+                        <p className="text-sm text-slate-400 ml-1">Generated by <span className="text-emerald-400">@{reviewingItem?.author?.name || 'Unknown'}</span></p>
                     </div>
-                
+                    
+                    <div className="flex-1 flex flex-col gap-2 w-full">
+                        <div className="flex items-center gap-2 ml-1">
+                            <svg className="w-3 h-3 text-emerald-500" fill="currentColor" viewBox="0 0 20 20"><path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"></path><path fillRule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clipRule="evenodd"></path></svg>
+                            <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Generation Context / AI Prompt</label>
+                        </div>
+                        <textarea readOnly
+                        value={ reviewingItem?.prompt || 'Unknown' }
+                        className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-xs text-slate-400 outline-none focus:border-emerald-500/40 focus:bg-emerald-500/5 transition-all resize-none min-h-20"
+                        />
+                    </div>
+                    
                     <button 
                         onClick={() => setShowPopup(false)}
                         className="cursor-pointer absolute sm:relative top-4 right-4 sm:top-auto sm:right-auto p-2 bg-white/5 hover:bg-white/10 rounded-full text-slate-400 hover:text-white transition-colors"
                     >
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                     </button>
+
                 </header>
 
                 {/* ----- Code / Preview Section ------- */}
@@ -341,6 +381,7 @@ const Admin = () => {
                     {/* ----- Main WorkSpace ----- */}
                     <div className="w-full flex-1 flex flex-col overflow-hidden custom-sandpack">
                         <SandpackProvider
+                            key={reviewingItem?._id}
                             template="react"
                             theme={sandpackDark}
                             files={{ "/App.js": reviewingItem?.code ||  '<h2>Component.io!</h2>' }}
@@ -384,31 +425,28 @@ const Admin = () => {
 
                 {/* ------ PopUp Footer Section -------- */}
                 <footer className="p-4 md:p-6 border-t border-white/5 bg-[#00140a] flex flex-col-reverse sm:flex-row justify-between items-center gap-4 shrink-0">
-                    <p className="text-xs text-slate-500 text-center sm:text-left">By approving, this component will be visible to all users on the Explore page.</p>
+                    <p className="text-xs text-slate-500 text-center sm:text-left"> Approve or reject the request to make it public or not? </p>
                 
                     <div className="flex items-center gap-3 w-full sm:w-auto">
-                        <button 
-                        onClick={() => {
-                            console.log("Reviewing Item:: " , reviewingItem); 
+                        
+                        <button onClick={() => {
                             if( reviewingItem?._id ){
-                                RejectRequest(reviewingItem._id)
+                                RejectRequest( reviewingItem._id ); 
                             }
                         }}
-                        className="cursor-pointer flex-1 sm:flex-none px-6 py-2.5 rounded-xl bg-rose-500/10 text-rose-400 border border-rose-500/30 hover:bg-rose-500 hover:text-white transition-all font-bold text-sm"
+                        className="flex justify-center items-center gap-1 flex-row cursor-pointer flex-1 sm:flex-none px-6 py-2.5 rounded-xl bg-rose-500 text-white border border-rose-500/30 hover:bg-rose-500/30 hover:text-rose-500 font-bold text-sm"
                         >
-                            Reject & Delete
+                            <RxCross2 /> Reject
                         </button>
-                        <button 
-                        onClick={() => {
-                            console.log("Reviewing Item:: " , reviewingItem); 
+                        
+                        <button onClick={() => {
                             if( reviewingItem?._id ){
                                 AcceptRequest(reviewingItem._id); 
                             }
                         }}
-                        className="cursor-pointer flex-1 sm:flex-none px-6 py-2.5 rounded-xl bg-emerald-500 text-[#000502] hover:bg-emerald-400 transition-all font-black text-sm shadow-[0_0_20px_rgba(16,185,129,0.4)] flex items-center justify-center gap-2"
+                        className="flex justify-center items-center gap-1 flex-row cursor-pointer flex-1 sm:flex-none px-6 py-2.5 rounded-xl bg-emerald-500 text-white border border-emerald-500/30 hover:bg-emerald-500/30 hover:text-emerald-500 font-bold text-sm"
                         >
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                            Approve & Publish
+                            <PiCheckFatLight /> Approve
                         </button>
                     </div>
                 </footer>
@@ -601,7 +639,7 @@ const Admin = () => {
                         <div className="col-span-3">Author</div>
                         <div className="col-span-2">Date Generated</div>
                         <div className="col-span-2">Status</div>
-                        <div className="col-span-2 text-right">Manage Status</div>
+                        <div className="col-span-2 text-right">Action</div>
                     </div>
 
                     {/* ----- Table Content / Items Lists ----- */}
