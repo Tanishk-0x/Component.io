@@ -2,8 +2,21 @@ import { MdDashboard } from "react-icons/md";
 import { PiCardsFill } from "react-icons/pi";
 import { SiHackthebox } from "react-icons/si";
 import { IoAddCircle } from "react-icons/io5";
+import { 
+  SandpackProvider, 
+  SandpackLayout, 
+  SandpackPreview 
+} from "@codesandbox/sandpack-react";
+import { sandpackDark } from "@codesandbox/sandpack-themes";
+import { useState } from "react";
+import { Home_Card, Home_Dashboard, Home_LandingPage } from "../Constants/dummyCode";
+import { useNavigate } from "react-router-dom";
 
 const Selector = () => {
+
+  const navigate = useNavigate(); 
+
+  const [selector , setSelector] = useState(Home_Card);
 
   return (
 
@@ -23,25 +36,53 @@ const Selector = () => {
           </div>
 
           <div className="w-full mt-8 md:mt-10 flex flex-wrap justify-center items-center gap-3 md:gap-6">
-            <button className="w-full sm:w-auto bg-emerald-950 gap-2 text-white flex flex-row justify-center items-center px-4 md:px-5 py-3 md:py-4 font-semibold text-[14px] md:text-[16px] rounded-lg border border-emerald-800 hover:bg-emerald-900 transition-colors cursor-pointer">
+            <button onClick={() => setSelector(Home_Dashboard)}
+            className="w-full sm:w-auto bg-emerald-950 gap-2 text-white flex flex-row justify-center items-center px-4 md:px-5 py-3 md:py-4 font-semibold text-[14px] md:text-[16px] rounded-lg border border-emerald-800 hover:bg-emerald-900 transition-colors cursor-pointer">
               <MdDashboard className="text-emerald-500 text-[18px] md:text-[20px]"/> Dashboard 
             </button>
 
-            <button className="w-full sm:w-auto bg-emerald-950 gap-2 text-white flex flex-row justify-center items-center px-4 md:px-5 py-3 md:py-4 font-semibold text-[14px] md:text-[16px] rounded-lg border border-emerald-800 hover:bg-emerald-900 transition-colors cursor-pointer">
+            <button onClick={() => setSelector(Home_LandingPage)}
+            className="w-full sm:w-auto bg-emerald-950 gap-2 text-white flex flex-row justify-center items-center px-4 md:px-5 py-3 md:py-4 font-semibold text-[14px] md:text-[16px] rounded-lg border border-emerald-800 hover:bg-emerald-900 transition-colors cursor-pointer">
               <SiHackthebox className="text-emerald-500 text-[18px] md:text-[20px]"/> Landing Page 
             </button>
 
-            <button className="w-full sm:w-auto bg-emerald-950 gap-2 text-white flex flex-row justify-center items-center px-4 md:px-5 py-3 md:py-4 font-semibold text-[14px] md:text-[16px] rounded-lg border border-emerald-800 hover:bg-emerald-900 transition-colors cursor-pointer">
+            <button onClick={() => setSelector(Home_Card)}
+            className="w-full sm:w-auto bg-emerald-950 gap-2 text-white flex flex-row justify-center items-center px-4 md:px-5 py-3 md:py-4 font-semibold text-[14px] md:text-[16px] rounded-lg border border-emerald-800 hover:bg-emerald-900 transition-colors cursor-pointer">
               <PiCardsFill className="text-emerald-500 text-[18px] md:text-[20px]"/> Modern Cards 
             </button>
 
-            <button className="w-full sm:w-auto bg-emerald-950 gap-2 outline-dotted outline-emerald-500 outline-2 outline-offset-2 text-white flex flex-row justify-center items-center px-4 md:px-5 py-3 md:py-4 font-semibold text-[14px] md:text-[16px] rounded-lg border border-emerald-800 hover:bg-emerald-900 transition-colors cursor-pointer">
+            <button onClick={() => navigate('/components')}
+            className="w-full sm:w-auto bg-emerald-950 gap-2 outline-dotted outline-emerald-500 outline-2 outline-offset-2 text-white flex flex-row justify-center items-center px-4 md:px-5 py-3 md:py-4 font-semibold text-[14px] md:text-[16px] rounded-lg border border-emerald-800 hover:bg-emerald-900 transition-colors cursor-pointer">
               <IoAddCircle className="text-emerald-500 text-[18px] md:text-[20px]"/> Much More 
             </button>
           </div>
 
-          <div className="bg-emerald-950/50 w-full max-w-5xl mt-10 md:mt-14 border border-emerald-800/60 rounded-2xl h-75 md:h-135 flex justify-center items-center text-emerald-800 font-black text-2xl md:text-5xl tracking-widest shadow-2xl">
-            SCREEN!
+          <div className="bg-emerald-950/50 custom-sp w-full max-w-5xl mt-10 md:mt-14 border border-emerald-800/60 rounded-2xl h-75 md:h-135 flex justify-center items-center text-emerald-800 font-black text-2xl md:text-5xl tracking-widest shadow-2xl">
+            <div className="w-full flex-1 custom-sp flex flex-col overflow-hidden custom-sandpack">
+            <SandpackProvider
+              template="react"
+              theme={sandpackDark}
+              files={{ "/App.js": selector || Home_Card }}
+              options={{
+              externalResources: ["https://cdn.tailwindcss.com"],
+              }}
+              className="h-full flex-1 flex flex-col"
+            >
+            <SandpackLayout 
+              className="h-full w-full border-none bg-transparent" 
+            >
+
+              <div className="custom-sp relative z-10 w-full h-full flex items-center justify-center p-2 md:p-0 overflow-auto">
+                <SandpackPreview 
+                  showRefreshButton={true}
+                  showOpenInCodeSandbox={false}
+                  className="h-full w-full"
+                  style={{ height: "100%", minHeight: "unset" }}
+                />
+              </div>
+            </SandpackLayout>
+            </SandpackProvider>
+            </div>
           </div>
 
         </div>
