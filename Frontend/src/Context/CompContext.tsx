@@ -219,9 +219,9 @@ const CompContext = ({children}: MainContextProps) => {
             ); 
 
             if( res.data.success ){
+                await GetUserDetails(); 
                 toast.success("Removed!"); 
                 setRemoved(true); 
-                setUserData(res.data.user); 
             }
         }
         

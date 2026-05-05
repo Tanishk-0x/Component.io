@@ -511,7 +511,7 @@ const Admin = () => {
                     </div>
 
                     {/* ----- Table Content / Items Lists ----- */}
-                    {users.length > 0 ? users.map((item: any) => (
+                    {users?.length > 0 ? users.map((item: any) => (
                     <div key={item.id} className="grid grid-cols-1 md:grid-cols-12 gap-4 p-4 border-b border-white/5 hover:bg-white/5 transition-colors items-center">
                         
                         {/* Mobile Label & Details / Column 1 */}

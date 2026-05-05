@@ -57,8 +57,8 @@ const AuthContext = ({ children }: MainContextProps) => {
             ); 
 
             if( res.data.success ){
+                await GetUserDetails(); 
                 toast.success('Signup SuccessFully!'); 
-                setUserData(res.data?.user);
                 return true ; 
             }
             return false ; 
@@ -107,8 +107,8 @@ const AuthContext = ({ children }: MainContextProps) => {
             ); 
 
             if( res.data.success ){
-                toast.success('Login SuccessFully!'); 
-                setUserData(res.data?.user); 
+                await GetUserDetails(); 
+                toast.success('Login SuccessFully!');  
                 return true ; 
             }
             return false ;

@@ -23,6 +23,15 @@ const Profile = () => {
 
     const [copied , setCopied] = useState(false); 
 
+    // ---------- Logout Handler ---------- 
+    const LogoutHandler = async () => {
+        const res = await Logout(); 
+        if( res ){
+            navigate('/login'); 
+        }
+        return ; 
+    }
+
 
   return (
 
@@ -46,7 +55,7 @@ const Profile = () => {
                     {/* Avatar */}
                     <div className="w-24 h-24 rounded-full bg-linear-to-tr from-emerald-500 to-cyan-500 p-1 shadow-[0_0_30px_rgba(16,185,129,0.2)]">
                         <div className="w-full h-full bg-[#000502] rounded-full flex items-center justify-center text-3xl font-bold text-slate-100">
-                            {userData?.name?.slice(0,1).toUpperCase()}
+                            {userData?.name?.slice(0,1).toUpperCase() || 'Unknown' }
                         </div>
                     </div>
 
@@ -62,19 +71,19 @@ const Profile = () => {
                             )}
                             {!userData.isVerified && (
                             <span onClick={() => navigate('/verify')}
-                            className="flex items-center gap-1 bg-red-900/10 text-red-400 border border-red-500/20 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide">
+                            className="cursor-pointer flex items-center gap-1 bg-red-900/10 text-red-400 border border-red-500/20 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide">
                                 <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path></svg>
                                 Not Verified
                             </span>
                             )}
                         </div>
 
-                        <p className="text-slate-400 text-sm mb-4">{userData?.email}</p>
+                        <p className="text-slate-400 text-sm mb-4">{userData?.email || 'Unknown'}</p>
                     
                         <div className="flex items-center gap-3 justify-center sm:justify-start">
                             <span className="px-3 py-1 bg-white/5 border border-white/10 rounded-lg text-xs font-medium text-slate-300"> Developer </span>
-                            <button onClick={() => Logout()}
-                            className="px-4 py-1 bg-rose-500/10 text-rose-400 border border-rose-500/20 hover:bg-rose-500/20 rounded-lg text-xs font-medium transition-colors flex items-center gap-2">
+                            <button onClick={() => LogoutHandler()}
+                            className="cursor-pointer px-4 py-1 bg-rose-500/10 text-rose-400 border border-rose-500/20 hover:bg-rose-500/20 rounded-lg text-xs font-medium transition-colors flex items-center gap-2">
                             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
                                 Logout
                             </button>
@@ -90,22 +99,25 @@ const Profile = () => {
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 md:gap-4 w-full lg:w-auto">
                         <div className="bg-[#000502]/50 border border-white/5 rounded-2xl p-4 flex flex-col justify-center items-center lg:items-start text-center lg:text-left">
                             <span className="text-emerald-400 text-xs font-bold uppercase tracking-wider mb-1 flex items-center gap-1.5"><svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L5 14l3-4L6 17v7l8-11z"></path></svg> Credits</span>
-                            <span className="text-2xl font-bold text-white">{userData?.credits}</span>
+                            <span className="text-2xl font-bold text-white">{ userData?.credits || 0 }</span>
                         </div>
                         <div className="bg-[#000502]/50 border border-white/5 rounded-2xl p-4 flex flex-col justify-center items-center lg:items-start text-center lg:text-left">
                             <span className="text-cyan-400 text-xs font-bold uppercase tracking-wider mb-1 flex items-center gap-1.5"><svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg> API Calls</span>
-                            <span className="text-2xl font-bold text-white"> 00 </span>
+                            <span className="text-2xl font-bold text-white"> { userData?.callsMade || 0 } </span>
                         </div>
                         <div className="bg-[#000502]/50 border border-white/5 rounded-2xl p-4 flex flex-col justify-center items-center lg:items-start text-center lg:text-left col-span-2 sm:col-span-1">
                             <span className="text-purple-400 text-xs font-bold uppercase tracking-wider mb-1 flex items-center gap-1.5"><svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path></svg> Saved</span>
-                            <span className="text-2xl font-bold text-white">{userData?.savedComponents?.length}</span>
+                            <span className="text-2xl font-bold text-white">{userData?.savedComponents?.length || 0 }</span>
                         </div>
                     </div>
 
+                    { userData?.message && 
                     <div className='bg-[#000502]/50 border border-white/5 rounded-lg flex justify-center items-center flex-row text-emerald-600'>
                         <IoIosNotificationsOutline className='text-emerald-500 text-[20px] font-semibold'/> 
-                        This is the dummy notification! real will appear
+                        {userData?.message}
                     </div>
+                    }
+
                 </div>
 
             </section>
@@ -125,25 +137,25 @@ const Profile = () => {
                     
                     {/* ---- Left Sidebar: Component List ---- */}
                     <aside className="w-full md:w-72 shrink-0 flex flex-row md:flex-col gap-3 overflow-x-auto md:overflow-y-auto custom-scrollbar pb-2 md:pb-0">
-                    {userData?.savedComponents.map((comp: any) => (
+                    {userData && userData?.savedComponents.map((comp: any) => (
                         <button
                         key={comp._id}
                         onClick={() => {
                             setActiveComponent(comp); 
                             console.log("CompActive: " , comp); 
                         }}
-                        className={`shrink-0 w-64 md:w-full text-left p-4 rounded-2xl transition-all duration-300 border ${
+                        className={`cursor-pointer shrink-0 w-64 md:w-full text-left p-4 rounded-2xl transition-all duration-300 border ${
                             activeComponent._id === comp._id 
                             ? 'bg-emerald-900/20 border-emerald-500/50 shadow-[0_0_20px_rgba(16,185,129,0.1)]' 
                             : 'bg-white/5 border-white/5 hover:border-white/10 hover:bg-white/10'
                         }`}
                         >
                         <div className="flex justify-between items-start mb-2">
-                            <span className="text-[10px] uppercase font-bold text-emerald-500/80 tracking-wider bg-emerald-500/10 px-2 py-0.5 rounded">{comp.category}</span>
-                            <span className="text-[10px] text-slate-500">22-22-26</span>
+                            <span className="text-[10px] uppercase font-bold text-emerald-500/80 tracking-wider bg-emerald-500/10 px-2 py-0.5 rounded">{comp.category || 'Unknown'}</span>
+                            <span className="text-[10px] text-slate-500"> {activeComponent?.createdAt?.split('T')[0] || 'N/A'} </span>
                         </div>
                         <h3 className={`text-sm font-semibold mb-1 ${activeComponent.id === comp.id ? 'text-emerald-400' : 'text-slate-200'}`}>
-                            {comp.title}
+                            {comp.title || 'Unknown'}
                         </h3>
                         <p className="text-xs text-slate-500 truncate">Tap to view preview & code</p>
                         </button>
@@ -159,13 +171,13 @@ const Profile = () => {
                         <div className="flex items-center gap-2 bg-[#000502] p-1 rounded-xl border border-white/10">
                             <button 
                                 onClick={() => setActiveTab('preview')}
-                                className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-all ${activeTab === 'preview' ? 'bg-white/10 text-emerald-400' : 'text-slate-400 hover:text-slate-200'}`}
+                                className={`cursor-pointer px-4 py-1.5 rounded-lg text-sm font-medium transition-all ${activeTab === 'preview' ? 'bg-white/10 text-emerald-400' : 'text-slate-400 hover:text-slate-200'}`}
                             >
                                 Preview
                             </button>
                             <button 
                                 onClick={() => setActiveTab('code')}
-                                className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-all ${activeTab === 'code' ? 'bg-white/10 text-emerald-400' : 'text-slate-400 hover:text-slate-200'}`}
+                                className={`cursor-pointer px-4 py-1.5 rounded-lg text-sm font-medium transition-all ${activeTab === 'code' ? 'bg-white/10 text-emerald-400' : 'text-slate-400 hover:text-slate-200'}`}
                             >
                                 Code
                             </button>
@@ -176,7 +188,7 @@ const Profile = () => {
                                 navigator.clipboard.writeText(activeComponent?.code || 'N/A') ; 
                                 setCopied(true); 
                             }}
-                            className="p-2 rounded-lg bg-white/5 border border-white/10 text-emerald-400 hover:text-emerald-500 hover:border-emerald-500/50 transition-all tooltip-trigger" title="Copy Code">
+                            className="cursor-pointer p-2 rounded-lg bg-white/5 border border-white/10 text-emerald-400 hover:text-emerald-500 hover:border-emerald-500/50 transition-all tooltip-trigger" title="Copy Code">
                                 {
                                     copied ? <TbCopyCheck /> : <TbCopy />
                                 }
@@ -184,7 +196,7 @@ const Profile = () => {
 
                             { !removed && 
                             <button onClick={() => RemoveSaved(activeComponent._id)}
-                            className="px-4 py-1.5 rounded-lg bg-rose-500/10 text-rose-400 border border-rose-500/20 hover:bg-rose-500/20 text-sm font-medium transition-all flex items-center gap-2">
+                            className="cursor-pointer px-4 py-1.5 rounded-lg bg-rose-500/10 text-rose-400 border border-rose-500/20 hover:bg-rose-500/20 text-sm font-medium transition-all flex items-center gap-2">
                                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                                 <span className="hidden sm:inline"> { isRemoving ? 'Removing..' : 'Remove' } </span>
                             </button>
