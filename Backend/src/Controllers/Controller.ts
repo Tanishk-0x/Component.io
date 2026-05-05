@@ -207,6 +207,18 @@ const SaveComponent = async(req: AuthenticatedRequest , res: Response) => {
             });
         }
 
+        const component = await Component.findByIdAndUpdate(id , 
+            { $inc: { savedCount: 1 } } , 
+            { new: true }
+        ); 
+
+        if( !component ){
+            return res.status(404).json({
+                success: false , 
+                message: 'Component Not Found!'
+            }); 
+        }
+
         if( !userId ){
             return res.status(401).json({
                 success: false , 
@@ -231,6 +243,7 @@ const SaveComponent = async(req: AuthenticatedRequest , res: Response) => {
         return res.status(200).json({
             success: true , 
             message: 'Component Saved SuccessFully!' , 
+            savedCount: component.savedCount ,
             user: user
         }); 
     }
@@ -252,8 +265,12 @@ const GetComponents = async (req: AuthenticatedRequest , res: Response) => {
         const limit = 10 ; 
         const skip = (page - 1) * limit ; 
 
+        const totalComponents = await Component.countDocuments(); 
+        const maxPages = Math.ceil(totalComponents / limit); 
+
         const components = await Component.find({})
         .select('-embedding').skip(skip).limit(limit)
+        .populate('author' , 'name email')
         .sort({ createdAt: -1}).lean({}); 
 
         if( !components || components.length === 0 ){
@@ -266,6 +283,7 @@ const GetComponents = async (req: AuthenticatedRequest , res: Response) => {
         return res.status(200).json({
             success: true , 
             message: 'Components Fetched SuccessFully!' , 
+            maxPages: maxPages , 
             components: components
         }); 
     }

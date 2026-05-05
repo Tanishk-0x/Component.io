@@ -33,7 +33,7 @@ const ComponentSchema = new mongoose.Schema({
         enum: ["Created" , "Public" , "Requested" , "Rejected"] , 
         default: "Created"
     },
-    copyCount: {
+    savedCount: {
         type: Number , 
         default: 0
     },
@@ -42,11 +42,6 @@ const ComponentSchema = new mongoose.Schema({
         type: Number , 
         default: 0 
     },
-    viewCount: {
-        type: Number , 
-        default: 0
-    },
-
     
     // ---- Embedding ----
     embedding: {
