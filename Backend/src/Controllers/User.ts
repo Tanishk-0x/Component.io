@@ -18,7 +18,7 @@ export const GetCurrentUser = async (req: Request, res: Response) => {
         }
 
         const user = await User.findById(UserId).select('-password')
-            .populate('savedComponents' , 'title category code');
+            .populate('savedComponents' , 'title category code createdAt');
 
         if( !user ){
             return res.status(404).json({

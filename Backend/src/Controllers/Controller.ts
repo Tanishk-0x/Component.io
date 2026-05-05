@@ -135,7 +135,8 @@ const ResolveComponent = async(req: AuthenticatedRequest , res: Response) => {
             const { embedding , ...safeComponent } = newObj ;  
 
             // -- Deduct Credits --
-            user.credits -= 20 ; 
+            user.credits -= 20 ;
+            user.callsMade += 1 ;  
             await user.save() ; 
 
             // -- Response --
@@ -165,6 +166,7 @@ const ResolveComponent = async(req: AuthenticatedRequest , res: Response) => {
 
             // -- Deduct Credits --
             user.credits -= 5 ; 
+            user.callsMade += 1 ; 
             await user.save() ; 
 
             // -- Response -- 

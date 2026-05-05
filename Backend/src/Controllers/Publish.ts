@@ -123,7 +123,7 @@ const AcceptRequest = async(req: Request , res: Response) => {
         await component.save(); 
 
         const user = await User.findByIdAndUpdate(userId , 
-            { $inc: { credits: 10 } } , 
+            { $inc: { credits: 10 } , message: 'Publish Request Accepted, 10 Credits Claimed' } , 
             { new: true }
         ).select('-password');  
 

@@ -17,6 +17,16 @@ const UserSchema = new mongoose.Schema({
         required: true ,
         trim: true
     },
+    
+    message: {
+        type: String ,
+        trim: true , 
+        default: ''
+    },
+    callsMade: {
+        type: Number , 
+        default: 0 , 
+    },
 
     credits: {
         type: Number,

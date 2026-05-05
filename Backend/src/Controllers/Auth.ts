@@ -30,7 +30,10 @@ export const Signup = async (req: Request , res: Response) => {
         const HashedPassword = await bcrypt.hash( password , 10 ); 
 
         const user = await User.create({
-            name , email , password: HashedPassword
+            name ,
+            email ,
+            password: HashedPassword ,
+            message: 'Verify Email To Get Free 100 Credits'
         });
 
         // Setting Tokens 
