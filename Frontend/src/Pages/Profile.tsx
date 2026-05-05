@@ -5,7 +5,10 @@ import { useNavigate } from 'react-router-dom';
 import { SandpackProvider, SandpackLayout, SandpackPreview, SandpackCodeEditor } from '@codesandbox/sandpack-react';
 import { sandpackDark } from "@codesandbox/sandpack-themes";
 import { componentDataContext } from '../Context/CompContext';
-
+import { IoIosNotificationsOutline } from "react-icons/io";
+import { TbCopyCheck } from "react-icons/tb";
+import { TbCopy } from "react-icons/tb";
+import { RxComponent2 } from "react-icons/rx";
 
 const Profile = () => {
 
@@ -17,6 +20,8 @@ const Profile = () => {
     // ----------- UseStates -------------
     const [activeComponent, setActiveComponent] = useState(userData.savedComponents[0]);
     const [activeTab, setActiveTab] = useState('preview'); // 'preview' or 'code'
+
+    const [copied , setCopied] = useState(false); 
 
 
   return (
@@ -74,23 +79,32 @@ const Profile = () => {
                                 Logout
                             </button>
                         </div>
+
                     </div>
 
                 </div>
 
                 {/* --- User Right Info (Stats) --- */}
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 md:gap-4 w-full lg:w-auto">
-                    <div className="bg-[#000502]/50 border border-white/5 rounded-2xl p-4 flex flex-col justify-center items-center lg:items-start text-center lg:text-left">
-                        <span className="text-emerald-400 text-xs font-bold uppercase tracking-wider mb-1 flex items-center gap-1.5"><svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L5 14l3-4L6 17v7l8-11z"></path></svg> Credits</span>
-                        <span className="text-2xl font-bold text-white">{userData?.credits}</span>
+                <div className='flex flex-col gap-2 '>
+
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 md:gap-4 w-full lg:w-auto">
+                        <div className="bg-[#000502]/50 border border-white/5 rounded-2xl p-4 flex flex-col justify-center items-center lg:items-start text-center lg:text-left">
+                            <span className="text-emerald-400 text-xs font-bold uppercase tracking-wider mb-1 flex items-center gap-1.5"><svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L5 14l3-4L6 17v7l8-11z"></path></svg> Credits</span>
+                            <span className="text-2xl font-bold text-white">{userData?.credits}</span>
+                        </div>
+                        <div className="bg-[#000502]/50 border border-white/5 rounded-2xl p-4 flex flex-col justify-center items-center lg:items-start text-center lg:text-left">
+                            <span className="text-cyan-400 text-xs font-bold uppercase tracking-wider mb-1 flex items-center gap-1.5"><svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg> API Calls</span>
+                            <span className="text-2xl font-bold text-white"> 00 </span>
+                        </div>
+                        <div className="bg-[#000502]/50 border border-white/5 rounded-2xl p-4 flex flex-col justify-center items-center lg:items-start text-center lg:text-left col-span-2 sm:col-span-1">
+                            <span className="text-purple-400 text-xs font-bold uppercase tracking-wider mb-1 flex items-center gap-1.5"><svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path></svg> Saved</span>
+                            <span className="text-2xl font-bold text-white">{userData?.savedComponents?.length}</span>
+                        </div>
                     </div>
-                    <div className="bg-[#000502]/50 border border-white/5 rounded-2xl p-4 flex flex-col justify-center items-center lg:items-start text-center lg:text-left">
-                        <span className="text-cyan-400 text-xs font-bold uppercase tracking-wider mb-1 flex items-center gap-1.5"><svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg> API Calls</span>
-                        <span className="text-2xl font-bold text-white"> 00 </span>
-                    </div>
-                    <div className="bg-[#000502]/50 border border-white/5 rounded-2xl p-4 flex flex-col justify-center items-center lg:items-start text-center lg:text-left col-span-2 sm:col-span-1">
-                        <span className="text-purple-400 text-xs font-bold uppercase tracking-wider mb-1 flex items-center gap-1.5"><svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path></svg> Saved</span>
-                        <span className="text-2xl font-bold text-white">{userData?.savedComponents?.length}</span>
+
+                    <div className='bg-[#000502]/50 border border-white/5 rounded-lg flex justify-center items-center flex-row text-emerald-600'>
+                        <IoIosNotificationsOutline className='text-emerald-500 text-[20px] font-semibold'/> 
+                        This is the dummy notification! real will appear
                     </div>
                 </div>
 
@@ -137,6 +151,7 @@ const Profile = () => {
                     </aside>
 
                     {/* ---- Right Area: Preview & Code Detail ---- */}
+                    { userData?.savedComponents?.length !== 0 && 
                     <main className="flex-1 bg-[#00140a]/40 border border-white/5 rounded-3xl backdrop-blur-xl flex flex-col overflow-hidden relative shadow-2xl min-h-100">
                     
                     {/* --- Code / Preview Header --- */}
@@ -157,8 +172,14 @@ const Profile = () => {
                         </div>
 
                         <div className="flex items-center gap-2">
-                            <button className="p-2 rounded-lg bg-white/5 border border-white/10 text-slate-300 hover:text-emerald-400 hover:border-emerald-500/50 transition-all tooltip-trigger" title="Copy Code">
-                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                            <button onClick={() => {
+                                navigator.clipboard.writeText(activeComponent?.code || 'N/A') ; 
+                                setCopied(true); 
+                            }}
+                            className="p-2 rounded-lg bg-white/5 border border-white/10 text-emerald-400 hover:text-emerald-500 hover:border-emerald-500/50 transition-all tooltip-trigger" title="Copy Code">
+                                {
+                                    copied ? <TbCopyCheck /> : <TbCopy />
+                                }
                             </button>
 
                             { !removed && 
@@ -202,7 +223,7 @@ const Profile = () => {
                         className="h-full w-full border-none bg-transparent" 
                         >
                         {activeTab === 'preview' && (
-                        <div className="relative z-10 w-full h-full flex items-center justify-center p-6 overflow-auto">
+                        <div className="relative z-10 w-full h-full flex items-center justify-center p-1 overflow-auto">
                             <SandpackPreview 
                             showRefreshButton={true}
                             showOpenInCodeSandbox={false}
@@ -214,7 +235,7 @@ const Profile = () => {
                         {/* --- Component Code Section --- */}
                         {/* ------------- Code ----------- */}
                         {activeTab === 'code' && (
-                        <div className="w-full h-full bg-[#0d1117] overflow-auto p-4 md:p-6 relative">
+                        <div className="w-full max-h-125 h-full bg-[#0d1117] overflow-auto p-4 md:p-1 relative">
                             <SandpackCodeEditor 
                             showLineNumbers 
                             showTabs={false}
@@ -229,6 +250,16 @@ const Profile = () => {
                     </div>
                     
                     </main>
+                    }
+
+                    { userData?.savedComponents?.length === 0 &&
+                    <div className='flex-1 flex justify-center items-center bg-[#00140a]/40 border border-white/5 rounded-3xl backdrop-blur-xl flex-col overflow-hidden relative shadow-2xl min-h-100'>
+                        <div className='text-[20px] font-semibold md:text-[34px] flex flex-col justify-center items-center text-slate-600'>
+                            <RxComponent2 />
+                            <p className='text-[16px] md:text-[20px]'> No Saved Component! </p>
+                        </div>
+                    </div>
+                    }
 
                 </div>
 

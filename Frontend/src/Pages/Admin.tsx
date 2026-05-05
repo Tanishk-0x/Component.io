@@ -14,9 +14,8 @@ import { publishDataContext } from '../Context/PublishContext';
 import { useNavigate } from 'react-router-dom';
 import { MdFileDownloadDone } from "react-icons/md";
 import { PiCheckFatLight } from "react-icons/pi";
-import { PiCheckFatFill } from "react-icons/pi";
 import { RxCross2 } from "react-icons/rx";
-{/* <PiCheckFatFill /> */}
+
 
 // ----- Auto Sync Code ------
 const SyncCode = ({ setFormData, currentCode }: any) => {
@@ -159,7 +158,7 @@ const Admin = () => {
                 className={`flex items-center gap-3 px-4 cursor-pointer py-3 rounded-xl text-emerald-50  w-40 md:w-full shrink-0 text-sm font-semibold ${ workType === 'reviews_queue' && 'border border-emerald-500/20 bg-emerald-500/10 text-emerald-400'}`}>
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
                     Review Requests
-                    <span className="ml-auto bg-emerald-500 text-[#000502] text-[10px] px-2 py-0.5 rounded-full">{queue.length}</span>
+                    <span className="ml-auto bg-emerald-500 text-[#000502] text-[10px] px-2 py-0.5 rounded-full">{ componentCount?.Requested || 0 }</span>
                 </button>
                 <button onClick={() => setWorkType('users_queue')}
                 className={`flex items-center gap-3 px-4 cursor-pointer py-3 rounded-xl text-emerald-50  w-40 md:w-full shrink-0 text-sm font-semibold ${ workType === 'users_queue' && 'border border-emerald-500/20 bg-emerald-500/10 text-emerald-400'}`}>
@@ -472,17 +471,17 @@ const Admin = () => {
                     <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity"><svg className="w-12 h-12 text-emerald-400" fill="currentColor" viewBox="0 0 20 20"><path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z"></path></svg></div>
                     <span className="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-2">Total Users</span>
                     <span className="text-3xl font-black text-white">{totalUsers || 0}</span>
-                    <span className="text-emerald-400 text-[10px] font-bold mt-2 bg-emerald-500/10 w-fit px-2 py-0.5 rounded">+124 this week</span>
+                    <span className="text-emerald-400 text-[10px] font-bold mt-2 bg-emerald-500/10 w-fit px-2 py-0.5 rounded">Total Registered User</span>
                 </div>
                 <div className="bg-emerald-500/10 border border-emerald-500/30 shadow-[inset_0_0_20px_rgba(16,185,129,0.05)] rounded-2xl p-4 md:p-5 flex flex-col relative overflow-hidden">
                     <span className="text-emerald-400 text-xs font-semibold uppercase tracking-wider mb-2 flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Pending Review</span>
-                    <span className="text-3xl font-black text-white">{queue.length}</span>
+                    <span className="text-3xl font-black text-white">{componentCount?.Requested || 0 }</span>
                     <span className="text-slate-400 text-[10px] font-medium mt-2">Requires your attention</span>
                 </div>
                 <div className="bg-white/5 border border-white/10 rounded-2xl p-4 md:p-5 flex flex-col relative overflow-hidden">
-                    <span className="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-2">Rejected</span>
-                    <span className="text-3xl font-black text-white">1,240</span>
-                    <span className="text-rose-400 text-[10px] font-bold mt-2 bg-rose-500/10 w-fit px-2 py-0.5 rounded">Did not meet UI standards</span>
+                    <span className="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-2">Total Public</span>
+                    <span className="text-3xl font-black text-white">{ componentCount?.Public || 0 }</span>
+                    <span className="text-yellow-400 text-[10px] font-bold mt-2 bg-yellow-500/10 w-fit px-2 py-0.5 rounded">Total Public Components</span>
                 </div>
                 <div className="bg-white/5 border border-white/10 rounded-2xl p-4 md:p-5 flex flex-col relative overflow-hidden">
                     <span className="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-2">Total AI Calls</span>
@@ -496,7 +495,7 @@ const Admin = () => {
                 <div className="flex items-center justify-between mb-4 clear-both">
                     <h2 className="text-lg font-bold text-slate-200">Action Required</h2>
                     <button onClick={() => GetAdminDashboardData(1)} 
-                    className="text-sm text-emerald-400 hover:text-emerald-300 font-medium transition-colors">Refresh Queue</button>
+                    className="text-sm text-emerald-400 hover:text-emerald-300 font-medium transition-colors">Refresh</button>
                 </div>
 
                 {/* --------- Items Listed Section -------- */}
