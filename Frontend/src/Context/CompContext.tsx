@@ -23,7 +23,7 @@ const CompContext = ({children}: MainContextProps) => {
     const [errorMessage , setErrorMessage] = useState(''); 
     const [isSaving , setIsSaving] = useState(false); 
     const [isSaved , setIsSaved] = useState(false); 
-    const [components , setCompnents] = useState(null); 
+    const [components , setCompnents] = useState<any|[]>([]); 
     const [isGetting , setIsGetting] = useState(false); 
     const [isLiking , setIsLiking] = useState(false); 
     const [isLiked , setIsLiked] = useState(false); 
@@ -31,6 +31,8 @@ const CompContext = ({children}: MainContextProps) => {
     const [isRemoving , setIsRemoving] = useState(false); 
     const [removed , setRemoved] = useState(false); 
     const [currentPage , setCurrentPage] = useState(1); 
+    const [savedCount , setSavedCount] = useState(null); 
+    const [maxPages , setMaxPages] = useState(0); 
 
     // ----- Function To Resolve Component ------
     const ResolveComponent = async (prompt: string , model: string) => {
@@ -104,6 +106,7 @@ const CompContext = ({children}: MainContextProps) => {
             if(res.data.success ){
                 toast.success("Component Saved!"); 
                 setIsSaved(true); 
+                setSavedCount(res.data.savedCount); 
             }
         }
         
@@ -122,6 +125,9 @@ const CompContext = ({children}: MainContextProps) => {
 
     // ----- Function To Get Components ------
     const GetComponents = async ( page: number ) => {
+        if( page > 1 && maxPages < page ){
+            return ; 
+        }
 
         if( isGetting ){
             return ; 
@@ -134,9 +140,13 @@ const CompContext = ({children}: MainContextProps) => {
 
             if( res.data.success ){
                 if( res.data.components.length > 0 ){
-                    setCompnents(res.data.components); 
-                    console.log("COMPONENTS: " , res.data.components); 
-                    toast.success("Components Fetched!"); 
+                    if( page === 1 ){
+                        setCompnents(res.data.components); 
+                    }
+                    else{
+                        setCompnents((prev: any) => [ ...prev , ...res.data.components ]); 
+                    }
+                    setMaxPages(res.data.maxPages); 
                 }
             }
         }
@@ -257,6 +267,7 @@ const CompContext = ({children}: MainContextProps) => {
         currentPage , 
         setCurrentPage , 
         isGetting , 
+        savedCount , 
     }; 
 
     return (

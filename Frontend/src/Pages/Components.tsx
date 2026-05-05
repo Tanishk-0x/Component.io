@@ -5,7 +5,8 @@ import {
   SandpackProvider, 
   SandpackLayout, 
   SandpackCodeEditor, 
-  SandpackPreview 
+  SandpackPreview, 
+  useActiveCode
 } from "@codesandbox/sandpack-react";
 import { sandpackDark } from "@codesandbox/sandpack-themes";
 import { MdContentCopy } from "react-icons/md";
@@ -14,6 +15,11 @@ import { MdRemoveRedEye } from "react-icons/md";
 import { FaHeart } from "react-icons/fa";
 import { BiLike } from "react-icons/bi";
 import { BiSolidLike } from "react-icons/bi";
+import { AiFillCheckCircle } from "react-icons/ai";
+import { TbCopy } from "react-icons/tb";
+import { TbCopyCheck } from "react-icons/tb";
+import { AiOutlineSave } from "react-icons/ai";
+import { MdExpandMore } from "react-icons/md";
 
 
 const Components = () => {
@@ -27,11 +33,16 @@ const Components = () => {
         GetComponents , 
         currentPage , 
         setCurrentPage ,
+        SaveComponent ,
+        isSaving , 
+        isSaved ,
+        savedCount , 
      } = useSafeContext(componentDataContext); 
 
     // ------------- UseStates ---------------
     const [activeComponent, setActiveComponent] = useState(components[0]);
     const [activeTab, setActiveTab] = useState('preview'); 
+    const [copied , setCopied] = useState(false); 
 
     console.log("COMPONENTS: " , components); 
     console.log("ACTIVE: " , activeComponent); 
@@ -68,7 +79,7 @@ const Components = () => {
             {/* ----------- Components ---------- */}
             <div className="flex md:flex-1 overflow-x-auto md:overflow-y-auto flex-row md:flex-col p-3 md:p-4 gap-3 md:gap-0 md:space-y-2 custom-scrollbar">
                 {/* ---- Map to render all components ---- */}
-                {components.map((comp: any) => (
+                {components?.map((comp: any) => (
                     
                     <button
                     key={comp._id}
@@ -91,8 +102,8 @@ const Components = () => {
                     GetComponents(currentPage + 1); 
                     setCurrentPage(currentPage + 1); 
                 }}
-                className='px-4 py-2 bg-emerald-950 border-2 border-emerald-800 text-emerald-600 font-semibold text-[18px] rounded-lg cursor-pointer hover:border-emerald-600 hover:text-emerald-500'>
-                    { isGetting ? 'Loading..' : 'Load More' }
+                className='px-4 flex justify-center items-center flex-row gap-1 py-2 bg-emerald-950 border-2 border-emerald-800 text-emerald-600 font-semibold text-[18px] rounded-lg cursor-pointer hover:border-emerald-600 hover:text-emerald-500'>
+                    <MdExpandMore />{ isGetting ? 'Loading..' : 'Load More' }
                 </button>
             </div>
 
@@ -109,7 +120,7 @@ const Components = () => {
                     <div className="flex flex-wrap items-center gap-3 md:gap-4 mt-2 md:mt-1 text-xs font-medium text-slate-400">
                         <span className="text-emerald-500 bg-emerald-500/10 px-2 py-0.5 rounded uppercase tracking-wider">{activeComponent.category || 'UnCategorized'}</span>
                         <span className="flex items-center gap-1"> <FaHeart />{ isLiked ? likesCount : activeComponent.likeCount }</span>
-                        <span className="flex items-center gap-1"> <MdRemoveRedEye />{activeComponent.views || 0 }</span>
+                        <span className="flex items-center gap-1"> <AiOutlineSave />{ isSaved ? savedCount : activeComponent?.savedCount || 0 }</span>
                     </div>
                 </div>
             
@@ -120,12 +131,33 @@ const Components = () => {
                             isLiked ? <BiSolidLike /> : <BiLike />
                         }
                     </button>
-                    <button className="flex-1 md:flex-none cursor-pointer justify-center px-3 md:px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-xs md:text-sm font-medium hover:bg-emerald-950 transition-colors flex items-center gap-2">
-                        <MdContentCopy /> Copy Code
-                    </button>
-                    <button className="flex-1 md:flex cursor-pointer items-center flex-row gap-1 justify-center px-3 md:px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white border border-emerald-500 text-xs md:text-sm font-medium transition-all shadow-[0_0_15px_rgba(16,185,129,0.3)]">
-                        <FaRegSave /> Save
-                    </button>
+                    
+                    { !copied ? 
+                    (<button onClick={() => {
+                        navigator.clipboard.writeText(activeComponent?.code); 
+                        setCopied(true); 
+                    }}
+                    className="flex-1 text-emerald-500 md:flex-none cursor-pointer justify-center px-3 md:px-4 py-2 rounded-lg bg-emerald-950 border-2 border-emerald-800 text-xs md:text-sm font-medium hover:bg-emerald-800 transition-colors flex items-center gap-2">
+                        <TbCopy /> Copy Code
+                    </button>)
+                    :
+                    (<button className="flex-1 text-emerald-500 md:flex-none cursor-pointer justify-center px-3 md:px-4 py-2 rounded-lg bg-emerald-950 border-2 border-emerald-800 text-xs md:text-sm font-medium hover:bg-emerald-800 transition-colors flex items-center gap-2">
+                        <TbCopyCheck /> Copied
+                    </button>)
+                    }
+
+                    { isSaved ? 
+                        (<button onClick={() => SaveComponent(activeComponent._id)}
+                        className="flex-1 text-emerald-500 md:flex-none cursor-pointer justify-center px-3 md:px-4 py-2 rounded-lg bg-emerald-950 border-2 border-emerald-800 text-xs md:text-sm font-medium hover:bg-emerald-800 transition-colors flex items-center gap-2">
+                            <AiFillCheckCircle /> Saved
+                        </button>)
+                        : 
+                        (<button onClick={() => SaveComponent(activeComponent._id)}
+                        className="flex-1 text-emerald-500 md:flex-none cursor-pointer justify-center px-3 md:px-4 py-2 rounded-lg bg-emerald-950 border-2 border-emerald-800 text-xs md:text-sm font-medium hover:bg-emerald-800 transition-colors flex items-center gap-2">
+                            <FaRegSave /> { isSaving ? 'Saving..' : 'Save' }
+                        </button>)
+                    }
+
                 </div>
             </header>
 
@@ -152,7 +184,7 @@ const Components = () => {
 
                 {/* -------- Render Area --------- */}
                 {/* -------- Code & Preview ------ */}
-                <div className="bg-pink-500 w-full flex-1 flex flex-col overflow-hidden custom-sandpack">
+                <div className="w-full flex-1 flex flex-col overflow-hidden custom-sandpack">
                     
                     {/* --- Background Effect --- */}
                     {activeTab === 'preview' && (
@@ -161,6 +193,7 @@ const Components = () => {
 
 
                     <SandpackProvider
+                        key={activeComponent._id}
                         template="react"
                         theme={sandpackDark}
                         files={{ "/App.js": activeComponent.code || '<h2>Component.io!</h2>' }}
@@ -187,7 +220,7 @@ const Components = () => {
                     {/* ------- Code Area ---------- */}
                     {/* ------ Component Code ------ */}
                     {activeTab === 'code' && (
-                    <div className="w-full h-full bg-[#0d1117] overflow-auto p-4 md:p-6 relative">
+                    <div className="w-full h-full bg-[#0d1117] overflow-auto p-4 md:p-1 relative">
                         <SandpackCodeEditor 
                             showLineNumbers 
                             showTabs={false}
@@ -211,7 +244,7 @@ const Components = () => {
                         <p className="text-xs md:text-sm text-slate-300 leading-snug">
                             Your ultimate hub for AI-generated Tailwind CSS components.
                         </p>
-                        <p className="text-[10px] md:text-xs text-slate-500 mt-1 md:mt-1.5">Generated by <span className="text-emerald-500/80"> Author </span> • Uses Tailwind CSS</p>
+                        <p className="text-[10px] md:text-xs text-slate-500 mt-1 md:mt-1.5">Generated by <span className="text-emerald-500/80"> {activeComponent?.author?.name} </span> • Uses Tailwind CSS</p>
                     </div>
                 </div>
 

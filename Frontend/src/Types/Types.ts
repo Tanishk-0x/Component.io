@@ -58,6 +58,7 @@ export interface ComponentContextType {
     currentPage: number ;   
     setCurrentPage: any ;   
     isGetting: boolean ; 
+    savedCount: any ; 
 }
 
 export interface PublishContextType {
@@ -125,6 +126,7 @@ export interface ReviewItemType {
   prompt: string;
   status: string;
   viewCount: number;
+  savedCount: number ; 
   likeCount: number;
   copyCount: number;
   modelUsed: string;
