@@ -20,6 +20,7 @@ import { TbCopy } from "react-icons/tb";
 import { TbCopyCheck } from "react-icons/tb";
 import { AiOutlineSave } from "react-icons/ai";
 import { MdExpandMore } from "react-icons/md";
+import { HiOutlineCommandLine } from "react-icons/hi2";
 
 
 const Components = () => {
@@ -43,6 +44,7 @@ const Components = () => {
     const [activeComponent, setActiveComponent] = useState(components[0]);
     const [activeTab, setActiveTab] = useState('preview'); 
     const [copied , setCopied] = useState(false); 
+    const [cliPopUp ,setCliPopUp] = useState(true); 
 
     console.log("COMPONENTS: " , components); 
     console.log("ACTIVE: " , activeComponent); 
@@ -158,6 +160,11 @@ const Components = () => {
                         </button>)
                     }
 
+                    <button onClick={() => setCliPopUp(true)}
+                        className="flex-1 text-sky-500 md:flex-none cursor-pointer justify-center px-3 md:px-4 py-2 rounded-lg bg-sky-950 border-2 border-sky-800 text-xs md:text-sm font-medium hover:bg-sky-800 transition-colors flex items-center gap-2">
+                            <HiOutlineCommandLine /> NPX Import
+                    </button>
+
                 </div>
             </header>
 
@@ -251,6 +258,96 @@ const Components = () => {
             </div>
 
         </main>
+
+        {cliPopUp && (
+            <div
+                className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/65 backdrop-blur-sm"
+                onClick={() => setCliPopUp(false)}
+            >
+                <div
+                className="w-full max-w-[500px] bg-[#00140a] border border-emerald-900/30 rounded-2xl p-7 shadow-2xl shadow-black/60 relative"
+                onClick={(e) => e.stopPropagation()}
+                >
+                <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-emerald-500 to-transparent rounded-t-2xl" />
+
+                <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-blink inline-block" />
+                    <h2 className="text-white font-black text-[15px] uppercase tracking-wide">Install Component</h2>
+                    </div>
+                    <button
+                    onClick={() => setCliPopUp(false)}
+                    className="text-slate-600 hover:text-white cursor-pointer transition-colors text-lg leading-none px-1"
+                    >✕</button>
+                </div>
+
+                <div className="flex flex-col gap-4">
+
+                    <div className="flex gap-4 items-start">
+                    <div className="flex flex-col items-center flex-shrink-0">
+                        <div className="w-8 h-8 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-500 text-xs font-black">1</div>
+                        <div className="w-px h-10 bg-emerald-900/40 mt-1" />
+                    </div>
+                    <div className="pt-1 flex-1">
+                        <p className="text-white text-sm font-bold mb-2">Copy the command</p>
+                        <div className="bg-[#000502] border border-emerald-900/25 rounded-xl px-4 py-2.5 flex items-center justify-between gap-3">
+                        <code className="text-emerald-400 text-xs font-mono">
+                            npx component.io add {activeComponent?.title?.toLowerCase().replace(/\s+/g, '-')}
+                        </code>
+                        <button
+                            onClick={() => navigator.clipboard.writeText(`npx component.io add ${activeComponent?.title?.toLowerCase().replace(/\s+/g, '-')}`)}
+                            className="text-slate-600 hover:text-emerald-400 transition-colors flex-shrink-0"
+                        >
+                            <TbCopy className="text-base" />
+                        </button>
+                        </div>
+                    </div>
+                    </div>
+
+                    <div className="flex gap-4 items-start">
+                    <div className="flex flex-col items-center flex-shrink-0">
+                        <div className="w-8 h-8 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-500 text-xs font-black">2</div>
+                        <div className="w-px h-10 bg-emerald-900/40 mt-1" />
+                    </div>
+                    <div className="pt-1 flex-1">
+                        <p className="text-white text-sm font-bold mb-1.5">Move to the path</p>
+                        <p className="text-gray-500 text-xs leading-relaxed">
+                        Open your terminal and navigate to your project's directory where your you want to install the component.
+                        </p>
+                    </div>
+                    </div>
+
+                    <div className="flex gap-4 items-start">
+                    <div className="flex flex-col items-center flex-shrink-0">
+                        <div className="w-8 h-8 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-500 text-xs font-black">3</div>
+                    </div>
+                    <div className="pt-1 flex-1">
+                        <p className="text-white text-sm font-bold mb-1.5">Execute &amp; import</p>
+                        <p className="text-gray-500 text-xs leading-relaxed">
+                        Run the command. The CLI drops the component into <span className="text-emerald-400/80 font-mono">/directory</span> <span className="text-sky-400/80 font-mono">Component.jsx</span> Created — no extra deps just use it.
+                        </p>
+                    </div>
+                    </div>
+
+                </div>
+
+                <div className="mt-5 p-3.5 bg-emerald-500/5 border border-emerald-900/20 rounded-xl">
+                    <p className="text-gray-600 text-[11.5px] leading-relaxed">
+                    Requires <span className="text-emerald-400/80 font-mono">Tailwind CSS</span> configured in your project. All components are zero-dependency, production-ready React + Tailwind out of the box.
+                    </p>
+                </div>
+
+                <button
+                    onClick={() => setCliPopUp(false)}
+                    className="cursor-pointer w-full mt-4 bg-emerald-500 text-black py-3 rounded-xl font-black text-sm uppercase tracking-wide hover:bg-emerald-400 active:scale-95 transition-all"
+                >
+                    Got it
+                </button>
+
+                </div>
+            </div>
+            )
+        }
 
     </div>
 
