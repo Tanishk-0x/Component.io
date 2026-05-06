@@ -7,6 +7,7 @@ import compRoutes from './Routes/compRoutes';
 import testRoutes from './Routes/testRoutes'; 
 import adminRoutes from './Routes/adminRoutes'; 
 import publishRoutes from './Routes/publishRoutes'; 
+import cliRoutes from './Routes/cliRoutes'; 
 import cookieParser from 'cookie-parser'; 
 import cors from 'cors'; 
 const app = express(); 
@@ -40,7 +41,7 @@ app.use('/comp' , compRoutes);
 app.use('/text' , testRoutes); 
 app.use('/admin' , adminRoutes); 
 app.use('/publish' , publishRoutes); 
-
+app.use('/cli' , cliRoutes); 
 
 app.get('/' , (req: Request , res: Response) => {
     res.send('Default Route!');
