@@ -1,0 +1,12 @@
+{
+    "name": "component-io",
+    "version": "1.0.4",
+    "description": "CLI For Component-io",
+    "bin": {
+        "component-io": "./bin/index.js"
+    },
+    "type": "module",
+    "dependencies": {
+        "node-fetch": "^3.3.2"
+    }
+}
