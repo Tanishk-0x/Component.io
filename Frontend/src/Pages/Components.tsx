@@ -49,6 +49,16 @@ const Components = () => {
     console.log("COMPONENTS: " , components); 
     console.log("ACTIVE: " , activeComponent); 
 
+    const HandleCommandCopy = async () => {
+        const command = `npx component-io get ${activeComponent._id}` ; 
+        await navigator.clipboard.writeText(command); 
+        setCopied(true); 
+
+        setTimeout(() => {
+            setCopied(false); 
+        }, 2000); 
+    }
+
 
   return (
 
@@ -139,29 +149,29 @@ const Components = () => {
                         navigator.clipboard.writeText(activeComponent?.code); 
                         setCopied(true); 
                     }}
-                    className="flex-1 text-emerald-500 md:flex-none cursor-pointer justify-center px-3 md:px-4 py-2 rounded-lg bg-emerald-950 border-2 border-emerald-800 text-xs md:text-sm font-medium hover:bg-emerald-800 transition-colors flex items-center gap-2">
+                    className="flex-1 text-emerald-500 md:flex-none cursor-pointer justify-center text-nowrap py-2 px-2 md:px-4 md:py-2 rounded-lg bg-emerald-950 border-2 border-emerald-800 text-xs md:text-sm font-medium hover:bg-emerald-800 transition-colors flex items-center gap-1 md:gap-2">
                         <TbCopy /> Copy Code
                     </button>)
                     :
-                    (<button className="flex-1 text-emerald-500 md:flex-none cursor-pointer justify-center px-3 md:px-4 py-2 rounded-lg bg-emerald-950 border-2 border-emerald-800 text-xs md:text-sm font-medium hover:bg-emerald-800 transition-colors flex items-center gap-2">
+                    (<button className="flex-1 text-emerald-500 md:flex-none cursor-pointer justify-center text-nowrap py-2 px-2 md:px-4 md:py-2 rounded-lg bg-emerald-950 border-2 border-emerald-800 text-xs md:text-sm font-medium hover:bg-emerald-800 transition-colors flex items-center gap-1 md:gap-2">
                         <TbCopyCheck /> Copied
                     </button>)
                     }
 
                     { isSaved ? 
                         (<button onClick={() => SaveComponent(activeComponent._id)}
-                        className="flex-1 text-emerald-500 md:flex-none cursor-pointer justify-center px-3 md:px-4 py-2 rounded-lg bg-emerald-950 border-2 border-emerald-800 text-xs md:text-sm font-medium hover:bg-emerald-800 transition-colors flex items-center gap-2">
+                        className="flex-1 text-emerald-500 md:flex-none cursor-pointer justify-center text-nowrap py-2 px-2 md:px-4 md:py-2 rounded-lg bg-emerald-950 border-2 border-emerald-800 text-xs md:text-sm font-medium hover:bg-emerald-800 transition-colors flex items-center gap-1 md:gap-2">
                             <AiFillCheckCircle /> Saved
                         </button>)
                         : 
                         (<button onClick={() => SaveComponent(activeComponent._id)}
-                        className="flex-1 text-emerald-500 md:flex-none cursor-pointer justify-center px-3 md:px-4 py-2 rounded-lg bg-emerald-950 border-2 border-emerald-800 text-xs md:text-sm font-medium hover:bg-emerald-800 transition-colors flex items-center gap-2">
+                        className="flex-1 text-emerald-500 md:flex-none cursor-pointer justify-center text-nowrap py-2 px-2 md:px-4 md:py-2 rounded-lg bg-emerald-950 border-2 border-emerald-800 text-xs md:text-sm font-medium hover:bg-emerald-800 transition-colors flex items-center gap-1 md:gap-2">
                             <FaRegSave /> { isSaving ? 'Saving..' : 'Save' }
                         </button>)
                     }
 
                     <button onClick={() => setCliPopUp(true)}
-                        className="flex-1 text-sky-500 md:flex-none cursor-pointer justify-center px-3 md:px-4 py-2 rounded-lg bg-sky-950 border-2 border-sky-800 text-xs md:text-sm font-medium hover:bg-sky-800 transition-colors flex items-center gap-2">
+                        className="flex-1 text-sky-500 md:flex-none cursor-pointer justify-center px-3 py-2 md:px-4 md:py-2 rounded-lg bg-sky-950 border-2 border-sky-800 text-nowrap text-xs md:text-sm font-medium hover:bg-sky-800 transition-colors flex items-center gap-1 md:gap-2">
                             <HiOutlineCommandLine /> NPX Import
                     </button>
 
@@ -292,13 +302,15 @@ const Components = () => {
                         <p className="text-white text-sm font-bold mb-2">Copy the command</p>
                         <div className="bg-[#000502] border border-emerald-900/25 rounded-xl px-4 py-2.5 flex items-center justify-between gap-3">
                         <code className="text-emerald-400 text-xs font-mono">
-                            npx component.io add {activeComponent?.title?.toLowerCase().replace(/\s+/g, '-')}
+                            npx component.io add {activeComponent?.title?.split(' ').slice(0, 2).join(' ') + '...' || 'mycomponent'}
                         </code>
                         <button
-                            onClick={() => navigator.clipboard.writeText(`npx component.io add ${activeComponent?.title?.toLowerCase().replace(/\s+/g, '-')}`)}
+                            onClick={() => {
+                                HandleCommandCopy(); 
+                            }}
                             className="text-slate-600 hover:text-emerald-400 transition-colors flex-shrink-0"
                         >
-                            <TbCopy className="text-base" />
+                            { copied ? <TbCopyCheck className="text-base" /> : <TbCopy className="text-base" /> }
                         </button>
                         </div>
                     </div>
