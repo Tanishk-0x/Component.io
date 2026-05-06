@@ -11,7 +11,7 @@ import Top from "./Pages/Top";
 import ComponentCards from "./Pages/ComponentCards";
 import Admin from "./Pages/Admin";
 import AddComponent from "./Pages/AddComponent";
-
+import ProtectedRoutes from "./Routes/ProtectedRoutes";
 
 const App = () => {
 
@@ -31,11 +31,11 @@ const App = () => {
     },
     {
       path: '/verify' ,
-      element: <Verify /> 
+      element: <ProtectedRoutes> <Verify /> </ProtectedRoutes> 
     },
     {
       path: '/lab' ,
-      element: <Lab /> 
+      element: <ProtectedRoutes> <Lab /> </ProtectedRoutes> 
     },
     {
       path: '/components' ,
@@ -43,7 +43,7 @@ const App = () => {
     },
     {
       path: '/profile' ,
-      element: <Profile /> 
+      element: <ProtectedRoutes> <Profile /> </ProtectedRoutes> 
     },
     {
       path: '/top' ,
