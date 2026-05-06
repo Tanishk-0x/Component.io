@@ -44,7 +44,7 @@ const Components = () => {
     const [activeComponent, setActiveComponent] = useState(components[0]);
     const [activeTab, setActiveTab] = useState('preview'); 
     const [copied , setCopied] = useState(false); 
-    const [cliPopUp ,setCliPopUp] = useState(true); 
+    const [cliPopUp ,setCliPopUp] = useState(false); 
 
     console.log("COMPONENTS: " , components); 
     console.log("ACTIVE: " , activeComponent); 

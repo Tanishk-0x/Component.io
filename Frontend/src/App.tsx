@@ -12,7 +12,9 @@ import ComponentCards from "./Pages/ComponentCards";
 import Admin from "./Pages/Admin";
 import AddComponent from "./Pages/AddComponent";
 
+
 const App = () => {
+
 
   const router = createBrowserRouter([
     {
@@ -29,11 +31,11 @@ const App = () => {
     },
     {
       path: '/verify' ,
-      element: <Verify />
+      element: <Verify /> 
     },
     {
       path: '/lab' ,
-      element: <Lab />
+      element: <Lab /> 
     },
     {
       path: '/components' ,
@@ -41,7 +43,7 @@ const App = () => {
     },
     {
       path: '/profile' ,
-      element: <Profile />
+      element: <Profile /> 
     },
     {
       path: '/top' ,

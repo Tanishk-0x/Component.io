@@ -57,7 +57,7 @@ const AuthContext = ({ children }: MainContextProps) => {
             ); 
 
             if( res.data.success ){
-                await GetUserDetails(); 
+                GetUserDetails(); 
                 toast.success('Signup SuccessFully!'); 
                 return true ; 
             }
@@ -107,7 +107,7 @@ const AuthContext = ({ children }: MainContextProps) => {
             ); 
 
             if( res.data.success ){
-                await GetUserDetails(); 
+                GetUserDetails(); 
                 toast.success('Login SuccessFully!');  
                 return true ; 
             }
