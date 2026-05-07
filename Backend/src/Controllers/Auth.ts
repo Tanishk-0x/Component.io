@@ -33,7 +33,8 @@ export const Signup = async (req: Request , res: Response) => {
             name ,
             email ,
             password: HashedPassword ,
-            message: 'Verify Email To Get Free 100 Credits'
+            message: 'Verify Email To Get Free 100 Credits' , 
+            role: "USER"
         });
 
         // Setting Tokens 

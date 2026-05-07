@@ -27,6 +27,12 @@ const UserSchema = new mongoose.Schema({
         type: Number , 
         default: 0 , 
     },
+    role: {
+        type: String , 
+        enum: ["USER" , "ADMIN"] , 
+        default: "USER" , 
+        required: true 
+    },
 
     credits: {
         type: Number,
@@ -41,7 +47,7 @@ const UserSchema = new mongoose.Schema({
     isVerified: {
         type: Boolean,
         default: false
-    }
+    }, 
 
 
 }, {timestamps: true}); 
