@@ -81,7 +81,7 @@ const Profile = () => {
                         <p className="text-slate-400 text-sm mb-4">{userData?.email || 'Unknown'}</p>
                     
                         <div className="flex items-center gap-3 justify-center sm:justify-start">
-                            <span className="px-3 py-1 bg-white/5 border border-white/10 rounded-lg text-xs font-medium text-slate-300"> Developer </span>
+                            <span className="px-3 py-1 bg-white/5 border border-white/10 rounded-lg text-xs font-medium text-slate-300"> { userData.role === "USER" ? 'Developer' : 'ADMIN' } </span>
                             <button onClick={() => LogoutHandler()}
                             className="cursor-pointer px-4 py-1 bg-rose-500/10 text-rose-400 border border-rose-500/20 hover:bg-rose-500/20 rounded-lg text-xs font-medium transition-colors flex items-center gap-2">
                             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>

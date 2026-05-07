@@ -12,6 +12,7 @@ import ComponentCards from "./Pages/ComponentCards";
 import Admin from "./Pages/Admin";
 import AddComponent from "./Pages/AddComponent";
 import ProtectedRoutes from "./Routes/ProtectedRoutes";
+import AdminRoutes from "./Routes/AdminRoutes";
 
 const App = () => {
 
@@ -55,11 +56,11 @@ const App = () => {
     },
     {
       path: '/admin' ,
-      element: <Admin />
+      element: <AdminRoutes> <Admin /> </AdminRoutes>
     },
     {
       path: '/addcomponent' ,
-      element: <AddComponent />
+      element: <AdminRoutes> <AddComponent /> </AdminRoutes>
     },
   ]); 
 
