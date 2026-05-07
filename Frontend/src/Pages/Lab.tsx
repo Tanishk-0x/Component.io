@@ -20,12 +20,12 @@ import { IoMdArrowBack } from "react-icons/io";
 import { FaSave } from "react-icons/fa";
 import { BiRefresh } from "react-icons/bi";
 import { SiGooglegemini } from "react-icons/si";
-import { BsNvidia } from "react-icons/bs";
 import { SiMeta } from "react-icons/si";
 import { useNavigate } from "react-router-dom";
 import { AiFillCheckCircle } from "react-icons/ai";
 import { MdPublish } from "react-icons/md";
 import { publishDataContext } from "../Context/PublishContext";
+import { LiaStackExchange } from "react-icons/lia";
 
 
 const Lab = () => {
@@ -58,9 +58,9 @@ const Lab = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
     const AI_MODELS = [
-        { id: "llama-3.3-70b-versatile", name: "Llama 3 (Meta)", icon: <SiMeta /> },
         { id: "gemini-2.5-flash-lite", name: "Flash (Gemini)", icon: <SiGooglegemini /> },
-        { id: "nvidia/nemotron-3-super-120b-a12b:free", name: "Nemotron (NVIDIA)", icon: <BsNvidia /> },
+        { id: "llama-3.3-70b-versatile", name: "Llama 3 (Meta)", icon: <SiMeta /> },
+        { id: "openrouter-fallback", name: "Fallback Models", icon: <LiaStackExchange /> },
     ];
 
   return (
@@ -100,7 +100,8 @@ const Lab = () => {
                 <div className="group text-emerald-500 font-semibold flex items-center gap-2 bg-emerald-950/30 border-2 border-emerald-800/40 px-3 py-1.5 md:px-4 md:py-2 rounded-xl backdrop-blur-md transition-all hover:border-emerald-500/50">
                     <AiOutlineThunderbolt /> 
                     <span>Credits <span className="text-emerald-400 font-bold ml-1"> {userData?.credits || 0} </span></span>
-                    <button className="bg-emerald-900/50 h-6 w-6 rounded-lg flex justify-center items-center cursor-pointer hover:bg-emerald-800 transition-colors">
+                    <button onClick={() => navigate('/')}
+                    className="bg-emerald-900/50 h-6 w-6 rounded-lg flex justify-center items-center cursor-pointer hover:bg-emerald-800 transition-colors">
                         +
                     </button> 
                 </div>
@@ -221,6 +222,9 @@ const Lab = () => {
                     files={{ "/App.js": componentData?.code || '<h2>Component.io!</h2>' }}
                     options={{
                     externalResources: ["https://cdn.tailwindcss.com"],
+                    autorun: true ,
+                    recompileMode: 'delayed' ,
+                    recompileDelay: 500
                     }}
                     className="h-full flex-1 flex flex-col"
                 >
@@ -258,7 +262,7 @@ const Lab = () => {
     
                 <div className="h-full flex flex-row gap-2 sm:gap-4 justify-center items-center">
                     <div className="bg-emerald-950 text-emerald-500 text-[16px] sm:text-[18px] font-semibold border-2 border-emerald-900 rounded-lg px-3 py-2">
-                        Source: <span className="text-emerald-400">{source || null}</span>
+                        <span className="text-emerald-400">{ componentData?.category || 'Unknown' }</span>
                     </div>
                     { !isSaved && 
                     <button onClick={() => SaveComponent(componentData._id)}
@@ -276,7 +280,7 @@ const Lab = () => {
                     </button> 
                     }
                     {/* ------- REQUEST TO PUBLISH -------- */}
-                    { !requested &&  
+                    { !requested && source === 'AI_Generated' &&  
                     <button onClick={() => RequestToPublish(componentData._id)}
                     className="bg-emerald-600 text-emerald-950 font-semibold px-3 py-2 rounded-lg cursor-pointer text-[16px] sm:text-[18px] flex justify-center items-center border border-emerald-900 flex-row gap-1 hover:border-emerald-700 hover:bg-emerald-500 transition-all">
                         <MdPublish />
@@ -315,7 +319,7 @@ const Lab = () => {
             }
 
             {/* ------ Loading Section ------ */}
-            {isLoading && !componentData && (
+            {isLoading && (
                 <div className="w-full h-25 flex justify-center items-start md:min-h-60 mt-18 bg-[#000a05]/80 backdrop-blur-xl overflow-hidden shadow-2xl">
                     <Loader />
                 </div>

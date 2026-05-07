@@ -14,7 +14,7 @@ const ProtectedRoutes = ({ children }: {children: React.ReactNode}) => {
     }
 
     if( !userData ){
-        return <Navigate to='/login' />
+        return <Navigate to='/' />
     }
 
     return children ; 
