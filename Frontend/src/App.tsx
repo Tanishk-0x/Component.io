@@ -13,6 +13,7 @@ import Admin from "./Pages/Admin";
 import AddComponent from "./Pages/AddComponent";
 import ProtectedRoutes from "./Routes/ProtectedRoutes";
 import AdminRoutes from "./Routes/AdminRoutes";
+import Demo from "./Pages/Demo";
 
 const App = () => {
 
@@ -53,6 +54,10 @@ const App = () => {
     {
       path: '/componentcard' ,
       element: <ComponentCards />
+    },
+    {
+      path: '/npx-demo' ,
+      element: <Demo />
     },
     {
       path: '/admin' ,
