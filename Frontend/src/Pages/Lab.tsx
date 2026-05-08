@@ -26,6 +26,9 @@ import { AiFillCheckCircle } from "react-icons/ai";
 import { MdPublish } from "react-icons/md";
 import { publishDataContext } from "../Context/PublishContext";
 import { LiaStackExchange } from "react-icons/lia";
+import { TbCopy } from "react-icons/tb";
+import { TbCopyCheck } from "react-icons/tb";
+import { HiOutlineCommandLine } from "react-icons/hi2";
 
 
 const Lab = () => {
@@ -52,6 +55,10 @@ const Lab = () => {
     const [showCode, setShowCode] = useState(false);
     const [showPreview, setShowPreview] = useState(true);
 
+    const [copied , setCopied] = useState(false); 
+    const [cliPopUp , setCliPopUp] = useState(false); 
+    const [codeCopied , setCodeCopied] = useState(false); 
+
     
     // ------ Swap Models ---------
     const [selectedModel, setSelectedModel] = useState("gemini-2.5-flash-lite");
@@ -62,6 +69,25 @@ const Lab = () => {
         { id: "llama-3.3-70b-versatile", name: "Llama 3 (Meta)", icon: <SiMeta /> },
         { id: "openrouter-fallback", name: "Fallback Models", icon: <LiaStackExchange /> },
     ];
+
+    const HandleCommandCopy = async () => {
+        const command = `npx component-io get ${componentData._id}` ; 
+        await navigator.clipboard.writeText(command); 
+        setCopied(true); 
+
+        setTimeout(() => {
+            setCopied(false); 
+        }, 5000); 
+    }
+
+    const HandleCodeCopy = async () => {
+        await navigator.clipboard.writeText(componentData?.code); 
+        setCodeCopied(true); 
+
+        setTimeout(() => {
+            setCodeCopied(false); 
+        }, 5000);
+    }
 
   return (
 
@@ -195,20 +221,30 @@ const Lab = () => {
                         <span className="tracking-tight uppercase"> {componentData?.title || 'Generated Component'} </span>
                     </div>
 
-                    <div className="bg-emerald-950/80 p-1 rounded-xl border border-emerald-800/50 flex items-center gap-1">
-                        <button 
-                        onClick={() => { setShowPreview(false); setShowCode(true); }}
-                        className={`px-4 py-1.5 rounded-lg text-emerald-600 text-sm font-bold transition-all shadow-lg cursor-pointer ${showCode && 'bg-emerald-600 text-emerald-950'}`}
+                    <div className="bg-yelow-500 flex flex-row gap-4 justify-center items-center">
+                        <button onClick={() => {
+                            HandleCodeCopy(); 
+                        }}
+                        className="flex justify-center items-center text-[26px] text-emerald-500 cursor-pointer"
                         >
-                        Code
+                            { codeCopied ? <TbCopyCheck /> : <TbCopy /> }
                         </button>
 
-                        <button 
-                        onClick={() => { setShowCode(false); setShowPreview(true); }}
-                        className={`px-4 py-1.5 rounded-lg text-emerald-600 text-sm font-bold transition-all shadow-lg cursor-pointer ${showPreview && 'bg-emerald-600 text-emerald-950'}`}
-                        >
-                        Preview
-                        </button>
+                        <div className="bg-emerald-950/80 p-1 rounded-xl border border-emerald-800/50 flex items-center gap-1">
+                            <button 
+                            onClick={() => { setShowPreview(false); setShowCode(true); }}
+                            className={`px-4 py-1.5 rounded-lg text-emerald-600 text-sm font-bold transition-all shadow-lg cursor-pointer ${showCode && 'bg-emerald-600 text-emerald-950'}`}
+                            >
+                            Code
+                            </button>
+
+                            <button 
+                            onClick={() => { setShowCode(false); setShowPreview(true); }}
+                            className={`px-4 py-1.5 rounded-lg text-emerald-600 text-sm font-bold transition-all shadow-lg cursor-pointer ${showPreview && 'bg-emerald-600 text-emerald-950'}`}
+                            >
+                            Preview
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -279,6 +315,10 @@ const Lab = () => {
                         Saved
                     </button> 
                     }
+                    <button onClick={() => setCliPopUp(true)}
+                    className="bg-sky-600 text-black flex flex-row justify-center items-center gap-1 text-[16px] sm:text-[18px] font-semibold border-2 border-sky-900 rounded-lg px-3 py-2 cursor-pointer hover:bg-sky-950 hover:text-sky-500 transition">
+                        <HiOutlineCommandLine /> NPX Install
+                    </button>
                     {/* ------- REQUEST TO PUBLISH -------- */}
                     { !requested && source === 'AI_Generated' &&  
                     <button onClick={() => RequestToPublish(componentData._id)}
@@ -338,6 +378,95 @@ const Lab = () => {
         </div>
 
       </div>
+
+        {cliPopUp && (
+            <div
+                className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/65 backdrop-blur-sm"
+                onClick={() => setCliPopUp(false)}
+            >
+                <div
+                className="w-full max-w-[500px] bg-[#00140a] border border-emerald-900/30 rounded-2xl p-7 shadow-2xl shadow-black/60 relative"
+                onClick={(e) => e.stopPropagation()}
+                >
+                <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-emerald-500 to-transparent rounded-t-2xl" />
+
+                <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-blink inline-block" />
+                    <h2 className="text-white font-black text-[15px] uppercase tracking-wide">Install Component</h2>
+                    </div>
+                    <button
+                    onClick={() => setCliPopUp(false)}
+                    className="text-slate-600 hover:text-white cursor-pointer transition-colors text-lg leading-none px-1"
+                    >✕</button>
+                </div>
+
+                <div className="flex flex-col gap-4">
+
+                    <div className="flex gap-4 items-start">
+                    <div className="flex flex-col items-center flex-shrink-0">
+                        <div className="w-8 h-8 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-500 text-xs font-black">1</div>
+                        <div className="w-px h-10 bg-emerald-900/40 mt-1" />
+                    </div>
+                    <div className="pt-1 flex-1">
+                        <p className="text-white text-sm font-bold mb-2">Copy the command</p>
+                        <div className="bg-[#000502] border border-emerald-900/25 rounded-xl px-4 py-2.5 flex items-center justify-between gap-3">
+                        <code className="text-emerald-400 text-xs font-mono">
+                            npx component.io add {componentData?.title?.split(' ').slice(0, 2).join(' ') + '...' || 'mycomponent'}
+                        </code>
+                        <button onClick={() => HandleCommandCopy()}
+                            className="text-slate-600 hover:text-emerald-400 transition-colors flex-shrink-0"
+                        >
+                            { copied ? <TbCopyCheck className="text-base" /> : <TbCopy className="text-base" /> }
+                        </button>
+                        </div>
+                    </div>
+                    </div>
+
+                    <div className="flex gap-4 items-start">
+                    <div className="flex flex-col items-center flex-shrink-0">
+                        <div className="w-8 h-8 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-500 text-xs font-black">2</div>
+                        <div className="w-px h-10 bg-emerald-900/40 mt-1" />
+                    </div>
+                    <div className="pt-1 flex-1">
+                        <p className="text-white text-sm font-bold mb-1.5">Move to the path</p>
+                        <p className="text-gray-500 text-xs leading-relaxed">
+                        Open your terminal and navigate to your project's directory where your you want to install the component.
+                        </p>
+                    </div>
+                    </div>
+
+                    <div className="flex gap-4 items-start">
+                    <div className="flex flex-col items-center flex-shrink-0">
+                        <div className="w-8 h-8 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-500 text-xs font-black">3</div>
+                    </div>
+                    <div className="pt-1 flex-1">
+                        <p className="text-white text-sm font-bold mb-1.5">Execute &amp; import</p>
+                        <p className="text-gray-500 text-xs leading-relaxed">
+                        Run the command. The CLI drops the component into <span className="text-emerald-400/80 font-mono">/directory</span> <span className="text-sky-400/80 font-mono">Component.jsx</span> Created — no extra deps just use it.
+                        </p>
+                    </div>
+                    </div>
+
+                </div>
+
+                <div className="mt-5 p-3.5 bg-emerald-500/5 border border-emerald-900/20 rounded-xl">
+                    <p className="text-gray-600 text-[11.5px] leading-relaxed">
+                    Requires <span className="text-emerald-400/80 font-mono">Tailwind CSS</span> configured in your project. All components are zero-dependency, production-ready React + Tailwind out of the box.
+                    </p>
+                </div>
+
+                <button
+                    onClick={() => setCliPopUp(false)}
+                    className="cursor-pointer w-full mt-4 bg-emerald-500 text-black py-3 rounded-xl font-black text-sm uppercase tracking-wide hover:bg-emerald-400 active:scale-95 transition-all"
+                >
+                    Got it
+                </button>
+
+                </div>
+            </div>
+            )
+        }      
 
     </div>
 
