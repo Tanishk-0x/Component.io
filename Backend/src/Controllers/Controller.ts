@@ -265,10 +265,10 @@ const GetComponents = async (req: AuthenticatedRequest , res: Response) => {
         const limit = 10 ; 
         const skip = (page - 1) * limit ; 
 
-        const totalComponents = await Component.countDocuments(); 
+        const totalComponents = await Component.countDocuments({ status: "Public" }); 
         const maxPages = Math.ceil(totalComponents / limit); 
 
-        const components = await Component.find({})
+        const components = await Component.find({ status: "Public" })
         .select('-embedding').skip(skip).limit(limit)
         .populate('author' , 'name email')
         .sort({ createdAt: -1}).lean({}); 
