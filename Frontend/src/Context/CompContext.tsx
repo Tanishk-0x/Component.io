@@ -14,7 +14,7 @@ export const componentDataContext = createContext<ComponentContextType | null>(n
 const CompContext = ({children}: MainContextProps) => {
 
     const { serverUrl } = useSafeContext(mainUrlContext); 
-    const { GetUserDetails , setUserData } = useSafeContext(authDataContext); 
+    const { GetUserDetails , userData } = useSafeContext(authDataContext); 
 
     // -------------- UseStates --------------
     const [source , setSource] = useState(null); 
@@ -89,6 +89,10 @@ const CompContext = ({children}: MainContextProps) => {
         if( !CompId ){
             return ; 
         }
+        if( !userData){
+            toast.error("Login! to save components"); 
+            return ; 
+        }
         const CSRF_TOKEN = ExtractCookie(); 
         setIsSaving(true); 
 
@@ -107,6 +111,10 @@ const CompContext = ({children}: MainContextProps) => {
                 toast.success("Component Saved!"); 
                 setIsSaved(true); 
                 setSavedCount(res.data.savedCount); 
+
+                window.setTimeout(() => {
+                    setIsSaved(false); 
+                }, 5000); 
             }
         }
         
@@ -190,6 +198,10 @@ const CompContext = ({children}: MainContextProps) => {
                 setIsLiked(true); 
                 setLikesCount(res.data.likeCount); 
                 toast.success("Liked!"); 
+
+                window.setTimeout(() => {
+                    setIsLiked(false); 
+                }, 5000); 
             }
         }
         
@@ -232,6 +244,10 @@ const CompContext = ({children}: MainContextProps) => {
                 await GetUserDetails(); 
                 toast.success("Removed!"); 
                 setRemoved(true); 
+
+                window.setTimeout(() => {
+                    setRemoved(false); 
+                }, 5000); 
             }
         }
         

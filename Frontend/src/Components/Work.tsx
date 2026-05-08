@@ -31,8 +31,8 @@ const Work = () => {
     },
     {
         num:   "03",
-        title: "Copy & Ship",
-        desc:  "One click copies the code. Drop it into your project and it just works — fully styled and production-ready code in your hand.",
+        title: "NPX & Copy",
+        desc:  "Fetch components instantly via a single NPX command or you can just copy-paste fully styled component and use it",
         delay: "1.3s",
         icon: (
             <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2}

@@ -187,6 +187,10 @@ const Profile = () => {
                             <button onClick={() => {
                                 navigator.clipboard.writeText(activeComponent?.code || 'N/A') ; 
                                 setCopied(true); 
+
+                                setTimeout(() => {
+                                    setCopied(false); 
+                                }, 5000); 
                             }}
                             className="cursor-pointer p-2 rounded-lg bg-white/5 border border-white/10 text-emerald-400 hover:text-emerald-500 hover:border-emerald-500/50 transition-all tooltip-trigger" title="Copy Code">
                                 {

@@ -6,12 +6,9 @@ import {
   SandpackLayout, 
   SandpackCodeEditor, 
   SandpackPreview, 
-  useActiveCode
 } from "@codesandbox/sandpack-react";
 import { sandpackDark } from "@codesandbox/sandpack-themes";
-import { MdContentCopy } from "react-icons/md";
 import { FaRegSave } from "react-icons/fa";
-import { MdRemoveRedEye } from "react-icons/md";
 import { FaHeart } from "react-icons/fa";
 import { BiLike } from "react-icons/bi";
 import { BiSolidLike } from "react-icons/bi";
@@ -41,13 +38,11 @@ const Components = () => {
      } = useSafeContext(componentDataContext); 
 
     // ------------- UseStates ---------------
-    const [activeComponent, setActiveComponent] = useState(components[0]);
+    const [activeComponent, setActiveComponent] = useState(components?.[0] || {} );
     const [activeTab, setActiveTab] = useState('preview'); 
     const [copied , setCopied] = useState(false); 
     const [cliPopUp ,setCliPopUp] = useState(false); 
 
-    console.log("COMPONENTS: " , components); 
-    console.log("ACTIVE: " , activeComponent); 
 
     const HandleCommandCopy = async () => {
         const command = `npx component-io get ${activeComponent._id}` ; 
@@ -97,12 +92,12 @@ const Components = () => {
                     key={comp._id}
                     onClick={() => setActiveComponent(comp)}
                     className={`shrink-0 cursor-pointer w-64 md:w-full text-left px-4 py-3 rounded-xl transition-all duration-300 flex flex-col gap-1 border ${
-                        activeComponent._id === comp._id 
+                        activeComponent?._id === comp?._id 
                         ? 'bg-emerald-900/20 border-emerald-500/30 shadow-[inset_4px_0_0_0_#10b981]' 
                         : 'bg-transparent border-white/5 md:border-transparent hover:bg-white/5'
                     }`}
                     >
-                    <span className={`text-sm font-semibold truncate ${activeComponent._id === comp._id ? 'text-emerald-400' : 'text-slate-300'}`}>
+                    <span className={`text-sm font-semibold truncate ${activeComponent?._id === comp?._id ? 'text-emerald-400' : 'text-slate-300'}`}>
                         {comp?.title || 'Untitled Component'}
                     </span>
                     <span className="text-xs text-slate-500">{comp?.category || 'UnCategorized'}</span>
@@ -115,7 +110,7 @@ const Components = () => {
                     setCurrentPage(currentPage + 1); 
                 }}
                 className='px-4 flex justify-center items-center flex-row gap-1 py-2 bg-emerald-950 border-2 border-emerald-800 text-emerald-600 font-semibold text-[18px] rounded-lg cursor-pointer hover:border-emerald-600 hover:text-emerald-500'>
-                    <MdExpandMore />{ isGetting ? 'Loading..' : 'Load More' }
+                    <MdExpandMore />{ isGetting ? 'Loading..' : 'Load More' } <span className='text-emerald-600 text-xs'>{ components?.length || 0 }</span>
                 </button>
             </div>
 
@@ -128,16 +123,16 @@ const Components = () => {
             {/* -------- Main Content Header -------- */}
             <header className="mt-2 h-auto md:h-20 border-b border-white/5 p-4 md:px-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 md:gap-0 bg-[#00140a]/20 backdrop-blur-md shrink-0">
                 <div className="w-full md:w-auto">
-                    <h1 className="text-xl md:text-2xl font-bold text-slate-100 truncate">{activeComponent.title || 'Untitled Component'}</h1>
+                    <h1 className="text-xl md:text-2xl font-bold text-slate-100 truncate">{activeComponent?.title || 'Untitled Component'}</h1>
                     <div className="flex flex-wrap items-center gap-3 md:gap-4 mt-2 md:mt-1 text-xs font-medium text-slate-400">
-                        <span className="text-emerald-500 bg-emerald-500/10 px-2 py-0.5 rounded uppercase tracking-wider">{activeComponent.category || 'UnCategorized'}</span>
-                        <span className="flex items-center gap-1"> <FaHeart />{ isLiked ? likesCount : activeComponent.likeCount }</span>
+                        <span className="text-emerald-500 bg-emerald-500/10 px-2 py-0.5 rounded uppercase tracking-wider">{activeComponent?.category || 'UnCategorized'}</span>
+                        <span className="flex items-center gap-1"> <FaHeart />{ isLiked ? likesCount : activeComponent?.likeCount || 0 }</span>
                         <span className="flex items-center gap-1"> <AiOutlineSave />{ isSaved ? savedCount : activeComponent?.savedCount || 0 }</span>
                     </div>
                 </div>
             
                 <div className="flex gap-2 md:gap-3 w-full md:w-auto mt-2 md:mt-0">
-                    <button onClick={() => LikeComponent( activeComponent._id )}
+                    <button onClick={() => LikeComponent( activeComponent?._id )}
                     className='text-emerald-500 cursor-pointer text-[24px] font-semibold hover:text-emerald-400 flex justify-center items-center'>
                         {
                             isLiked ? <BiSolidLike /> : <BiLike />
@@ -148,6 +143,10 @@ const Components = () => {
                     (<button onClick={() => {
                         navigator.clipboard.writeText(activeComponent?.code); 
                         setCopied(true); 
+
+                        setTimeout(() => {
+                            setCopied(false); 
+                        }, 5000); 
                     }}
                     className="flex-1 text-emerald-500 md:flex-none cursor-pointer justify-center text-nowrap py-2 px-2 md:px-4 md:py-2 rounded-lg bg-emerald-950 border-2 border-emerald-800 text-xs md:text-sm font-medium hover:bg-emerald-800 transition-colors flex items-center gap-1 md:gap-2">
                         <TbCopy /> Copy Code
@@ -159,12 +158,12 @@ const Components = () => {
                     }
 
                     { isSaved ? 
-                        (<button onClick={() => SaveComponent(activeComponent._id)}
+                        (<button onClick={() => SaveComponent(activeComponent?._id)}
                         className="flex-1 text-emerald-500 md:flex-none cursor-pointer justify-center text-nowrap py-2 px-2 md:px-4 md:py-2 rounded-lg bg-emerald-950 border-2 border-emerald-800 text-xs md:text-sm font-medium hover:bg-emerald-800 transition-colors flex items-center gap-1 md:gap-2">
                             <AiFillCheckCircle /> Saved
                         </button>)
                         : 
-                        (<button onClick={() => SaveComponent(activeComponent._id)}
+                        (<button onClick={() => SaveComponent(activeComponent?._id)}
                         className="flex-1 text-emerald-500 md:flex-none cursor-pointer justify-center text-nowrap py-2 px-2 md:px-4 md:py-2 rounded-lg bg-emerald-950 border-2 border-emerald-800 text-xs md:text-sm font-medium hover:bg-emerald-800 transition-colors flex items-center gap-1 md:gap-2">
                             <FaRegSave /> { isSaving ? 'Saving..' : 'Save' }
                         </button>)
@@ -213,7 +212,7 @@ const Components = () => {
                         key={activeComponent._id}
                         template="react"
                         theme={sandpackDark}
-                        files={{ "/App.js": activeComponent.code || '<h2>Component.io!</h2>' }}
+                        files={{ "/App.js": activeComponent?.code || '<h2>Component.io!</h2>' }}
                         options={{
                         externalResources: ["https://cdn.tailwindcss.com"],
                         }}

@@ -15,6 +15,7 @@ import { useNavigate } from 'react-router-dom';
 import { MdFileDownloadDone } from "react-icons/md";
 import { PiCheckFatLight } from "react-icons/pi";
 import { RxCross2 } from "react-icons/rx";
+import { authDataContext } from '../Context/AuthContext';
 
 
 // ----- Auto Sync Code ------
@@ -91,6 +92,8 @@ const Admin = () => {
         showPopup , 
         setShowPopup , 
     } = useSafeContext(publishDataContext); 
+
+    const { Logout } = useSafeContext(authDataContext); 
 
 
     // --------- UseStates ---------
@@ -177,7 +180,8 @@ const Admin = () => {
                 className="w-full py-2.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 hover:bg-emerald-500/20 text-sm font-medium transition-all cursor-pointer">
                     Add Component
                 </button>
-                <button className="w-full py-2.5 rounded-lg bg-rose-500/10 border border-rose-500/20 text-rose-400 hover:bg-rose-500/20 text-sm font-medium transition-all cursor-pointer">
+                <button onClick={() => Logout()}
+                className="w-full py-2.5 rounded-lg bg-rose-500/10 border border-rose-500/20 text-rose-400 hover:bg-rose-500/20 text-sm font-medium transition-all cursor-pointer">
                     Exit Admin
                 </button>
             </div>

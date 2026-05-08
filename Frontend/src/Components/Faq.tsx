@@ -6,13 +6,13 @@ const Faq = () => {
 
     const faqs = [
     { q: "Is Component.io really free to start?",
-        a: "Yes — the Free plan gives you 100 free. But you have to verify your email to claim those credits. No credit card required to sign up." },
+        a: "Yes — the Free plan gives you 100 free credits. But you have to verify your email to claim those credits. No credit card required." },
     { q: "What frameworks do the generated components support?",
         a: "All components are React + Tailwind CSS. They work with Next.js, Vite, Remix, and any project that supports JSX." },
     { q: "How does the AI Lab actually work?",
         a: `You describe what you need in plain English — Eg: "a responsive pricing card with a toggle between monthly and annual billing" — and our model generates clean, themed React + Tailwind code on the spot.` },
-    { q: "Can I use generated components in commercial projects?",
-        a: "Absolutely. All components — library or AI-generated can used. Use them in personal or commercial work, no attribution required." },
+    { q: "Do I have need to manually copy-paste every the code?",
+        a: "Not at all! You can fetch any component instantly using `npx component-io get <id>`. Our CLI automatically create file contains component in the choosen path." },
     { q: "Do I need to install any dependencies?",
         a: "No external component library is required. The output is pure React + Tailwind — no extra packages. Just copy, paste, and it works." },
     ];

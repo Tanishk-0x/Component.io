@@ -3,7 +3,7 @@ const Pricing = () => {
 
     const PricingCards = [
         {
-            tier: "Free", price: "$0", sub: "Perfect for side projects", delay: "0.2s", pro: false,
+            tier: "Free", price: "$0", sub: "Perfect for Side Projects", delay: "0.2s", pro: false,
             features: [
                 { on: true,  text: "Get 100 Free Credits" },
                 { on: true,  text: "Access to components" },
@@ -13,7 +13,7 @@ const Pricing = () => {
                 cta: "Get started free",
         },
         {
-            tier: "Pro", price: "$12", sub: "For serious builders", delay: "0.35s", pro: true,
+            tier: "Pro", price: "$12", sub: "For Consistent Developers", delay: "0.35s", pro: true,
             features: [
                 { on: true, text: "Get 300 Credits" },
                 { on: true, text: "Access to components" },
@@ -23,7 +23,7 @@ const Pricing = () => {
             cta: "Start Pro",
         },
         {
-            tier: "Premium", price: "$20", sub: "For Consistent Developers", delay: "0.5s", pro: false,
+            tier: "Premium", price: "$20", sub: "For Serious Builders", delay: "0.5s", pro: false,
             features: [
                 { on: true, text: "Everything in Pro" },
                 { on: true, text: "Get 500 Credits" },

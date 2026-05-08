@@ -15,7 +15,7 @@ const MainSection = () => {
       <section className="w-full flex justify-center items-center flex-col md:flex-row gap-10 md:gap-1 max-w-7xl px-4 md:px-6 pt-16 md:pt-24 pb-20 md:pb-24 relative">
           
           <div className="hidden sm:block absolute top-0 right-0 p-4 text-[10px] opacity-40 font-bold uppercase tracking-widest text-right">
-            [ Email: {userData?.email || 'developer@dev'} ] <br /> [ Name: {userData?.name || 'developer'} ] <br /> [ Verified ]
+            [ Email: {userData?.email || 'developer@dev'} ] <br /> [ Name: {userData?.name || 'developer'} ] <br /> { userData?.isVerified ? '[ Verified ]' : '[ Not Verified ]' }
           </div>
 
           {/* --------- SIDE TEXT SECTION ---------- */}
@@ -35,7 +35,7 @@ const MainSection = () => {
             <div className="w-full max-w-xl p-6 md:p-8 glass-panel border-l-4 border-emerald-500 relative">
               <div className="absolute top-0 right-0 w-8 h-8 corner-br rotate-180"></div>
               <p className="text-sm md:text-lg leading-relaxed opacity-70">
-                Component.io is a Ai Powered component library, Where you can generate components and just copy paste and use it.
+                Component.io is a AI Powered component library, You can generate components and use via Installing npx or copy paste.
               </p>
             </div>
 

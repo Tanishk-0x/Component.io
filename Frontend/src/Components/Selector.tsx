@@ -31,7 +31,7 @@ const Selector = () => {
               </span>
             </p>
             <p className="text-[14px] md:text-[16px] text-gray-400 mt-4">
-              A carefully curated collection of gorgeous, fully functional templates.
+              A carefully curated collection of gorgeous, fully functional components.
             </p>
           </div>
 

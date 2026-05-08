@@ -45,14 +45,14 @@ const Signup = () => {
                 Create Your Account 
             </h1>
             <p className="text-gray-400 text-[12px] md:text-[14px]">
-                Build Stunning Components With <span className="text-green-400"> Component.io </span> 
+                Build Stunning Components With <span className="text-emerald-400"> Component.io </span> 
             </p>
 
             <form className="w-full flex justify-center items-center flex-col mt-3">
             
                 {/* UserName */}
                 <div className="w-[90%]">
-                    <label className="text-neutral-400 text-sm font-medium">Username</label>
+                    <label className="text-emerald-400 text-sm font-medium">Username</label>
                     <input
                     onChange={(e) => {
                         setFormData({ ...formData , name: e.target.value})
@@ -61,13 +61,13 @@ const Signup = () => {
                     value={formData.name}
                     type="text"
                     placeholder="E.g., Name"
-                    className="w-full bg-transparent border border-neutral-700 rounded-lg px-4 py-3 text-white text-sm placeholder:text-neutral-600 focus:outline-none focus:border-green-400 focus:ring-2 focus:ring-green-900 transition"
+                    className="w-full bg-transparent border border-emerald-600 rounded-lg px-4 py-3 text-white text-sm placeholder:text-neutral-600 focus:outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-900 transition"
                     />
                 </div>
 
                 {/* Email */}
                 <div className="w-[90%] mt-2">
-                    <label className="text-neutral-400 text-sm font-medium">Email Address</label>
+                    <label className="text-emerald-400 text-sm font-medium">Email Address</label>
                     <input
                     onChange={(e) => {
                         setFormData({ ...formData , email: e.target.value})
@@ -76,13 +76,13 @@ const Signup = () => {
                     value={formData.email}
                     type="email"
                     placeholder="name@example.com"
-                    className="w-full bg-transparent border border-neutral-700 rounded-lg px-4 py-3 text-white text-sm placeholder:text-neutral-600 focus:outline-none focus:border-green-400 focus:ring-2 focus:ring-green-900 transition"
+                    className="w-full bg-transparent border border-emerald-600 rounded-lg px-4 py-3 text-white text-sm placeholder:text-neutral-600 focus:outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-900 transition"
                     />
                 </div>
 
                 {/* Password */}
                 <div className="w-[90%] mt-2">
-                    <label className="text-neutral-400 text-sm font-medium">Password</label>
+                    <label className="text-emerald-400 text-sm font-medium">Password</label>
                     <input
                     onChange={(e) => {
                         setFormData({ ...formData , password: e.target.value})
@@ -91,7 +91,7 @@ const Signup = () => {
                     value={formData.password}
                     type="password"
                     placeholder="••••••••"
-                    className="w-full bg-transparent border border-neutral-700 rounded-lg px-4 py-3 text-white text-sm placeholder:text-neutral-600 focus:outline-none focus:border-green-400 focus:ring-2 focus:ring-green-900 transition pr-10"
+                    className="w-full bg-transparent border border-emerald-600 rounded-lg px-4 py-3 text-white text-sm placeholder:text-neutral-600 focus:outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-900 transition pr-10"
                     />
                 </div>
 
@@ -101,7 +101,7 @@ const Signup = () => {
                     e.preventDefault(); 
                     HandleSignup(); 
                 }}
-                className="mt-6 w-[90%] bg-green-500 text-black text-[18px] py-3 rounded-lg font-semibold text-base hover:bg-green-400 transition duration-150 active:scale-[0.98] cursor-pointer">
+                className="mt-6 w-[90%] bg-emerald-400 text-black text-[18px] py-3 rounded-lg font-semibold text-base hover:bg-emerald-500 transition duration-150 active:scale-[0.98] cursor-pointer">
                     { signupLoading ? 'Loading..' : 'Create Account' }
                 </button>
                 
@@ -114,7 +114,7 @@ const Signup = () => {
             </form>
 
             <p className="text-neutral-400 text-center mt-4 text-md">
-            Already have an account? <span onClick={() => navigate('/login')} className="text-green-400 font-medium hover:text-green-300 cursor-pointer"> Login </span>
+            Already have an account? <span onClick={() => navigate('/login')} className="text-emerald-400 font-medium hover:text-emerald-300 cursor-pointer"> Login </span>
             </p>
             
         </div>

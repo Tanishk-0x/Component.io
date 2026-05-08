@@ -3,9 +3,6 @@ import { useSafeContext } from "../Hooks/UseSafeContext";
 import { otpDataContext } from "../Context/OtpContext";
 import { authDataContext } from "../Context/AuthContext";
 import { useNavigate } from "react-router-dom";
-// import toast from "react-hot-toast";
-// import { FcGoogle } from "react-icons/fc";
-
 
 const Verify = () => {
 
@@ -78,14 +75,14 @@ const Verify = () => {
                 Email Verification 
             </h1>
             <p className="text-gray-400 text-[12px] md:text-[14px] text-center">
-                Verify your email to get your free <span className="text-green-500 font-semibold">100</span> creadits   
+                Verify your email to get your free <span className="text-emerald-500 font-semibold">100</span> creadits   
             </p>
 
             <form className="w-full flex justify-center items-center flex-col mt-3">
 
                 {/* Email */}
                 <div className="w-[90%] mt-2">
-                    <label className="text-green-400 text-sm font-medium">Email Address</label>
+                    <label className="text-emerald-400 text-sm font-medium">Email Address</label>
                     <input
                     onChange={(e) => {
                         e.preventDefault(); 
@@ -100,13 +97,22 @@ const Verify = () => {
                 </div>
 
                 {/* Send Otp */}
+                { !isOtpSend && 
                 <button onClick={(e) => {
                     e.preventDefault();
                     SendOtp(email); 
                 }}
-                className="mt-4 w-[90%] bg-green-500 text-black text-[18px] py-2.5 rounded-lg font-semibold text-base hover:bg-green-400 transition duration-150 active:scale-[0.98] cursor-pointer">
-                    { sendingOtp ? 'Loading..' : 'Send Otp' }
+                className="mt-4 w-[90%] bg-emerald-500 text-black text-[18px] py-2.5 rounded-lg font-semibold text-base hover:bg-emerald-400 transition duration-150 active:scale-[0.98] cursor-pointer">
+                    { sendingOtp ? 'Sending..' : 'Send Otp' }
                 </button>
+                }
+
+                { isOtpSend && 
+                <button 
+                className="mt-4 w-[90%] bg-emerald-950 text-emerald-500 text-[18px] py-2.5 rounded-lg font-semibold text-base border border-emerald-500 transition duration-150 active:scale-[0.98] cursor-pointer">
+                    Otp Send
+                </button>
+                }
 
                 <div className="bg-neutral-800 h-0.5 mt-4 w-[90%] "></div>
 
@@ -129,7 +135,7 @@ const Verify = () => {
                             ref={(el) => { inputRefs.current[index] = el; }}
                             onChange={(e) => HandleOtpChange(e.target.value, index)}
                             onKeyDown={(e) => handleKeyDown(e, index)}
-                            className="border border-green-400 rounded-lg h-10 w-10 md:h-12 md:w-12 bg-transparent text-white text-center outline-none"
+                            className="border border-emerald-400 rounded-lg h-10 w-10 md:h-12 md:w-12 bg-transparent text-white text-center outline-none"
                             />
                         ))}
                         </div>
@@ -142,16 +148,16 @@ const Verify = () => {
                     HandleverifyOtp(); 
                 }}
                 className={
-                    `${ isOtpSend ? 'border-green-500 text-green-500 hover:bg-green-500 hover:text-black' : 'border-red-500 text-red-500 hover:bg-red-500 hover:text-black' } 
+                    `${ isOtpSend ? 'border-emerald-500 text-emerald-500 hover:bg-emerald-500 hover:text-black' : 'border-rose-500 text-rose-500 hover:bg-rose-500 hover:text-black' } 
                     mt-4 w-[90%] border  text-[18px] py-2.5 rounded-lg font-semibold text-base  transition duration-150 active:scale-[0.98] cursor-pointer`
                 }>
-                    { verifyingOtp ? 'Loading..' : 'Verify Otp' }
+                    { verifyingOtp ? 'Verifying..' : 'Verify Otp' }
                 </button>
 
             </form>
 
             <p className="text-neutral-400 text-center mt-4 text-md">
-                Didn't receive a code? <span className="border-b border-green-500 font-medium hover:text-green-300 cursor-pointer"> Resend </span>
+                Didn't receive a code? <span className="border-b border-emerald-500 font-medium hover:text-green-300 cursor-pointer"> Resend </span>
             </p>
             
         </div>
