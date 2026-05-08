@@ -37,6 +37,8 @@ const Components = () => {
         savedCount , 
         activeComponent , 
         setActiveComponent , 
+        SearchComponent , 
+        isSearching , 
      } = useSafeContext(componentDataContext); 
 
     // ------------- UseStates ---------------
@@ -44,6 +46,7 @@ const Components = () => {
     const [activeTab, setActiveTab] = useState('preview'); 
     const [copied , setCopied] = useState(false); 
     const [cliPopUp ,setCliPopUp] = useState(false); 
+    const [query , setQuery] = useState(''); 
 
 
     const HandleCommandCopy = async () => {
@@ -74,14 +77,22 @@ const Components = () => {
                     Component.io
                 </h2>
                 {/* ----- Search Bar ------ */}
-                <div className="relative">
+                <div className="relative flex items-center gap-1">
                     <input 
+                    onChange={(e) => setQuery(e.target.value)}
                     type="text" 
                     placeholder="Search components..." 
                     className="w-full bg-[#000502] border border-emerald-900/50 rounded-lg py-2 pl-10 pr-4 text-sm text-slate-300 focus:outline-none focus:border-emerald-500/50 transition-colors placeholder-slate-600"
                     />
                     <svg className="w-4 h-4 absolute left-3 top-2.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+
+                    <button onClick={() => SearchComponent(query)}
+                        className="cursor-pointer shrink-0 px-3 py-2 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500 hover:text-[#000502] rounded-lg text-sm font-bold transition-all flex items-center gap-2"
+                    >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </button>
                 </div>
+
             </div>
 
             {/* -------- Components Lists ------- */}
@@ -107,6 +118,7 @@ const Components = () => {
                 ))}
 
                 {/* ------ LOAD_MORE --------- */}
+                { components.length > 8 && 
                 <button onClick={() => {
                     GetComponents(currentPage + 1); 
                     setCurrentPage(currentPage + 1); 
@@ -114,6 +126,7 @@ const Components = () => {
                 className='px-4 flex justify-center items-center flex-row gap-1 py-2 bg-emerald-950 border-2 border-emerald-800 text-emerald-600 font-semibold text-[18px] rounded-lg cursor-pointer hover:border-emerald-600 hover:text-emerald-500'>
                     <MdExpandMore />{ isGetting ? 'Loading..' : 'Load More' } <span className='text-emerald-600 text-xs'>{ components?.length || 0 }</span>
                 </button>
+                }
             </div>
 
         </aside>

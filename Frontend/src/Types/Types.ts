@@ -64,6 +64,8 @@ export interface ComponentContextType {
     topComponents: any ; 
     activeComponent: any ;  
     setActiveComponent: any ; 
+    SearchComponent: (query: string) => Promise<void> ; 
+    isSearching: boolean ; 
 }
 
 export interface PublishContextType {

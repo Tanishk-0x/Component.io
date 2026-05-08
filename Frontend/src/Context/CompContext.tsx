@@ -38,6 +38,8 @@ const CompContext = ({children}: MainContextProps) => {
 
     const [activeComponent, setActiveComponent] = useState(components?.[0] || {} );
 
+    const [isSearching , setIsSearching] = useState(false); 
+
     // ----- Function To Resolve Component ------
     const ResolveComponent = async (prompt: string , model: string) => {
         
@@ -295,6 +297,38 @@ const CompContext = ({children}: MainContextProps) => {
         }
     }
 
+    // ---- Search Components ----
+    const SearchComponent = async(query: string) => {
+
+        if( isSearching ){
+            return ; 
+        }
+        if( !query ){
+            toast.error("Query Cant Be Empty!"); 
+            return ; 
+        }
+
+        try {
+            const res = await axios.get( serverUrl + `/comp/searchcomponent?query=${query}`); 
+
+            if( res.data.success ){
+                toast.success("Searched!"); 
+                setCompnents(res.data.components); 
+            }
+        }
+        
+        catch (error: any) {
+            const errorMessage = error?.response?.data?.message ; 
+            toast.error(errorMessage); 
+            console.log("Searching Components Error!"); 
+            console.dir(error);
+        }
+
+        finally{
+            setIsSearching(false); 
+        }
+    }
+
     const value = {
         ResolveComponent ,
         componentData ,
@@ -321,6 +355,8 @@ const CompContext = ({children}: MainContextProps) => {
         topComponents , 
         activeComponent , 
         setActiveComponent ,
+        SearchComponent , 
+        isSearching , 
     }; 
 
     return (
