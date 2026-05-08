@@ -37,25 +37,6 @@ const SyncCode = ({ setFormData, currentCode }: any) => {
   return null;
 };
 
-// ----- Dummy Data For Admin -----
-const INITIAL_QUEUE = [
-  { 
-    id: "rev-101", title: "Neumorphic Login Form", author: "@dev_rahul", date: "Apr 26, 2026", status: "pending",
-    code: `// React Code for Neumorphic Form\n<div className="p-8 rounded-3xl bg-gray-100 shadow-[20px_20px_60px_#bebebe,-20px_-20px_60px_#ffffff]">\n  <h2 className="text-gray-700">Login</h2>\n</div>`,
-    preview: <div className="p-8 rounded-3xl bg-slate-200 shadow-[10px_10px_30px_#b8b9be,-10px_-10px_30px_#ffffff] flex flex-col gap-4 w-72"><h3 className="text-slate-600 font-bold text-center">Neumorphic Login</h3><input type="text" placeholder="Username" className="p-3 rounded-xl bg-slate-200 shadow-[inset_5px_5px_10px_#b8b9be,inset_-5px_-5px_10px_#ffffff] outline-none text-slate-600"/><button className="p-3 mt-2 rounded-xl bg-slate-200 shadow-[5px_5px_10px_#b8b9be,-5px_-5px_10px_#ffffff] text-emerald-600 font-bold hover:shadow-[inset_5px_5px_10px_#b8b9be,inset_-5px_-5px_10px_#ffffff] transition-all">Sign In</button></div>
-  },
-  { 
-    id: "rev-102", title: "Cyberpunk Glitch Button", author: "@neon_ninja", date: "Apr 26, 2026", status: "pending",
-    code: `/* CSS Only Glitch Button */\n<button className="relative px-8 py-3 bg-red-500 text-white font-bold uppercase tracking-widest skew-x-[-10deg] border-2 border-cyan-400 group">\n  <span className="group-hover:animate-pulse">Initialize</span>\n</button>`,
-    preview: <button className="relative px-8 py-3 bg-rose-600 text-white font-black uppercase tracking-widest skew-x-[-15deg] border-l-4 border-cyan-400 shadow-[4px_4px_0px_#22d3ee] hover:translate-y-1 hover:shadow-none transition-all duration-150">Execute</button>
-  },
-  { 
-    id: "rev-103", title: "Minimal Weather Widget", author: "@tanishk_dev", date: "Apr 25, 2026", status: "pending",
-    code: `// Minimal Weather React Component\n<div className="bg-white/10 backdrop-blur border border-white/20 p-6 rounded-2xl">\n  <p>24°C - Sunny</p>\n</div>`,
-    preview: <div className="bg-linear-to-br from-blue-400/20 to-cyan-300/20 backdrop-blur-md border border-white/20 p-6 rounded-3xl w-64 flex flex-col items-center gap-2 shadow-xl"><svg className="w-16 h-16 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clipRule="evenodd"></path></svg><h2 className="text-4xl font-light text-white mt-2">28°<span className="text-xl">C</span></h2><p className="text-cyan-100 text-sm font-medium tracking-wide">Clear Sky • Indore</p></div>
-  }
-];
-
 
 const Admin = () => {
 
@@ -63,32 +44,23 @@ const Admin = () => {
 
     // -------- UseContexts ---------
     const {
-        isGettingData ,
         GetAdminDashboardData ,
         totalUsers , 
         componentCount , 
         requestedComponents , 
         users , 
         components , 
-        currentPage ,
         UpdateComponent , 
-        isUpdating , 
         updated ,
         DeleteComponent , 
         isDeleting ,
-        deleted , 
         DeleteUser , 
         isDeletingUser , 
-        userDeleted ,
     } = useSafeContext(adminDataContext); 
 
     const { 
         RejectRequest , 
-        isRejecting , 
-        rejected , 
         AcceptRequest , 
-        isAccepting , 
-        accepted , 
         showPopup , 
         setShowPopup , 
     } = useSafeContext(publishDataContext); 
@@ -97,7 +69,6 @@ const Admin = () => {
 
 
     // --------- UseStates ---------
-    const [queue, setQueue] = useState(INITIAL_QUEUE);
     const [reviewingItem, setReviewingItem] = useState<ReviewItemType | null>(null); 
     const [managingItem , setManagingItem] = useState<ManagingComponentType | null>(null);
     const [showManagingPopUp , setShowManagingPopUp] = useState(false); 
@@ -235,7 +206,7 @@ const Admin = () => {
                 <div className="bg-[#000a05] border border-white/10 rounded-2xl overflow-hidden shadow-2xl">
                     
                     {/* ---------- Table Header (Fixed Grid 3+3+2+2+2 = 12) ----------- */}
-                    <div className="hidden md:grid grid-cols-12 gap-4 p-4 border-b border-white/5 text-[11px] font-bold text-slate-500 uppercase tracking-wider bg-white/[0.02]">
+                    <div className="hidden md:grid grid-cols-12 gap-4 p-4 border-b border-white/5 text-[11px] font-bold text-slate-500 uppercase tracking-wider bg-white/2">
                         <div className="col-span-3">Component Details</div>
                         <div className="col-span-3">Author</div>
                         <div className="col-span-2">Date Generated</div>
@@ -250,7 +221,7 @@ const Admin = () => {
                         
                         {/* Mobile Label & Details / Column 1 */}
                         <div className="col-span-1 md:col-span-3 flex items-center gap-4 overflow-hidden">
-                            <div className="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-gradient-to-tr from-slate-800 to-slate-700 border border-white/10 flex items-center justify-center shrink-0">
+                            <div className="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-linear-to-tr from-slate-800 to-slate-700 border border-white/10 flex items-center justify-center shrink-0">
                                 {/* Component Icon */}
                                 <svg className="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
                             </div>
@@ -260,7 +231,7 @@ const Admin = () => {
                                 
                                 {/* Mobile Info Stack */}
                                 <div className="flex md:hidden items-center gap-2 mt-1">
-                                    <span className="text-xs text-slate-400 truncate max-w-[100px]">{item?.author?.name || item?.author || 'Unknown'}</span>
+                                    <span className="text-xs text-slate-400 truncate max-w-25">{item?.author?.name || item?.author || 'Unknown'}</span>
                                     <span className="w-1 h-1 bg-slate-600 rounded-full shrink-0"></span>
                                     <span className="text-xs text-emerald-400 font-medium shrink-0">{item?.status}</span>
                                     <span className="w-1 h-1 bg-slate-600 rounded-full shrink-0"></span>
@@ -506,7 +477,7 @@ const Admin = () => {
                 <div className="bg-[#000a05] border border-white/10 rounded-2xl overflow-hidden shadow-2xl">
                     
                     {/* ---------- Table Header (Fixed Grid 3+3+2+2+2 = 12) ----------- */}
-                    <div className="hidden md:grid grid-cols-12 gap-4 p-4 border-b border-white/5 text-[11px] font-bold text-slate-500 uppercase tracking-wider bg-white/[0.02]">
+                    <div className="hidden md:grid grid-cols-12 gap-4 p-4 border-b border-white/5 text-[11px] font-bold text-slate-500 uppercase tracking-wider bg-white/2">
                         <div className="col-span-3">User's Name</div>
                         <div className="col-span-3">Email Address</div>
                         <div className="col-span-2">Status & Credits</div>
@@ -520,14 +491,14 @@ const Admin = () => {
                         
                         {/* Mobile Label & Details / Column 1 */}
                         <div className="col-span-1 md:col-span-3 flex items-center gap-4 overflow-hidden">
-                            <div className="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-gradient-to-tr from-slate-800 to-slate-700 border border-white/10 flex items-center justify-center shrink-0">
+                            <div className="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-linear-to-tr from-slate-800 to-slate-700 border border-white/10 flex items-center justify-center shrink-0">
                                 {/* User Icon */}
                                 <svg className="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
                             </div>
                             <div className="min-w-0 flex-1">
                                 <h3 className="text-sm md:text-base font-bold text-slate-200 truncate">{item?.name || 'Unknown'}</h3>
                                 <div className="flex md:hidden items-center gap-2 mt-1">
-                                    <span className="text-xs text-slate-400 truncate max-w-[100px]">{item?.email || 'Unknown'}</span>
+                                    <span className="text-xs text-slate-400 truncate max-w-25">{item?.email || 'Unknown'}</span>
                                     <span className="w-1 h-1 bg-slate-600 rounded-full shrink-0"></span>
                                     <span className="text-xs text-emerald-400 font-medium shrink-0">{item?.credits || 0} cr</span>
                                     <span className="w-1 h-1 bg-slate-600 rounded-full shrink-0"></span>
@@ -637,7 +608,7 @@ const Admin = () => {
                 <div className="bg-[#000a05] border border-white/10 rounded-2xl overflow-hidden shadow-2xl">
                     
                     {/* ---------- Table Header (Fixed Grid 3+3+2+2+2 = 12) ----------- */}
-                    <div className="hidden md:grid grid-cols-12 gap-4 p-4 border-b border-white/5 text-[11px] font-bold text-slate-500 uppercase tracking-wider bg-white/[0.02]">
+                    <div className="hidden md:grid grid-cols-12 gap-4 p-4 border-b border-white/5 text-[11px] font-bold text-slate-500 uppercase tracking-wider bg-white/2">
                         <div className="col-span-3">Component Details</div>
                         <div className="col-span-3">Author</div>
                         <div className="col-span-2">Date Generated</div>
@@ -652,7 +623,7 @@ const Admin = () => {
                         
                         {/* Mobile Label & Details / Column 1 */}
                         <div className="col-span-1 md:col-span-3 flex items-center gap-4 overflow-hidden">
-                            <div className="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-gradient-to-tr from-slate-800 to-slate-700 border border-white/10 flex items-center justify-center shrink-0">
+                            <div className="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-linear-to-tr from-slate-800 to-slate-700 border border-white/10 flex items-center justify-center shrink-0">
                                 {/* Component Icon */}
                                 <svg className="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
                             </div>
@@ -662,7 +633,7 @@ const Admin = () => {
                                 
                                 {/* Mobile Info Stack */}
                                 <div className="flex md:hidden items-center gap-2 mt-1">
-                                    <span className="text-xs text-slate-400 truncate max-w-[100px]">{item?.author?.name || item?.author || 'Unknown'}</span>
+                                    <span className="text-xs text-slate-400 truncate max-w-25">{item?.author?.name || item?.author || 'Unknown'}</span>
                                     <span className="w-1 h-1 bg-slate-600 rounded-full shrink-0"></span>
                                     <span className="text-xs text-emerald-400 font-medium shrink-0">{item?.status}</span>
                                     <span className="w-1 h-1 bg-slate-600 rounded-full shrink-0"></span>

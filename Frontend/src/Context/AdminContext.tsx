@@ -18,7 +18,7 @@ const AddComponentCard = () => {
       <button className="group relative w-72 h-80 bg-[#0a1210] rounded-3xl border border-white/5 flex flex-col items-center justify-center gap-6 transition-all duration-500 hover:border-emerald-500/50 hover:shadow-[0_0_40px_rgba(16,185,129,0.15)] hover:-translate-y-2 overflow-hidden cursor-pointer">
         
         {/* Ambient Hover Glow */}
-        <div className="absolute inset-0 bg-gradient-to-b from-emerald-500/0 via-emerald-500/0 to-emerald-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
+        <div className="absolute inset-0 bg-linear-to-b from-emerald-500/0 via-emerald-500/0 to-emerald-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
         <div className="absolute -bottom-10 inset-x-0 h-20 bg-emerald-500/20 blur-[30px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
 
         {/* Floating Icon Container */}

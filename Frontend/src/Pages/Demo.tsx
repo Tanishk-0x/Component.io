@@ -69,7 +69,7 @@ const steps = [
 
 const Demo = () => {
 
-    const navigate = useNavigate(); 
+  const navigate = useNavigate(); 
 
   const [activeStep, setActiveStep] = useState(0);
 

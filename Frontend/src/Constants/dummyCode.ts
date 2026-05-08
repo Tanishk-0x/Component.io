@@ -86,7 +86,7 @@ export default function EmeraldBarGraph() {
 
                 {/* The Animated Bar */}
                 <div 
-                  className={"w-full max-w-[3rem] rounded-t-xl transition-all duration-1000 ease-out relative overflow-hidden " + (isAnyHovered && !isHovered ? "bg-zinc-800" : "bg-gradient-to-t from-emerald-600 to-emerald-400 shadow-[0_0_20px_rgba(16,185,129,0.3)]")}
+                  className={"w-full max-w-12 rounded-t-xl transition-all duration-1000 ease-out relative overflow-hidden " + (isAnyHovered && !isHovered ? "bg-zinc-800" : "bg-linear-to-t from-emerald-600 to-emerald-400 shadow-[0_0_20px_rgba(16,185,129,0.3)]")}
                   style={{ 
                     height: isLoaded ? heightPercentage + "%" : "0%"
                   }}
@@ -131,13 +131,13 @@ export default function App() {
     <div className="relative min-h-screen bg-zinc-950 text-slate-200 font-sans overflow-hidden flex flex-col w-full">
       
       {/* Background Ambient Glows */}
-      <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-emerald-600/20 blur-[150px] rounded-full pointer-events-none -translate-x-1/2 -translate-y-1/2"></div>
-      <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-teal-600/20 blur-[150px] rounded-full pointer-events-none translate-x-1/2 translate-y-1/2"></div>
+      <div className="absolute top-0 left-0 w-125 h-125 bg-emerald-600/20 blur-[150px] rounded-full pointer-events-none -translate-x-1/2 -translate-y-1/2"></div>
+      <div className="absolute bottom-0 right-0 w-125 h-125 bg-teal-600/20 blur-[150px] rounded-full pointer-events-none translate-x-1/2 translate-y-1/2"></div>
 
       {/* Navigation */}
       <nav className={"relative z-20 w-full max-w-7xl mx-auto px-6 py-6 flex items-center justify-between " + animateUp}>
         <div className="flex items-center gap-2 cursor-pointer group">
-          <div className="w-8 h-8 bg-gradient-to-tr from-emerald-500 to-teal-400 rounded-xl flex items-center justify-center transform group-hover:rotate-12 transition-transform">
+          <div className="w-8 h-8 bg-linear-to-tr from-emerald-500 to-teal-400 rounded-xl flex items-center justify-center transform group-hover:rotate-12 transition-transform">
             <div className="w-3 h-3 bg-zinc-950 rounded-full"></div>
           </div>
           <span className="text-2xl font-black text-white tracking-tight">
@@ -172,9 +172,9 @@ export default function App() {
             New Horizon Series
           </div>
           
-          <h1 className="text-6xl md:text-7xl lg:text-8xl font-black text-white leading-[1] tracking-tighter mb-6">
+          <h1 className="text-6xl md:text-7xl lg:text-8xl font-black text-white leading-none tracking-tighter mb-6">
             Time, <br/>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-600">Redefined.</span>
+            <span className="text-transparent bg-clip-text bg-linear-to-r from-emerald-400 to-teal-600">Redefined.</span>
           </h1>
           
           <p className="text-zinc-400 text-lg mb-10 max-w-md leading-relaxed font-medium">
@@ -193,17 +193,17 @@ export default function App() {
         </div>
 
         {/* Right Image/Showcase Area */}
-        <div className={"w-full lg:w-1/2 relative flex items-center justify-center h-[400px] lg:h-[600px] " + animateLeft}>
+        <div className={"w-full lg:w-1/2 relative flex items-center justify-center h-100 lg:h-150 " + animateLeft}>
           
           {/* Animated Background Circles */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <div className="w-[300px] h-[300px] md:w-[450px] md:h-[450px] rounded-full border border-emerald-500/20 animate-[spin_20s_linear_infinite] flex items-center justify-center">
+            <div className="w-75 h-75 md:w-112.5 md:h-112.5 rounded-full border border-emerald-500/20 animate-[spin_20s_linear_infinite] flex items-center justify-center">
               <div className="w-[70%] h-[70%] rounded-full border border-dashed border-emerald-500/30"></div>
             </div>
           </div>
 
           {/* Product Image Container */}
-          <div className="relative z-20 w-full max-w-[350px] md:max-w-[400px] transform transition-transform duration-700 hover:scale-105">
+          <div className="relative z-20 w-full max-w-87.5 md:max-w-100 transform transition-transform duration-700 hover:scale-105">
             <div className="animate-bounce" style={{ animationDuration: "3s" }}>
               <img 
                 src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=800&auto=format&fit=crop" 

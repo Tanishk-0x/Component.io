@@ -196,7 +196,7 @@ const AddComponent = () => {
                   </div>
                 ) : (
                   <div className="w-full h-full min-h-200 bg-[#050807] p-4 md:p-10 animate-in zoom-in-95 duration-500">
-                    <div className="w-full h-full min-h-180 rounded-2xl overflow-hidden border border-white/5 shadow-2xl bg-white/[0.02]">
+                    <div className="w-full h-full min-h-180 rounded-2xl overflow-hidden border border-white/5 shadow-2xl bg-white/2">
                         {/* ----- Preview ----- */}
                         <SandpackPreview 
                           showRefreshButton={true}

@@ -385,10 +385,10 @@ const Lab = () => {
                 onClick={() => setCliPopUp(false)}
             >
                 <div
-                className="w-full max-w-[500px] bg-[#00140a] border border-emerald-900/30 rounded-2xl p-7 shadow-2xl shadow-black/60 relative"
+                className="w-full max-w-125 bg-[#00140a] border border-emerald-900/30 rounded-2xl p-7 shadow-2xl shadow-black/60 relative"
                 onClick={(e) => e.stopPropagation()}
                 >
-                <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-emerald-500 to-transparent rounded-t-2xl" />
+                <div className="absolute top-0 left-0 right-0 h-0.5 bg-linear-to-r from-transparent via-emerald-500 to-transparent rounded-t-2xl" />
 
                 <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center gap-2">
@@ -404,7 +404,7 @@ const Lab = () => {
                 <div className="flex flex-col gap-4">
 
                     <div className="flex gap-4 items-start">
-                    <div className="flex flex-col items-center flex-shrink-0">
+                    <div className="flex flex-col items-center shrink-0">
                         <div className="w-8 h-8 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-500 text-xs font-black">1</div>
                         <div className="w-px h-10 bg-emerald-900/40 mt-1" />
                     </div>
@@ -415,7 +415,7 @@ const Lab = () => {
                             npx component.io add {componentData?.title?.split(' ').slice(0, 2).join(' ') + '...' || 'mycomponent'}
                         </code>
                         <button onClick={() => HandleCommandCopy()}
-                            className="text-slate-600 hover:text-emerald-400 transition-colors flex-shrink-0"
+                            className="text-slate-600 hover:text-emerald-400 transition-colors shrink-0"
                         >
                             { copied ? <TbCopyCheck className="text-base" /> : <TbCopy className="text-base" /> }
                         </button>
@@ -424,7 +424,7 @@ const Lab = () => {
                     </div>
 
                     <div className="flex gap-4 items-start">
-                    <div className="flex flex-col items-center flex-shrink-0">
+                    <div className="flex flex-col items-center shrink-0">
                         <div className="w-8 h-8 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-500 text-xs font-black">2</div>
                         <div className="w-px h-10 bg-emerald-900/40 mt-1" />
                     </div>
@@ -437,7 +437,7 @@ const Lab = () => {
                     </div>
 
                     <div className="flex gap-4 items-start">
-                    <div className="flex flex-col items-center flex-shrink-0">
+                    <div className="flex flex-col items-center shrink-0">
                         <div className="w-8 h-8 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-500 text-xs font-black">3</div>
                     </div>
                     <div className="pt-1 flex-1">
