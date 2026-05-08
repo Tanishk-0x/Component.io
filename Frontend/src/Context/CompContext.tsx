@@ -39,6 +39,7 @@ const CompContext = ({children}: MainContextProps) => {
     const [activeComponent, setActiveComponent] = useState(components?.[0] || {} );
 
     const [isSearching , setIsSearching] = useState(false); 
+    const [isSearched , setIsSearched] = useState(false); 
 
     // ----- Function To Resolve Component ------
     const ResolveComponent = async (prompt: string , model: string) => {
@@ -146,6 +147,7 @@ const CompContext = ({children}: MainContextProps) => {
         if( isGetting ){
             return ; 
         }
+        setIsSearched(false); 
         setIsGetting(true); 
         try {
             const res = await axios.get( serverUrl + `/comp/getcomponents?page=${page}` ,
@@ -312,8 +314,8 @@ const CompContext = ({children}: MainContextProps) => {
             const res = await axios.get( serverUrl + `/comp/searchcomponent?query=${query}`); 
 
             if( res.data.success ){
-                toast.success("Searched!"); 
                 setCompnents(res.data.components); 
+                setIsSearched(true); 
             }
         }
         
@@ -357,6 +359,7 @@ const CompContext = ({children}: MainContextProps) => {
         setActiveComponent ,
         SearchComponent , 
         isSearching , 
+        isSearched , 
     }; 
 
     return (

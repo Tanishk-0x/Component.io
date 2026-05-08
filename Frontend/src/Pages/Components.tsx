@@ -18,6 +18,7 @@ import { TbCopyCheck } from "react-icons/tb";
 import { AiOutlineSave } from "react-icons/ai";
 import { MdExpandMore } from "react-icons/md";
 import { HiOutlineCommandLine } from "react-icons/hi2";
+import { VscRefresh } from "react-icons/vsc";
 
 
 const Components = () => {
@@ -38,7 +39,8 @@ const Components = () => {
         activeComponent , 
         setActiveComponent , 
         SearchComponent , 
-        isSearching , 
+        isSearching ,
+        isSearched ,  
      } = useSafeContext(componentDataContext); 
 
     // ------------- UseStates ---------------
@@ -73,9 +75,19 @@ const Components = () => {
         <aside className="w-full md:w-80 h-auto md:h-full shrink-0 border-b md:border-b-0 md:border-r border-white/5 bg-[#00140a]/40 backdrop-blur-xl flex flex-col z-10">
             
             <div className="p-4 md:p-6 border-b border-white/5">
-                <h2 className="text-lg md:text-xl font-bold bg-clip-text text-transparent bg-linear-to-r from-emerald-400 to-cyan-400 mb-3 md:mb-4">
-                    Component.io
-                </h2>
+                
+                <div className='flex justify-between items-center'>
+                    <h2 className="text-lg md:text-xl font-bold bg-clip-text text-transparent bg-linear-to-r from-emerald-400 to-cyan-400 mb-3 md:mb-4">
+                        Component.io
+                    </h2>
+                    
+                    <div onClick={() => {
+                        GetComponents(currentPage);
+                    }}
+                    className='text-[14px] cursor-pointer text-emerald-400 flex justify-center items-center flex-row gap-0'> 
+                        <VscRefresh className='text-[12px]'/> refresh
+                    </div>
+                </div>
                 {/* ----- Search Bar ------ */}
                 <div className="relative flex items-center gap-1">
                     <input 

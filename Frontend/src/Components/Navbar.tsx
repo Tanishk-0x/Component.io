@@ -44,33 +44,64 @@ const Navbar = () => {
 
       {/* --- NAVIGATION (Desktop Only) --- */}
       <nav className="hidden md:block absolute left-1/2 -translate-x-1/2">
-        <ul className="flex flex-row items-center gap-8">
-          
-          <li onClick={() => navigate('/componentcard')}
-          className="relative text-neutral-400 hover:text-emerald-400 font-mono text-[16px] cursor-pointer transition-all duration-200 group">
-            Components
-            <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-emerald-400 transition-all duration-300 group-hover:w-full"></span>
-          </li>
+        { userData && userData.role === 'ADMIN' ? 
+          (<ul className="flex flex-row items-center gap-8">
+            
+            <li onClick={() => navigate('/components')}
+            className="relative text-neutral-400 hover:text-emerald-400 font-mono text-[16px] cursor-pointer transition-all duration-200 group">
+              Components
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-emerald-400 transition-all duration-300 group-hover:w-full"></span>
+            </li>
 
-          <li onClick={() => navigate('/admin')}
-          className="relative text-neutral-400 hover:text-emerald-400 font-mono text-[16px] cursor-pointer transition-all duration-200 group">
-            Admin
-            <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-emerald-400 transition-all duration-300 group-hover:w-full"></span>
-          </li>
+            <li onClick={() => navigate('/admin')}
+            className="relative text-neutral-400 hover:text-emerald-400 font-mono text-[16px] cursor-pointer transition-all duration-200 group">
+              AdminPanel
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-emerald-400 transition-all duration-300 group-hover:w-full"></span>
+            </li>
 
-          <li onClick={() => navigate('/profile')} 
-          className="relative text-neutral-400 hover:text-emerald-400 font-mono text-[16px] cursor-pointer transition-all duration-200 group">
-            Profile
-            <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-emerald-400 transition-all duration-300 group-hover:w-full"></span>
-          </li>
+            <li onClick={() => navigate('/npx-demo')} 
+            className="relative text-neutral-400 hover:text-emerald-400 font-mono text-[16px] cursor-pointer transition-all duration-200 group">
+              Npx-Demo
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-emerald-400 transition-all duration-300 group-hover:w-full"></span>
+            </li>
 
-          <li onClick={() => navigate('/top')} 
-          className="relative text-neutral-400 hover:text-emerald-400 font-mono text-[16px] cursor-pointer transition-all duration-200 group">
-            Top
-            <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-emerald-400 transition-all duration-300 group-hover:w-full"></span>
-          </li>
+            <li onClick={() => navigate('/top')} 
+            className="relative text-neutral-400 hover:text-emerald-400 font-mono text-[16px] cursor-pointer transition-all duration-200 group">
+              TopLiked
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-emerald-400 transition-all duration-300 group-hover:w-full"></span>
+            </li>
 
-        </ul>
+          </ul>)
+          : 
+          (<ul className="flex flex-row items-center gap-8">
+            
+            <li onClick={() => navigate('/components')}
+            className="relative text-neutral-400 hover:text-emerald-400 font-mono text-[16px] cursor-pointer transition-all duration-200 group">
+              Components
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-emerald-400 transition-all duration-300 group-hover:w-full"></span>
+            </li>
+
+            <li onClick={() => navigate('/lab')}
+            className="relative text-neutral-400 hover:text-emerald-400 font-mono text-[16px] cursor-pointer transition-all duration-200 group">
+              AILab
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-emerald-400 transition-all duration-300 group-hover:w-full"></span>
+            </li>
+
+            <li onClick={() => navigate('/npx-demo')} 
+            className="relative text-neutral-400 hover:text-emerald-400 font-mono text-[16px] cursor-pointer transition-all duration-200 group">
+              Npx-Demo
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-emerald-400 transition-all duration-300 group-hover:w-full"></span>
+            </li>
+
+            <li onClick={() => navigate('/top')} 
+            className="relative text-neutral-400 hover:text-emerald-400 font-mono text-[16px] cursor-pointer transition-all duration-200 group">
+              TopLiked
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-emerald-400 transition-all duration-300 group-hover:w-full"></span>
+            </li>
+
+          </ul>)
+        }
+
       </nav>
 
       {/* --- RIGHT ACTION --- */}
@@ -126,10 +157,36 @@ const Navbar = () => {
       {/* --- MOBILE DROPDOWN --- */}
       {isOpen && (
         <div className="absolute top-18 left-0 w-full bg-neutral-900 border border-neutral-800 rounded-xl p-4 flex flex-col gap-4 md:hidden shadow-2xl animate-in fade-in slide-in-from-top-2">
-          <ul className="flex flex-col gap-4">
+          
+          { userData && userData.role === 'ADMIN' ? 
+          (<ul className="flex flex-col gap-4">
             <li onClick={() => navigate('/components')} className="text-white hover:text-emerald-400 font-mono text-[18px]">Components</li>
-            <li onClick={() => navigate('/lab')}  className="text-white hover:text-emerald-400 font-mono text-[18px]">AiLab</li>
-            <li onClick={() => navigate('/admin')}  className="text-white hover:text-emerald-400 font-mono text-[18px]">Admin</li>
+            <li onClick={() => navigate('/lab')}  className="text-white hover:text-emerald-400 font-mono text-[18px]">AILab</li>
+            <li onClick={() => navigate('/npx-Demo')}  className="text-white hover:text-emerald-400 font-mono text-[18px]">Npx-Demo</li>
+            
+            <li>
+              {
+                !userData && 
+                <button onClick={() => navigate('/login')}
+                className="w-full bg-emerald-500 text-neutral-950 py-2 font-bold rounded-lg">
+                  LogIn
+                </button>
+              }
+              {
+                userData && 
+                <button onClick={() => navigate('/admin')}
+                className="w-full bg-emerald-500 text-neutral-950 py-2 font-bold rounded-lg">
+                  Admin
+                </button>
+              }
+            </li>
+
+          </ul>)
+            : 
+          (<ul className="flex flex-col gap-4">
+            <li onClick={() => navigate('/components')} className="text-white hover:text-emerald-400 font-mono text-[18px]">Components</li>
+            <li onClick={() => navigate('/lab')}  className="text-white hover:text-emerald-400 font-mono text-[18px]">AILab</li>
+            <li onClick={() => navigate('/npx-demo')}  className="text-white hover:text-emerald-400 font-mono text-[18px]">Npx-Demo</li>
             
             <li>
               {
@@ -148,7 +205,9 @@ const Navbar = () => {
               }
             </li>
 
-          </ul>
+          </ul>)
+        }
+
         </div>
       )}
 
