@@ -35,10 +35,12 @@ const Components = () => {
         isSaving , 
         isSaved ,
         savedCount , 
+        activeComponent , 
+        setActiveComponent , 
      } = useSafeContext(componentDataContext); 
 
     // ------------- UseStates ---------------
-    const [activeComponent, setActiveComponent] = useState(components?.[0] || {} );
+    
     const [activeTab, setActiveTab] = useState('preview'); 
     const [copied , setCopied] = useState(false); 
     const [cliPopUp ,setCliPopUp] = useState(false); 

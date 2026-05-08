@@ -59,6 +59,11 @@ export interface ComponentContextType {
     setCurrentPage: any ;   
     isGetting: boolean ; 
     savedCount: any ; 
+    TopComponents: () => Promise<void> ; 
+    gettingTop: boolean ;  
+    topComponents: any ; 
+    activeComponent: any ;  
+    setActiveComponent: any ; 
 }
 
 export interface PublishContextType {

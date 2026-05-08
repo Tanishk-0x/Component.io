@@ -33,6 +33,10 @@ const CompContext = ({children}: MainContextProps) => {
     const [currentPage , setCurrentPage] = useState(1); 
     const [savedCount , setSavedCount] = useState(null); 
     const [maxPages , setMaxPages] = useState(0); 
+    const [gettingTop , setGettingTop] = useState(false); 
+    const [topComponents , setTopComponents] = useState<any | []>([]); 
+
+    const [activeComponent, setActiveComponent] = useState(components?.[0] || {} );
 
     // ----- Function To Resolve Component ------
     const ResolveComponent = async (prompt: string , model: string) => {
@@ -150,6 +154,7 @@ const CompContext = ({children}: MainContextProps) => {
                 if( res.data.components.length > 0 ){
                     if( page === 1 ){
                         setCompnents(res.data.components); 
+                        setActiveComponent(res.data.components[0]); 
                     }
                     else{
                         setCompnents((prev: any) => [ ...prev , ...res.data.components ]); 
@@ -263,6 +268,33 @@ const CompContext = ({children}: MainContextProps) => {
         }
     }
 
+    // ---- Function To Get Top Components ----- 
+    const TopComponents = async() => {
+        if( gettingTop ){
+            return ; 
+        }
+
+        try {
+            const res = await axios.get( serverUrl + '/comp/gettopcomponents'); 
+
+            if( res.data.success ){
+                setTopComponents(res.data.components); 
+                toast.success("Top Components Fetched!"); 
+            }
+        }
+        
+        catch (error: any) {
+            const errorMessage = error?.response?.data?.message ; 
+            toast.error(errorMessage); 
+            console.log("Fetch Top Components Error!"); 
+            console.dir(error);
+        }
+
+        finally{
+            setGettingTop(false); 
+        }
+    }
+
     const value = {
         ResolveComponent ,
         componentData ,
@@ -284,6 +316,11 @@ const CompContext = ({children}: MainContextProps) => {
         setCurrentPage , 
         isGetting , 
         savedCount , 
+        TopComponents , 
+        gettingTop , 
+        topComponents , 
+        activeComponent , 
+        setActiveComponent ,
     }; 
 
     return (
