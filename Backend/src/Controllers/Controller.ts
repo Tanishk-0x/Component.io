@@ -389,5 +389,36 @@ const RemoveSaved = async(req: AuthenticatedRequest, res: Response) => {
     }
 }
 
+// Top Components(Most Liked!)
+const TopComponents = async(req: Request , res: Response) => {
+    try {
+        
+        const components = await Component.find()
+        .sort({ likeCount: -1 }).limit(10)
+        .select('_id title category likeCount savedCount author code')
+        .populate('author' , 'name').lean();  
 
-export default {ResolveComponent , SaveComponent, GetComponents , LikeComponent , RemoveSaved}; 
+        if( !components ){
+            return res.status(404).json({
+                success: false , 
+                message: 'Components Not Fetched!'
+            }); 
+        }
+
+        return res.status(200).json({
+            success: true , 
+            message: 'Top Liked Components Fetched!' , 
+            components: components 
+        }); 
+    }
+    
+    catch (error: any) {
+        return res.status(500).json({
+            success: false , 
+            message: 'Error While Removing Saved Component!' , 
+            error: error.message 
+        }); 
+    }
+}
+
+export default {ResolveComponent , SaveComponent, GetComponents , LikeComponent , RemoveSaved, TopComponents}; 

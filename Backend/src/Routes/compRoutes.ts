@@ -11,6 +11,7 @@ router.post('/save/:id' , requireCSRF , AuthMe , Component.SaveComponent );
 router.post('/remove/:id' , requireCSRF , AuthMe , Component.RemoveSaved); 
 // ------------------------------------------------
 router.get('/getcomponents' , Component.GetComponents); 
+router.get('/gettopcomponents' , Component.TopComponents); 
 // ------------------------------------------------
 router.post('/likecomponent/:id' , Component.LikeComponent); 
 
