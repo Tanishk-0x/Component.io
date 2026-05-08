@@ -14,5 +14,7 @@ router.get('/getcomponents' , Component.GetComponents);
 router.get('/gettopcomponents' , Component.TopComponents); 
 // ------------------------------------------------
 router.post('/likecomponent/:id' , Component.LikeComponent); 
+// ------------------------------------------------
+router.get('/searchcomponent' , Component.SearchComponent); 
 
 export default router ; 

@@ -421,4 +421,57 @@ const TopComponents = async(req: Request , res: Response) => {
     }
 }
 
-export default {ResolveComponent , SaveComponent, GetComponents , LikeComponent , RemoveSaved, TopComponents}; 
+
+// Search Components
+const SearchComponent = async(req: Request , res: Response) => {
+    try {
+        const { query } = req.query ; 
+
+        if( !query || typeof query !== "string" ){
+            return res.status(404).json({
+                success: false , 
+                message: 'Query Not Found!'
+            }); 
+        }
+
+        const SearchRegex = new RegExp( query , "i" ); 
+
+        const components  = await Component.find({
+            status: "Public" , 
+
+            $or: [
+                { title: { $regex: SearchRegex } } , 
+                { prompt: { $regex: SearchRegex } }
+            ]
+        })
+        .select('_id title category code likeCount savedCount author')
+        .populate('author' , 'name')
+        .sort({ createdAt: -1 })
+        .limit(5)
+        .lean(); 
+
+        if( !components ){
+            return res.status(404).json({
+                success: false , 
+                message: 'Component Not Found!'
+            }); 
+        }
+
+
+        return res.status(200).json({
+            success: true , 
+            message: 'Component Searched SuccessFully!' , 
+            components: components
+        }); 
+    }
+    
+    catch (error: any) {
+        return res.status(500).json({
+            success: false , 
+            message: 'Error While Removing Saved Component!' , 
+            error: error.message 
+        });
+    }
+}
+
+export default {ResolveComponent , SaveComponent, GetComponents , LikeComponent , RemoveSaved, TopComponents , SearchComponent }; 
