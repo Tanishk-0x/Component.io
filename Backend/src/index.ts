@@ -17,7 +17,7 @@ const PORT = process.env.PORT ;
 
 // Limitter 
 const Limiter = rateLimit({
-    windowMs: 1000 * 60 * 15  , 
+    windowMs: 1000 * 60   , 
     max: 100 , 
     message: {
         success: false,

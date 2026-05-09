@@ -13,7 +13,7 @@ const GetComponentForCLI = async(req: Request , res: Response) => {
             }); 
         }
 
-        const component = await Component.findById( id ); 
+        const component = await Component.findById( id ).lean();  
 
         if( !component ){
             return res.status(404).json({

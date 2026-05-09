@@ -45,6 +45,7 @@ const GetAdminDashboardData = async(req: Request , res: Response) => {
             .sort({ createdAt: -1 })
             .skip(skip)
             .limit(limit)
+            .lean() 
             , 
 
             // 4. Recent Users 
@@ -52,7 +53,9 @@ const GetAdminDashboardData = async(req: Request , res: Response) => {
             .select('-password')
             .sort({ createdAt: -1 })
             .skip(skip)
-            .limit(limit),
+            .limit(limit)
+            .lean()
+            ,
 
             // 5. All Components 
             Component.find({ status: "Public" })
@@ -61,6 +64,7 @@ const GetAdminDashboardData = async(req: Request , res: Response) => {
             .sort({ createdAt: -1 })
             .skip(skip)
             .limit(limit)
+            .lean()
         ]); 
 
         const componentStats: any = {
@@ -93,6 +97,7 @@ const GetAdminDashboardData = async(req: Request , res: Response) => {
                     components: allRecentComponents
                 },
                 pagination: {
+                    maxPage: Math.ceil(componentStats.Public / limit) , 
                     currentPage: page , 
                     limit: limit
                 }
