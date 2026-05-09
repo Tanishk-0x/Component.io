@@ -105,12 +105,15 @@ const Signup = () => {
                     { signupLoading ? 'Loading..' : 'Create Account' }
                 </button>
                 
-                {/* Google Button */}
-                <button
-                className="text-[18px] mt-3 w-[90%] bg-white text-neutral-900 py-3 rounded-lg font-semibold text-base flex items-center justify-center hover:bg-neutral-100 transition duration-150 active:scale-[0.98] cursor-pointer">
-                    <FcGoogle />
-                    Sign in with Google
-                </button>
+                <div className="mt-3 w-[90%] py-3 flex items-center justify-center rounded-lg bg-neutral-900/40 border border-neutral-800 border-dashed">
+                    <p className="font-mono text-[13px] sm:text-sm flex items-center gap-2 text-neutral-400">
+                        <span className="text-emerald-500 font-bold">❯</span>
+                        <span className="tracking-wide">Build Smarter with Component.io</span>
+                        {/* Blinking Cursor Animation */}
+                        <span className="w-1.5 h-4 bg-emerald-400 animate-[pulse_1s_ease-in-out_infinite]"></span>
+                    </p>
+                </div>
+                
             </form>
 
             <p className="text-neutral-400 text-center mt-4 text-md">

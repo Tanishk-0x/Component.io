@@ -27,7 +27,7 @@ const MainSection = () => {
               </div>
 
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-black font-sans text-white uppercase leading-tight md:leading-none">
-                Create <span className="text-[#10b981]">Component</span>
+                Engage <span className="text-[#10b981]">Component</span>
                 <br /> In <span className="text-[#10b981]">Minute</span>
               </h1>
             </div>
@@ -35,7 +35,7 @@ const MainSection = () => {
             <div className="w-full max-w-xl p-6 md:p-8 glass-panel border-l-4 border-emerald-500 relative">
               <div className="absolute top-0 right-0 w-8 h-8 corner-br rotate-180"></div>
               <p className="text-sm md:text-lg leading-relaxed opacity-70">
-                Component.io is a AI Powered component library, You can generate components and use via Installing npx or copy paste.
+                Component.io is a AI Powered component library, You can generate components and use Installing via <span className='text-cyan-300 font-semibold'>npx</span> or <span className='text-cyan-300 font-semibold'>copy paste</span>.
               </p>
             </div>
 
