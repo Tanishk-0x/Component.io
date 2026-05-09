@@ -8,6 +8,5 @@ export const ExtractCookie = () => {
         ?.split('=')[1] ; 
 
 
-    console.log("CSRF_TOKEN_COOKIE: " , csrfToken); 
     return csrfToken ; 
 }
