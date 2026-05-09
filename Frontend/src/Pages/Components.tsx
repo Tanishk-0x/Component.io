@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useSafeContext } from '../Hooks/UseSafeContext';
 import { componentDataContext } from '../Context/CompContext';
 import { 
@@ -19,6 +19,7 @@ import { AiOutlineSave } from "react-icons/ai";
 import { MdExpandMore } from "react-icons/md";
 import { HiOutlineCommandLine } from "react-icons/hi2";
 import { VscRefresh } from "react-icons/vsc";
+import { PiNotchesBold } from "react-icons/pi";
 
 
 const Components = () => {
@@ -59,6 +60,23 @@ const Components = () => {
         }, 2000); 
     }
 
+    // ---------- Debounce -------------
+    const Debounce = (fn: any , delay: number) => {
+        let timer: any ; 
+
+        return function( ...args: any ){
+            clearTimeout(timer); 
+            timer = setTimeout(() => {
+                fn(...args); 
+            }, delay); 
+        } 
+    }
+
+    const SearchWithDebounce = useCallback(
+        Debounce((val: string) => SearchComponent(val) , 500 ),
+        [SearchComponent]
+    ); 
+
 
   return (
 
@@ -89,7 +107,11 @@ const Components = () => {
                 {/* ----- Search Bar ------ */}
                 <div className="relative flex items-center gap-1">
                     <input 
-                    onChange={(e) => setQuery(e.target.value)}
+                    onChange={(e) => {
+                        const val = e.target.value ; 
+                        setQuery(val); 
+                        SearchWithDebounce(val); 
+                    }}
                     type="text" 
                     placeholder="Search components..." 
                     className="w-full bg-[#000502] border border-emerald-900/50 rounded-lg py-2 pl-10 pr-4 text-sm text-slate-300 focus:outline-none focus:border-emerald-500/50 transition-colors placeholder-slate-600"
@@ -137,7 +159,14 @@ const Components = () => {
                     <MdExpandMore />{ isGetting ? 'Loading..' : 'Load More' } <span className='text-emerald-600 text-xs'>{ components?.length || 0 }</span>
                 </button>
                 }
+
+                { components.length === 0 && 
+                    <div className='border-2 py-3 flex justify-center flex-row gap-1 items-center font-semibold text-[16px] rounded-lg  border-emerald-700 text-emerald-600'>
+                        <PiNotchesBold /> No Result Found!
+                    </div>
+                }
             </div>
+
 
         </aside>
 

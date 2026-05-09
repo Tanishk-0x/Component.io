@@ -306,7 +306,6 @@ const CompContext = ({children}: MainContextProps) => {
             return ; 
         }
         if( !query ){
-            toast.error("Query Cant Be Empty!"); 
             return ; 
         }
 
