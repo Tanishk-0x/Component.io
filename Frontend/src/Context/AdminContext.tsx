@@ -98,7 +98,7 @@ const AdminContext = ({children}: MainContextProps) => {
         if( isGettingData ){
             return ; 
         }
-        if( currentPage >= maxPage ){
+        if( currentPage > maxPage ){
             return ; 
         }
 
