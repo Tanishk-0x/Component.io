@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://component-io-backend.vercel.app/:path*"
+    }
+  ]
+}

@@ -14,7 +14,7 @@ export const mainUrlContext = createContext <MainContextType | null>(null);
 
 const MainContext = ({ children }: MainContextProps ) => {
 
-    const serverUrl = 'https://component-io-backend.vercel.app' ; 
+    const serverUrl = '/api' ; 
 
     // Defining Values 
     const value = {
