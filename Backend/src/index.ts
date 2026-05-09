@@ -8,10 +8,28 @@ import adminRoutes from './Routes/adminRoutes';
 import publishRoutes from './Routes/publishRoutes'; 
 import cliRoutes from './Routes/cliRoutes'; 
 import cookieParser from 'cookie-parser'; 
+import rateLimit from 'express-rate-limit'; 
+import helmet from 'helmet';
 import cors from 'cors'; 
 const app = express(); 
 
 const PORT = process.env.PORT ; 
+
+// Limitter 
+const Limiter = rateLimit({
+    windowMs: 1000 * 60 * 15  , 
+    max: 100 , 
+    message: {
+        success: false,
+        message: 'Too Many Requests From This IP'
+    },
+});
+
+app.use(Limiter); 
+
+
+app.use(helmet()); 
+
 
 // Cors Setup
 app.use(cors({
@@ -46,8 +64,13 @@ app.get('/' , (req: Request , res: Response) => {
 }); 
 
 
-DbConnect(); 
+DbConnect()
+.then(() => {
+    app.listen(PORT , () => {
+        console.log(`Server Started SuccessFully At: ${PORT}✅`);
+    });
+})
+.catch((error) => {
+    console.log('Database Connection Failed', error);
+})
 
-app.listen(PORT , () => {
-    console.log(`Server Started SuccessFully At: ${PORT}✅`);
-});
