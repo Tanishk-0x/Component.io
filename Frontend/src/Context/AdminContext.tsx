@@ -142,8 +142,7 @@ const AdminContext = ({children}: MainContextProps) => {
         catch (error: any) {
             const errorMessage = error?.response?.data?.message ; 
             toast.error(errorMessage); 
-            console.log("Get Admin Data Error!"); 
-            console.dir(error);
+            console.error(error);
         }
 
         finally{
@@ -187,8 +186,7 @@ const AdminContext = ({children}: MainContextProps) => {
         catch (error: any) {
             const errorMessage = error?.response?.data?.message ; 
             toast.error(errorMessage); 
-            console.log("Adding Component Error!"); 
-            console.dir(error);
+            console.error(error);
         }
 
         finally{
@@ -229,8 +227,7 @@ const AdminContext = ({children}: MainContextProps) => {
         catch (error: any) {
             const errorMessage = error?.response?.data?.message ; 
             toast.error(errorMessage); 
-            console.log("Updating Component Error!"); 
-            console.dir(error);
+            console.error(error);
         }
 
         finally{
@@ -267,8 +264,7 @@ const AdminContext = ({children}: MainContextProps) => {
         catch (error: any) {
             const errorMessage = error?.response?.data?.message ; 
             toast.error(errorMessage); 
-            console.log("Deleting Component Error!"); 
-            console.dir(error);
+            console.error(error);
             return false ; 
         }
 
@@ -306,8 +302,7 @@ const AdminContext = ({children}: MainContextProps) => {
         catch (error: any) {
             const errorMessage = error?.response?.data?.message ; 
             toast.error(errorMessage); 
-            console.log("Deleting Component Error!"); 
-            console.dir(error);
+            console.error(error);
         }
 
         finally{

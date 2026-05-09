@@ -66,9 +66,8 @@ const AuthContext = ({ children }: MainContextProps) => {
         
         catch (error: any) {
             const errorMessage = error?.response?.data?.message ; 
-            toast.error(errorMessage); 
-            console.log("Signup Error!"); 
-            console.dir(error); 
+            toast.error(errorMessage);  
+            console.error(error); 
             return false ; 
         }
 
@@ -117,8 +116,7 @@ const AuthContext = ({ children }: MainContextProps) => {
         catch (error: any) {
             const errorMessage = error?.response?.data?.message ; 
             toast.error(errorMessage); 
-            console.log("Login Error!"); 
-            console.dir(error);
+            console.error(error);
             return false ; 
         }
 
@@ -148,14 +146,12 @@ const AuthContext = ({ children }: MainContextProps) => {
             ); 
 
             if( res.data.success ){
-                console.log("Token Refreshed!"); 
                 return true ; 
             }
         }
         
         catch (error) {
             // Logout 
-            console.log("Refresh Token Expired!"); 
             setUserData(null); 
             return false ; 
         }
@@ -222,8 +218,7 @@ const AuthContext = ({ children }: MainContextProps) => {
             }
 
             else{
-                console.log("Authenticating Error!"); 
-                console.dir(error);
+                console.error(error);
             }
         }
 
@@ -269,8 +264,7 @@ const AuthContext = ({ children }: MainContextProps) => {
         catch (error: any) {
             const errorMessage = error?.response?.data?.message ; 
             toast.error(errorMessage); 
-            console.log("Logout Error!"); 
-            console.dir(error); 
+            console.error(error); 
             setUserData(null); 
             return false ;
         }

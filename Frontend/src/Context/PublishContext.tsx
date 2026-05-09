@@ -59,8 +59,7 @@ const PublishContext = ({children}: MainContextProps) => {
         catch (error: any) {
             const errorMessage = error?.response?.data?.message ;  
             toast.error(errorMessage); 
-            console.log("Requesting Component Error!"); 
-            console.dir(error);
+            console.error(error);
         }
 
         finally{
@@ -101,9 +100,8 @@ const PublishContext = ({children}: MainContextProps) => {
         
         catch (error: any) {
             const errorMessage = error?.response?.data?.message ;  
-            toast.error(errorMessage); 
-            console.log("Accepting Request Error!"); 
-            console.dir(error);
+            toast.error(errorMessage);  
+            console.error(error);
         }
 
         finally{
@@ -146,8 +144,7 @@ const PublishContext = ({children}: MainContextProps) => {
         catch (error: any) {
             const errorMessage = error?.response?.data?.message ;  
             toast.error(errorMessage); 
-            console.log("Rejecting Request Error!"); 
-            console.dir(error);
+            console.error(error);
         }
 
         finally{

@@ -52,8 +52,7 @@ const OtpContext = ({children}: MainContextProps) => {
         catch (error: any) {
             const errorMessage = error?.response?.data?.message ; 
             toast.error(errorMessage); 
-            console.log("SendOtp Error!"); 
-            console.dir(error);
+            console.error(error);
         }
 
         finally{
@@ -97,8 +96,7 @@ const OtpContext = ({children}: MainContextProps) => {
         catch (error: any) {
             const errorMessage = error?.response?.data?.message ; 
             toast.error(errorMessage); 
-            console.log("VerifyOtp Error!"); 
-            console.dir(error);
+            console.error(error);
             return false ; 
         }
 

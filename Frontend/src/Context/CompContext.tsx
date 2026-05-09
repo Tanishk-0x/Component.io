@@ -78,8 +78,7 @@ const CompContext = ({children}: MainContextProps) => {
             const errorMessage = error?.response?.data?.message ; 
             setErrorMessage(errorMessage); 
             toast.error(errorMessage); 
-            console.log("Component Error!"); 
-            console.dir(error); 
+            console.error(error); 
         }
 
         finally{
@@ -130,8 +129,7 @@ const CompContext = ({children}: MainContextProps) => {
             const errorMessage = error?.response?.data?.message ; 
             setErrorMessage(errorMessage); 
             toast.error(errorMessage); 
-            console.log("Component Save Error!"); 
-            console.dir(error);
+            console.error(error);
         }
 
         finally{
@@ -173,8 +171,7 @@ const CompContext = ({children}: MainContextProps) => {
             const errorMessage = error?.response?.data?.message ; 
             setErrorMessage(errorMessage); 
             toast.error(errorMessage); 
-            console.log("Get Components Error!"); 
-            console.dir(error);
+            console.error(error);
         }
 
         finally{
@@ -219,8 +216,7 @@ const CompContext = ({children}: MainContextProps) => {
             const errorMessage = error?.response?.data?.message ; 
             setErrorMessage(errorMessage); 
             toast.error(errorMessage); 
-            console.log("Like Components Error!"); 
-            console.dir(error);
+            console.error(error);
         }
 
         finally{
@@ -263,8 +259,7 @@ const CompContext = ({children}: MainContextProps) => {
         catch (error: any) {
             const errorMessage = error?.response?.data?.message ; 
             toast.error(errorMessage); 
-            console.log("Remove Saved Error!"); 
-            console.dir(error);
+            console.error(error);
         }
 
         finally{
@@ -289,8 +284,7 @@ const CompContext = ({children}: MainContextProps) => {
         catch (error: any) {
             const errorMessage = error?.response?.data?.message ; 
             toast.error(errorMessage); 
-            console.log("Fetch Top Components Error!"); 
-            console.dir(error);
+            console.error(error);
         }
 
         finally{
@@ -320,8 +314,7 @@ const CompContext = ({children}: MainContextProps) => {
         catch (error: any) {
             const errorMessage = error?.response?.data?.message ; 
             toast.error(errorMessage); 
-            console.log("Searching Components Error!"); 
-            console.dir(error);
+            console.error(error);
         }
 
         finally{
