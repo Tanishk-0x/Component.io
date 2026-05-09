@@ -7,5 +7,7 @@ export const ExtractCookie = () => {
         .find(row => row.startsWith('csrf_token='))
         ?.split('=')[1] ; 
 
+
+    console.log("CSRF_TOKEN_COOKIE: " , csrfToken); 
     return csrfToken ; 
 }
