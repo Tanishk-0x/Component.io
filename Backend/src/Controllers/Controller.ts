@@ -441,7 +441,6 @@ const SearchComponent = async(req: Request , res: Response) => {
 
             $or: [
                 { title: { $regex: SearchRegex } } , 
-                { prompt: { $regex: SearchRegex } }
             ]
         })
         .select('_id title category code likeCount savedCount author')
