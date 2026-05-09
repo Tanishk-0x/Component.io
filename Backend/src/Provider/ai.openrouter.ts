@@ -1,20 +1,13 @@
 import { SystemInstruction } from '../Constants/instructions';
-import { OpenRouter } from '@openrouter/sdk';
-
-const OPEN_ROUTER_API_KEY = process.env.OPEN_ROUTER_API_KEY1
-
-const client = new OpenRouter({ 
-    apiKey: OPEN_ROUTER_API_KEY 
-});
 
 
-function CreateInstruction ( prompt: string ){
-    return SystemInstruction + "The Prompt Is: " + prompt ; 
+const OPEN_ROUTER_API_KEY = process.env.OPENROUTER_API_KEY || process.env.OPEN_ROUTER_API_KEY;
+
+function CreateInstruction (prompt: string) {
+    return SystemInstruction + "\n\nThe Prompt Is: " + prompt; 
 }
 
-
 const GenerateViaOpenRouter = async (prompt: string) => {
-
     const instruction = CreateInstruction(prompt);
 
     const FALL_BACK_MODELS = [
@@ -26,33 +19,45 @@ const GenerateViaOpenRouter = async (prompt: string) => {
         'nvidia/nemotron-3-super-120b-a12b:free'        
     ];
 
-    for( const currentModel of FALL_BACK_MODELS ){
-        try {
+    for (const currentModel of FALL_BACK_MODELS) {
 
-            const completion = await client.chat.send({
-                chatRequest: {
+        try {
+            const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${OPEN_ROUTER_API_KEY}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
                     model: currentModel,
-                    messages: [{ role: 'user', content: instruction }],
-                }
+                    messages: [{ role: 'user', content: instruction }]
+                })
             });
 
-            const content = completion.choices?.[0]?.message?.content;
-
-            if( !content || content.trim() === '' ){
+            if (!response.ok) {
+                console.log(`Skipping ${currentModel} - API Error Status: ${response.status}`);
                 continue;
             }
 
-            return content;
-        }
+            const data = await response.json();
+            const content = data.choices?.[0]?.message?.content;
 
+            if (!content || content.trim() === '') {
+                continue;
+            }
+
+            return content; 
+            
+        }
+        
         catch (error: any) {
+            console.error(`Failed with ${currentModel}:`, error.message);
             continue;
         }
     }
 
-    console.log('Failed To Generate'); 
+    console.log('Failed To Generate With All Fallback Models'); 
     return null;
-    
 };
 
 export default GenerateViaOpenRouter;
