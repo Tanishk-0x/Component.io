@@ -110,155 +110,208 @@ export default function EmeraldBarGraph() {
 ` ; 
 
 export const Home_LandingPage = `
-import React, { useState, useEffect } from "react";
+import React from "react";
 
-export default function App() {
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoaded(true);
-    }, 150);
-    return () => clearTimeout(timer);
-  }, []);
-
-  const baseAnim = "transition-all duration-1000 ease-out transform ";
-  const animateUp = baseAnim + (isLoaded ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0");
-  const animateRight = baseAnim + (isLoaded ? "translate-x-0 opacity-100" : "-translate-x-10 opacity-0");
-  const animateLeft = baseAnim + (isLoaded ? "translate-x-0 opacity-100" : "translate-x-10 opacity-0");
-
+export default function EmeraldLandingPage() {
   return (
-    <div className="relative min-h-screen bg-zinc-950 text-slate-200 font-sans overflow-hidden flex flex-col w-full">
+    <div className="min-h-screen bg-black text-white overflow-hidden relative">
       
-      {/* Background Ambient Glows */}
-      <div className="absolute top-0 left-0 w-125 h-125 bg-emerald-600/20 blur-[150px] rounded-full pointer-events-none -translate-x-1/2 -translate-y-1/2"></div>
-      <div className="absolute bottom-0 right-0 w-125 h-125 bg-teal-600/20 blur-[150px] rounded-full pointer-events-none translate-x-1/2 translate-y-1/2"></div>
+      {/* Background Glow Effects */}
+      <div className="absolute top-[-150px] left-[-120px] w-[420px] h-[420px] bg-emerald-500/20 blur-[140px] rounded-full animate-pulse"></div>
 
-      {/* Navigation */}
-      <nav className={"relative z-20 w-full max-w-7xl mx-auto px-6 py-6 flex items-center justify-between " + animateUp}>
-        <div className="flex items-center gap-2 cursor-pointer group">
-          <div className="w-8 h-8 bg-linear-to-tr from-emerald-500 to-teal-400 rounded-xl flex items-center justify-center transform group-hover:rotate-12 transition-transform">
-            <div className="w-3 h-3 bg-zinc-950 rounded-full"></div>
-          </div>
-          <span className="text-2xl font-black text-white tracking-tight">
-            Chrono<span className="text-emerald-500">X</span>
-          </span>
-        </div>
+      <div className="absolute bottom-[-180px] right-[-100px] w-[420px] h-[420px] bg-emerald-400/10 blur-[140px] rounded-full animate-pulse"></div>
 
-        <div className="hidden md:flex items-center gap-8">
-          <a href="#" className="text-sm font-bold text-white hover:text-emerald-400 transition-colors">Watches</a>
-          <a href="#" className="text-sm font-semibold text-zinc-400 hover:text-emerald-400 transition-colors">Accessories</a>
-          <a href="#" className="text-sm font-semibold text-zinc-400 hover:text-emerald-400 transition-colors">Our Story</a>
-        </div>
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(16,185,129,0.15),transparent_40%)]"></div>
 
+      <div className="absolute inset-0 opacity-[0.06] bg-[linear-gradient(to_right,#10b981_1px,transparent_1px),linear-gradient(to_bottom,#10b981_1px,transparent_1px)] bg-[size:60px_60px]"></div>
+
+      {/* Navbar */}
+      <nav className="relative z-20 flex items-center justify-between px-8 md:px-20 py-7">
+        
         <div className="flex items-center gap-4">
-          <button className="text-zinc-400 hover:text-emerald-400 transition-colors">
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-          </button>
-          <button className="relative text-zinc-400 hover:text-emerald-400 transition-colors">
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
-            <span className="absolute -top-1 -right-1 w-4 h-4 bg-emerald-500 text-zinc-950 text-[10px] font-bold rounded-full flex items-center justify-center">2</span>
-          </button>
+          <div className="w-11 h-11 rounded-2xl bg-emerald-500 flex items-center justify-center shadow-[0_0_40px_rgba(16,185,129,0.7)]">
+            <div className="w-4 h-4 bg-white rounded-sm rotate-45"></div>
+          </div>
+
+          <h1 className="text-2xl font-bold tracking-wide">
+            Emerald<span className="text-emerald-400">Store</span>
+          </h1>
         </div>
+
+        <div className="hidden md:flex items-center gap-10 text-sm text-zinc-300">
+          <a href="#" className="hover:text-emerald-400 transition">
+            Home
+          </a>
+
+          <a href="#" className="hover:text-emerald-400 transition">
+            Shop
+          </a>
+
+          <a href="#" className="hover:text-emerald-400 transition">
+            Collection
+          </a>
+
+          <a href="#" className="hover:text-emerald-400 transition">
+            Contact
+          </a>
+        </div>
+
+        <button className="px-6 py-3 rounded-full bg-emerald-500 hover:bg-emerald-400 transition-all duration-300 font-semibold shadow-[0_0_30px_rgba(16,185,129,0.5)] hover:scale-105">
+          Explore
+        </button>
       </nav>
 
       {/* Hero Section */}
-      <main className="relative z-10 flex-1 w-full max-w-7xl mx-auto px-6 py-10 flex flex-col lg:flex-row items-center justify-center gap-12">
+      <section className="relative z-20 px-8 md:px-20 pt-20 pb-32">
         
-        {/* Left Typography Area */}
-        <div className={"w-full lg:w-1/2 flex flex-col items-start " + animateRight}>
-          <div className="px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-black tracking-widest uppercase mb-6 flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-            New Horizon Series
-          </div>
+        <div className="grid lg:grid-cols-2 gap-20 items-center">
           
-          <h1 className="text-6xl md:text-7xl lg:text-8xl font-black text-white leading-none tracking-tighter mb-6">
-            Time, <br/>
-            <span className="text-transparent bg-clip-text bg-linear-to-r from-emerald-400 to-teal-600">Redefined.</span>
-          </h1>
-          
-          <p className="text-zinc-400 text-lg mb-10 max-w-md leading-relaxed font-medium">
-            Crafted with aerospace-grade titanium and an infinite-edge sapphire display. The ultimate smartwatch for the modern pioneer.
-          </p>
-          
-          <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
-            <button className="w-full sm:w-auto px-8 py-4 bg-emerald-500 text-zinc-950 font-black text-sm uppercase tracking-wide rounded-2xl hover:bg-emerald-400 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-[0_15px_30px_rgba(16,185,129,0.3)] flex items-center justify-center gap-3">
-              Shop Now
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-            </button>
-            <button className="w-full sm:w-auto px-8 py-4 bg-transparent text-white font-bold text-sm uppercase tracking-wide rounded-2xl border-2 border-zinc-800 hover:border-emerald-500/50 hover:bg-zinc-900 transition-all duration-300 flex items-center justify-center">
-              Explore Specs
-            </button>
-          </div>
-        </div>
+          {/* Left */}
+          <div>
+            <div className="inline-flex items-center gap-3 px-5 py-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 mb-8 backdrop-blur-xl">
+              
+              <div className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></div>
 
-        {/* Right Image/Showcase Area */}
-        <div className={"w-full lg:w-1/2 relative flex items-center justify-center h-100 lg:h-150 " + animateLeft}>
-          
-          {/* Animated Background Circles */}
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <div className="w-75 h-75 md:w-112.5 md:h-112.5 rounded-full border border-emerald-500/20 animate-[spin_20s_linear_infinite] flex items-center justify-center">
-              <div className="w-[70%] h-[70%] rounded-full border border-dashed border-emerald-500/30"></div>
+              <span className="text-sm text-emerald-300 tracking-wide">
+                NEXT GENERATION ECOMMERCE
+              </span>
+            </div>
+
+            <h1 className="text-5xl md:text-7xl font-black leading-tight">
+              Premium
+              <span className="block text-emerald-400">
+                Shopping
+              </span>
+              Experience
+            </h1>
+
+            <p className="mt-8 text-zinc-400 text-lg leading-relaxed max-w-xl">
+              Discover futuristic fashion and premium products crafted
+              for modern lifestyle. Elegant design meets powerful shopping
+              experience with immersive interactions.
+            </p>
+
+            <div className="flex flex-wrap gap-5 mt-10">
+              
+              <button className="group px-8 py-4 rounded-2xl bg-emerald-500 hover:bg-emerald-400 transition-all duration-300 font-semibold shadow-[0_0_40px_rgba(16,185,129,0.4)] hover:scale-105">
+                Shop Now
+              </button>
+
+              <button className="px-8 py-4 rounded-2xl border border-emerald-500/30 bg-white/5 backdrop-blur-xl hover:bg-emerald-500/10 transition-all duration-300 hover:border-emerald-400">
+                Explore Collection
+              </button>
+            </div>
+
+            {/* Stats */}
+            <div className="flex flex-wrap gap-10 mt-16">
+              
+              <div>
+                <h2 className="text-4xl font-bold text-emerald-400">
+                  50K+
+                </h2>
+                <p className="text-zinc-500 mt-2">
+                  Happy Customers
+                </p>
+              </div>
+
+              <div>
+                <h2 className="text-4xl font-bold text-emerald-400">
+                  120+
+                </h2>
+                <p className="text-zinc-500 mt-2">
+                  Premium Products
+                </p>
+              </div>
+
+              <div>
+                <h2 className="text-4xl font-bold text-emerald-400">
+                  4.9★
+                </h2>
+                <p className="text-zinc-500 mt-2">
+                  Customer Rating
+                </p>
+              </div>
             </div>
           </div>
 
-          {/* Product Image Container */}
-          <div className="relative z-20 w-full max-w-87.5 md:max-w-100 transform transition-transform duration-700 hover:scale-105">
-            <div className="animate-bounce" style={{ animationDuration: "3s" }}>
-              <img 
-                src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=800&auto=format&fit=crop" 
-                alt="Premium Smartwatch" 
-                className="w-full h-auto object-cover rounded-[3rem] shadow-[0_30px_60px_rgba(16,185,129,0.2)] -rotate-12"
-              />
-            </div>
+          {/* Right */}
+          <div className="relative flex items-center justify-center">
             
-            {/* Floating Price Tag */}
-            <div className="absolute -left-4 md:-left-8 bottom-10 bg-zinc-900/90 backdrop-blur-md border border-zinc-800 px-5 py-3 rounded-2xl shadow-2xl flex flex-col items-start">
-              <span className="text-[10px] text-emerald-400 font-bold uppercase tracking-widest mb-1">Pre-Order Price</span>
-              <span className="text-2xl font-black text-white">$299.00</span>
+            {/* Floating Glow */}
+            <div className="absolute w-[420px] h-[420px] bg-emerald-500/20 blur-[120px] rounded-full animate-pulse"></div>
+
+            {/* Product Card */}
+            <div className="relative w-[340px] h-[480px] rounded-[40px] border border-white/10 bg-white/5 backdrop-blur-2xl overflow-hidden shadow-[0_0_80px_rgba(16,185,129,0.25)] hover:scale-105 transition-all duration-500">
+              
+              {/* Top Blur */}
+              <div className="absolute top-0 inset-x-0 h-32 bg-gradient-to-b from-emerald-500/20 to-transparent"></div>
+
+              {/* Product */}
+              <div className="relative z-10 flex flex-col items-center justify-center h-full px-8">
+                
+                {/* Fake Shoe */}
+                <div className="relative">
+                  
+                  <div className="w-64 h-40 bg-gradient-to-br from-emerald-300 to-emerald-600 rounded-[40px] rotate-[-20deg] shadow-[0_30px_60px_rgba(16,185,129,0.45)]"></div>
+
+                  <div className="absolute top-8 left-10 w-40 h-8 bg-black/20 rounded-full blur-xl"></div>
+
+                  <div className="absolute top-5 right-4 w-16 h-16 rounded-full bg-white/10 backdrop-blur-md border border-white/20"></div>
+                </div>
+
+                <div className="mt-14 text-center">
+                  
+                  <h2 className="text-3xl font-bold">
+                    Emerald Runner
+                  </h2>
+
+                  <p className="mt-3 text-zinc-400">
+                    Futuristic premium sneakers with ultra comfort
+                    and modern design.
+                  </p>
+
+                  <div className="mt-6 flex items-center justify-center gap-3">
+                    
+                    <div className="w-5 h-5 rounded-full bg-emerald-400 border-2 border-white"></div>
+
+                    <div className="w-5 h-5 rounded-full bg-white/30"></div>
+
+                    <div className="w-5 h-5 rounded-full bg-zinc-700"></div>
+                  </div>
+
+                  <div className="mt-8 flex items-center justify-between">
+                    
+                    <h3 className="text-3xl font-bold text-emerald-400">
+                      $249
+                    </h3>
+
+                    <button className="px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 transition-all duration-300 shadow-[0_0_30px_rgba(16,185,129,0.4)]">
+                      Add To Cart
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Floating Cards */}
+            <div className="absolute top-10 right-0 animate-bounce">
+              <div className="px-5 py-3 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl">
+                <p className="text-sm text-zinc-300">
+                  Free Shipping
+                </p>
+              </div>
+            </div>
+
+            <div className="absolute bottom-10 left-0 animate-pulse">
+              <div className="px-5 py-3 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl">
+                <p className="text-sm text-zinc-300">
+                  Premium Quality
+                </p>
+              </div>
             </div>
           </div>
-
         </div>
-      </main>
-
-      {/* Feature Footer */}
-      <footer className={"relative z-20 w-full border-t border-zinc-800 bg-zinc-950/50 backdrop-blur-xl py-8 mt-auto " + animateUp}>
-        <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 sm:grid-cols-3 gap-8 divide-y sm:divide-y-0 sm:divide-x divide-zinc-800">
-          
-          <div className="flex items-center gap-4 sm:px-4 md:px-6">
-            <div className="w-12 h-12 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-400 shrink-0">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
-            </div>
-            <div>
-              <h3 className="text-white font-bold text-sm">2-Year Warranty</h3>
-              <p className="text-zinc-500 text-xs mt-1">Full coverage on all parts.</p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-4 sm:px-4 md:px-6 pt-6 sm:pt-0">
-            <div className="w-12 h-12 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-400 shrink-0">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
-            </div>
-            <div>
-              <h3 className="text-white font-bold text-sm">Free Shipping</h3>
-              <p className="text-zinc-500 text-xs mt-1">Delivered securely to you.</p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-4 sm:px-4 md:px-6 pt-6 sm:pt-0">
-            <div className="w-12 h-12 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-400 shrink-0">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
-            </div>
-            <div>
-              <h3 className="text-white font-bold text-sm">30-Day Returns</h3>
-              <p className="text-zinc-500 text-xs mt-1">Not satisfied? Return it.</p>
-            </div>
-          </div>
-
-        </div>
-      </footer>
-
+      </section>
     </div>
   );
 }
