@@ -7,11 +7,15 @@ export const SendMail = async ( email: string , otp: string ) => {
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         host: 'smtp.example.com',
-        port: 587,
-        secure: false,
+        port: 465,
+        secure: true,
+        pool: true ,
         auth: {
             user: process.env.HOST_EMAIL,
             pass: process.env.EMAIL_APP_PASSWORD
+        },
+        tls: {
+            rejectUnauthorized: false
         }
     }); 
 

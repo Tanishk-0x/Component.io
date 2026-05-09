@@ -15,6 +15,8 @@ const app = express();
 
 const PORT = process.env.PORT ; 
 
+app.set('trust proxy', 1);
+
 // Limitter 
 const Limiter = rateLimit({
     windowMs: 1000 * 60   , 
@@ -30,6 +32,8 @@ app.use(Limiter);
 
 app.use(helmet()); 
 
+const allowedOrigin = ["http://localhost:5173" , process.env.FRONTEND_URL ] ; 
+
 
 // Cors Setup
 app.use(cors({
@@ -37,7 +41,7 @@ app.use(cors({
         if(!origin){
             return callback(null , true); 
         }
-        if( process.env.CORS_ORIGIN?.includes(origin) ){
+        if( allowedOrigin?.includes(origin) ){
             return callback(null , true); 
         }
 
@@ -51,6 +55,17 @@ app.use(express.json());
 app.use(cookieParser()); 
 
 
+app.use(async (req, res, next) => {
+    try {
+        await DbConnect();  
+        next();
+    } catch (error) {
+        console.error("Database connection error in middleware:", error);
+        res.status(500).json({ success: false, message: "Database connection failed" });
+    }
+});
+
+
 // Mounting 
 app.use('/auth' , authRoutes);
 app.use('/user' , userRoutes); 
@@ -59,18 +74,21 @@ app.use('/admin' , adminRoutes);
 app.use('/publish' , publishRoutes); 
 app.use('/cli' , cliRoutes); 
 
+
 app.get('/' , (req: Request , res: Response) => {
     res.send('Default Route!');
 }); 
 
 
-DbConnect()
-.then(() => {
-    app.listen(PORT , () => {
-        console.log(`Server Started SuccessFully At: ${PORT}✅`);
+if( process.env.NODE_ENV !== 'production' ){
+    const serverPort = PORT || 5000 ; 
+    app.listen(serverPort , () => {
+        console.log(`Server Started SuccessFully At: ${serverPort}✅`);
     });
-})
-.catch((error) => {
-    console.log('Database Connection Failed', error);
-})
+}
+
+
+export default app ; 
+
+
 
