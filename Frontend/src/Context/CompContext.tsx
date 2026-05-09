@@ -118,6 +118,7 @@ const CompContext = ({children}: MainContextProps) => {
                 toast.success("Component Saved!"); 
                 setIsSaved(true); 
                 setSavedCount(res.data.savedCount); 
+                GetUserDetails(); 
 
                 window.setTimeout(() => {
                     setIsSaved(false); 
@@ -250,8 +251,7 @@ const CompContext = ({children}: MainContextProps) => {
             ); 
 
             if( res.data.success ){
-                await GetUserDetails(); 
-                toast.success("Removed!"); 
+                await GetUserDetails();  
                 setRemoved(true); 
 
                 window.setTimeout(() => {
@@ -283,7 +283,6 @@ const CompContext = ({children}: MainContextProps) => {
 
             if( res.data.success ){
                 setTopComponents(res.data.components); 
-                toast.success("Top Components Fetched!"); 
             }
         }
         

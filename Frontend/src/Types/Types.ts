@@ -112,6 +112,8 @@ export interface AdminContextType {
     DeleteUser: ( id: string ) => Promise<void> ;  
     isDeletingUser: boolean ;
     userDeleted: boolean ; 
+    maxPage: number ; 
+    setCurrentPage: any ; 
 }; 
 
 

@@ -56,6 +56,9 @@ const Admin = () => {
         isDeleting ,
         DeleteUser , 
         isDeletingUser , 
+        currentPage , 
+        maxPage , 
+        setCurrentPage , 
     } = useSafeContext(adminDataContext); 
 
     const { 
@@ -151,6 +154,15 @@ const Admin = () => {
                 className="w-full py-2.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 hover:bg-emerald-500/20 text-sm font-medium transition-all cursor-pointer">
                     Add Component
                 </button>
+
+                <button onClick={() => {
+                    GetAdminDashboardData(currentPage+1); 
+                    setCurrentPage(currentPage+1); 
+                }}
+                className="w-full flex justify-center items-center flex-row gap-1 py-2.5 rounded-lg bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 hover:bg-cyan-500/20 text-sm font-medium transition-all cursor-pointer">
+                    LoadMore <p className='text-[12px]'> {`${currentPage}/${maxPage}`} </p>
+                </button>
+                
                 <button onClick={() => Logout()}
                 className="w-full py-2.5 rounded-lg bg-rose-500/10 border border-rose-500/20 text-rose-400 hover:bg-rose-500/20 text-sm font-medium transition-all cursor-pointer">
                     Exit Admin
@@ -851,6 +863,7 @@ const Admin = () => {
 
         </div>
         )}
+
 
     </div>
 

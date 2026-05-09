@@ -71,10 +71,11 @@ const AdminContext = ({children}: MainContextProps) => {
     const [isGettingData , setIsGettingData] = useState(false); 
     const [totalUsers , setTotalUsers] = useState(0); 
     const [componentCount , setComponentCount] = useState<ComponentCounts | null>(null); 
-    const [requestedComponents , setRequestedComponents] = useState(null); 
-    const [users , setUsers] = useState(null); 
-    const [components , setComponents] = useState(null); 
-    const [currentPage ,  setCurrentPage] = useState(null); 
+    const [requestedComponents , setRequestedComponents] = useState<any[]>([]); 
+    const [users , setUsers] = useState<any[]>([]); 
+    const [components , setComponents] = useState<any[]>([]); 
+    const [currentPage ,  setCurrentPage] = useState(0); 
+    const [maxPage , setMaxPage] = useState(1); 
 
     const [isAdding , setIsAdding] = useState(false); 
     const [added , setAdded] = useState(false); 
@@ -97,6 +98,10 @@ const AdminContext = ({children}: MainContextProps) => {
         if( isGettingData ){
             return ; 
         }
+        if( currentPage >= maxPage ){
+            return ; 
+        }
+
         const CSRF_TOKEN = ExtractCookie(); 
         setIsGettingData(true); 
 
@@ -111,16 +116,26 @@ const AdminContext = ({children}: MainContextProps) => {
             ); 
 
             if( res.data.success ){
-                toast.success("Data Fetched!"); 
                 const data = res.data.data ; 
 
                 // Setting States
                 setTotalUsers(data.counts.users);
                 setComponentCount(data.counts.components) ; 
-                setRequestedComponents(data.lists.requests); 
-                setUsers(data.lists.users); 
-                setComponents(data.lists.components); 
+
+                if(page === 1){
+                    setRequestedComponents(data.lists.requests);
+                    setUsers(data.lists.users);
+                    setComponents(data.lists.components);
+                }
+
+                else{
+                    setRequestedComponents((prev) => ([...prev , ...data.lists.requests]));
+                    setUsers((prev) => ([...prev , ...data.lists.users]));
+                    setComponents((prev) => ([...prev , ...data.lists.components]));
+                }
+
                 setCurrentPage(data.pagination.currentPage);
+                setMaxPage(data.pagination.maxPage); 
             }
         }
         
@@ -323,6 +338,8 @@ const AdminContext = ({children}: MainContextProps) => {
         DeleteUser , 
         isDeletingUser , 
         userDeleted , 
+        maxPage , 
+        setCurrentPage , 
     }; 
 
     return (
