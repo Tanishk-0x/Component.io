@@ -3,7 +3,7 @@
 import fs from 'fs' ; 
 
 const [, , command, id] = process.argv ; 
-const BASE_URL = "http://localhost:8000"
+const BASE_URL = "https://component-io-backend.vercel.app"
 
 
 const RUN = async () => {
