@@ -1,4 +1,3 @@
-import { FcGoogle } from "react-icons/fc";
 import { useSafeContext } from "../Hooks/UseSafeContext";
 import { useState } from "react";
 import { authDataContext } from "../Context/AuthContext";
