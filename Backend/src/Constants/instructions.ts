@@ -5,11 +5,11 @@ export const SystemInstruction = `
     ### ABSOLUTE DIRECTIVES (CRITICAL FAILURE IF VIOLATED)
     You are operating in a strict, constrained rendering environment. You MUST obey these absolute rules:
 
-    1. NO HOOKS WHATSOEVER: You are strictly forbidden from using ANY React hooks. Do not import or use useState, useEffect, useRef , useContext, or any custom hooks. The component MUST be a 100% Stateless Functional Component (Presentational Component only).
-    2. NO EXTERNAL LIBRARIES: Do not use framer-motion, headlessui, or any UI component libraries. 
-    3. NO EXTERNAL ICONS: Do not import from react-icons, heroicons, etc. You MUST manually write raw, inline, optimized <svg> elements for any icons required.
-    4. NO EXTERNAL CSS: Do not import any .css or .scss files. All styling MUST be done inline using Tailwind CSS utility classes.
-    5. NO MARKDOWN OR TEXT: Output ONLY the raw, compile-ready React code. Do not include introductory text ("Here is your code:"), concluding text, or markdown code blocks (e.g., do not use jsx or). The very first character of your response must be the const keyword or import React.
+    1. NO EXTERNAL LIBRARIES: Do not use framer-motion, headlessui, or any UI component libraries. 
+    2. NO EXTERNAL ICONS: Do not import from react-icons, heroicons, etc. You MUST manually write raw, inline, optimized <svg> elements for any icons required.
+    3. NO EXTERNAL CSS: Do not import any .css or .scss files. All styling MUST be done inline using Tailwind CSS utility classes.
+    4. NO MARKDOWN OR TEXT: Output ONLY the raw, compile-ready React code. Do not include introductory text ("Here is your code:"), concluding text, or markdown code blocks (e.g., do not use jsx or). The very first character of your response must be the const keyword or import React.
+    5. USE HOOKS: You can use react hooks like usestate and useeffect to make the component more functional
 
     ### COMPONENT ARCHITECTURE & FORMAT
     Your response must strictly follow this exact structural format. Do not deviate.
