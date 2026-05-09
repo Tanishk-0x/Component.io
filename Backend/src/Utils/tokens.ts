@@ -1,8 +1,11 @@
 import jwt from 'jsonwebtoken'; 
 import crypto from 'crypto'; 
 
+const NODE_ENV = process.env.NODE_ENV ; 
+
 const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET || '' ; 
 const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET || '' ; 
+
 
 export function SetAccessToken (res: any , userId: string , role: string , maxAge: number) {
     // 1. Generate token 
@@ -18,8 +21,8 @@ export function SetAccessToken (res: any , userId: string , role: string , maxAg
     
     res.cookie('access_token' , token , {
         httpOnly: true , 
-        secure: true , 
-        sameSite: 'lax' , 
+        secure: NODE_ENV === 'production' , 
+        sameSite: NODE_ENV === 'production' ? 'none' : 'lax' , 
         maxAge: maxAge , 
     }); 
 };
@@ -38,8 +41,8 @@ export function SetRefreshToken (res: any , userId: string , role: string , maxA
 
     res.cookie('refresh_token' , token , {
         httpOnly: true , 
-        secure: true , 
-        sameSite: 'lax' , 
+        secure: NODE_ENV === 'production' , 
+        sameSite: NODE_ENV === 'production' ? 'none' : 'lax' ,
         maxAge: maxAge , 
     }); 
 };
@@ -51,8 +54,8 @@ export function SetCsrfToken (res: any , maxAge: number) {
 
     res.cookie('csrf_token' , csrfToken , {
         httpOnly: false , 
-        secure: true,
-        sameSite: 'lax',
+        secure: NODE_ENV === 'production' , 
+        sameSite: NODE_ENV === 'production' ? 'none' : 'lax' ,
         maxAge: maxAge,
     }); 
 }
@@ -60,17 +63,17 @@ export function SetCsrfToken (res: any , maxAge: number) {
 
 export function ClearAllCookies (res: any) {
     res.clearCookie('access_token' , {
-        secure: true, 
-        sameSite: 'lax'
+        secure: NODE_ENV === 'production' , 
+        sameSite: NODE_ENV === 'production' ? 'none' : 'lax' ,
     }); 
 
     res.clearCookie('refresh_token' , {
-        secure: true, 
-        sameSite: 'lax'
+        secure: NODE_ENV === 'production' , 
+        sameSite: NODE_ENV === 'production' ? 'none' : 'lax' ,
     }); 
     
     res.clearCookie('csrf_token' , {
-        secure: true, 
-        sameSite: 'lax'
+        secure: NODE_ENV === 'production' , 
+        sameSite: NODE_ENV === 'production' ? 'none' : 'lax' ,
     }); 
 }
