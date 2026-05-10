@@ -7,6 +7,8 @@ import compRoutes from './Routes/compRoutes';
 import adminRoutes from './Routes/adminRoutes'; 
 import publishRoutes from './Routes/publishRoutes'; 
 import cliRoutes from './Routes/cliRoutes'; 
+import paymentRoutes from './Routes/paymentRoutes'; 
+import HandleStripeWebhook from './Payments/Webhook';
 import cookieParser from 'cookie-parser'; 
 import rateLimit from 'express-rate-limit'; 
 import helmet from 'helmet';
@@ -14,6 +16,15 @@ import cors from 'cors';
 const app = express(); 
 
 const PORT = process.env.PORT ; 
+
+// ---- WebHooks -----
+app.post(
+    '/api/webhook',
+    express.raw({ type: 'application/json' }),
+    HandleStripeWebhook 
+); 
+
+
 
 app.set('trust proxy', 1);
 
@@ -73,6 +84,8 @@ app.use('/comp' , compRoutes);
 app.use('/admin' , adminRoutes); 
 app.use('/publish' , publishRoutes); 
 app.use('/cli' , cliRoutes); 
+app.use('/payment' , paymentRoutes); 
+
 
 
 app.get('/' , (req: Request , res: Response) => {
