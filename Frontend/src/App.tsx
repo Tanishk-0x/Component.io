@@ -14,6 +14,8 @@ import AddComponent from "./Pages/AddComponent";
 import ProtectedRoutes from "./Routes/ProtectedRoutes";
 import AdminRoutes from "./Routes/AdminRoutes";
 import Demo from "./Pages/Demo";
+import Success from "./Pages/Payments/Success";
+import Cancel from "./Pages/Payments/Cancel";
 
 const App = () => {
 
@@ -66,6 +68,14 @@ const App = () => {
     {
       path: '/addcomponent' ,
       element: <AdminRoutes> <AddComponent /> </AdminRoutes>
+    },
+    {
+      path: '/success' ,
+      element: <Success />
+    },
+    {
+      path: '/cancel' ,
+      element: <Cancel />
     },
   ]); 
 

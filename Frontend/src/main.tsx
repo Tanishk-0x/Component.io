@@ -8,6 +8,7 @@ import OtpContext from './Context/OtpContext.tsx'
 import CompContext from './Context/CompContext.tsx'
 import PublishContext from './Context/PublishContext.tsx'
 import AdminContext from './Context/AdminContext.tsx'
+import PricingContext from './Context/PricingContext.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -17,7 +18,9 @@ createRoot(document.getElementById('root')!).render(
             <CompContext>
                 <AdminContext>
                   <PublishContext>
-                  <App />  
+                  <PricingContext>
+                    <App />   
+                  </PricingContext> 
                   </PublishContext>
                 </AdminContext>   
             </CompContext>

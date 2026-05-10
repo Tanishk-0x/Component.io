@@ -158,3 +158,7 @@ export interface ManagingComponentType {
     prompt: any ; 
 }; 
 
+export interface PricingContextType {
+    HandleCheckout: ( tierId: any ) => Promise<void> ; 
+    loading: boolean ; 
+}; 

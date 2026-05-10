@@ -1,12 +1,17 @@
+import { pricingDataContext } from "../Context/PricingContext";
+import { useSafeContext } from "../Hooks/UseSafeContext";
 
 const Pricing = () => {
+
+    const { HandleCheckout } = useSafeContext(pricingDataContext); 
 
     const PricingCards = [
         {
             tier: "Free", price: "$0", sub: "Perfect for Side Projects", delay: "0.2s", pro: false,
+            tierId: '00' , 
             features: [
                 { on: true,  text: "Get 100 Free Credits" },
-                { on: true,  text: "Access to components" },
+                { on: true,  text: "Verify to get credits" },
                 { on: true,  text: "Copy-paste ready code" },
                 { on: false, text: "Community Support" },
             ],
@@ -14,8 +19,9 @@ const Pricing = () => {
         },
         {
             tier: "Pro", price: "$12", sub: "For Consistent Developers", delay: "0.35s", pro: true,
+            tierId: '01' ,
             features: [
-                { on: true, text: "Get 300 Credits" },
+                { on: true, text: "Get 200 Credits" },
                 { on: true, text: "Access to components" },
                 { on: true, text: "Copy-paste ready code" },
                 { on: true, text: "Community Support" },
@@ -23,7 +29,8 @@ const Pricing = () => {
             cta: "Start Pro",
         },
         {
-            tier: "Premium", price: "$20", sub: "For Serious Builders", delay: "0.5s", pro: false,
+            tier: "Ultimate", price: "$20", sub: "For Serious Builders", delay: "0.5s", pro: false,
+            tierId: '02' ,
             features: [
                 { on: true, text: "Everything in Pro" },
                 { on: true, text: "Get 500 Credits" },
@@ -80,7 +87,11 @@ const Pricing = () => {
                 ))}
                 </div>
 
-                <button
+                <button onClick={() => {
+                    if( plan.tierId !== '00' ){
+                        HandleCheckout( plan.tierId ); 
+                    }
+                }}
                 className={`cursor-pointer w-full py-3 rounded-xl font-black text-sm uppercase tracking-wide transition-all active:scale-95
                     ${plan.pro ? "bg-emerald-500 text-black hover:bg-emerald-400" : "border border-emerald-500 text-emerald-500 hover:bg-emerald-500/10"}`}>
                 {plan.cta}
