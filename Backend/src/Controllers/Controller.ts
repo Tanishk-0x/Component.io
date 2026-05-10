@@ -165,7 +165,7 @@ const ResolveComponent = async(req: AuthenticatedRequest , res: Response) => {
             }
 
             // -- Deduct Credits --
-            user.credits -= 5 ; 
+            user.credits -= 10 ; 
             user.callsMade += 1 ; 
             await user.save() ; 
 
