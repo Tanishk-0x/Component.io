@@ -98,3 +98,11 @@ body {
 .custom-sp::-webkit-scrollbar{
   display: none;
 }
+
+/* --- Sandpack Mobile Preview Fix --- */
+.comp-sandpack-wrapper .sp-preview-container,
+.comp-sandpack-wrapper .sp-preview,
+.comp-sandpack-wrapper iframe {
+    height: 100% !important;
+    min-height: unset !important;
+}

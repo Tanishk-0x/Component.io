@@ -278,7 +278,7 @@ const Components = () => {
                     {/* ------- Preview Area ------ */}
                     {/* ---- Component Preview ---- */}
                     {activeTab === 'preview' && (
-                        <div className="relative z-10 w-full h-full flex items-center justify-center p-4 md:p-1 overflow-auto">
+                        <div className="relative z-10 w-full h-full flex items-center justify-center p-1 md:p-1 overflow-auto">
                             <SandpackPreview 
                             showRefreshButton={true}
                             showOpenInCodeSandbox={false}
@@ -290,7 +290,7 @@ const Components = () => {
                     {/* ------- Code Area ---------- */}
                     {/* ------ Component Code ------ */}
                     {activeTab === 'code' && (
-                    <div className="w-full h-full bg-[#0d1117] overflow-auto p-4 md:p-1 relative">
+                    <div className="w-full h-full bg-[#0d1117] overflow-auto p-1 md:p-1 relative">
                         <SandpackCodeEditor 
                             showLineNumbers 
                             showTabs={false}

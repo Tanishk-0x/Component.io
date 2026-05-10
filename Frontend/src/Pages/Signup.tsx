@@ -2,6 +2,7 @@ import { useSafeContext } from "../Hooks/UseSafeContext";
 import { useState } from "react";
 import { authDataContext } from "../Context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import Loader from "../Components/Loader";
 
 const Signup = () => {
 
@@ -101,7 +102,7 @@ const Signup = () => {
                     HandleSignup(); 
                 }}
                 className="mt-6 w-[90%] bg-emerald-400 text-black text-[18px] py-3 rounded-lg font-semibold text-base hover:bg-emerald-500 transition duration-150 active:scale-[0.98] cursor-pointer">
-                    { signupLoading ? 'Loading..' : 'Create Account' }
+                    { signupLoading ? <Loader /> : 'Create Account' }
                 </button>
                 
                 <div className="mt-3 w-[90%] py-3 flex items-center justify-center rounded-lg bg-neutral-900/40 border border-neutral-800 border-dashed">

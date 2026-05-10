@@ -2,6 +2,7 @@ import { useSafeContext } from "../Hooks/UseSafeContext";
 import { authDataContext } from "../Context/AuthContext";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Loader from "../Components/Loader";
 
 const Login = () => {
 
@@ -84,8 +85,8 @@ const Login = () => {
                     e.preventDefault(); 
                     HandleLogin();  
                 }}
-                className="mt-6 w-[90%] bg-emerald-400 text-black text-[18px] py-3 rounded-lg font-semibold text-base hover:bg-emerald-500 transition duration-150 active:scale-[0.98] cursor-pointer">
-                    { loginLoading ? 'Loading..' : 'Login' }
+                className="mt-6 w-[90%] bg-emerald-400 flex justify-center items-center text-black text-[18px] py-3 rounded-lg font-semibold text-base hover:bg-emerald-500 transition duration-150 active:scale-[0.98] cursor-pointer">
+                    { loginLoading ? <Loader /> : 'Login' }
                 </button>
                 
                 <div className="mt-3 w-[90%] py-3 flex items-center justify-center rounded-lg bg-neutral-900/40 border border-neutral-800 border-dashed">
