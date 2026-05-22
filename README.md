@@ -35,7 +35,7 @@ Browse a rich collection of professionally designed, ready-to-use UI components.
 * One-Click Integration: Seamlessly pull any library component straight into your local project using a direct copy-paste or the custom npx CLI command.
 #### Preview: 
 <p align="center">
-  <img src="https://drive.google.com/uc?export=view&id=17w8fOh8TPyI8JuCI6BlhXiebwZezI0DI" alt="Natural Language Search Demo" width="90%">
+  <img src="https://drive.google.com/uc?export=view&id=17w8fOh8TPyI8JuCI6BlhXiebwZezI0DI" alt="Components" width="90%">
 </p>
 
 ### ✨Seamless CLI Integration
@@ -44,6 +44,9 @@ Streamline your development workflow with a dedicated command-line tool. Fetch a
 * Executable Tooling: A custom-built CLI for instant execution via npx component-io.
 * Automated Scaffolding: Connects directly to the backend API to retrieve component data and automatically structures the necessary .jsx/.tsx files in your specified directory.
 #### Preview: 
+<p align="center">
+  <img src="https://drive.google.com/uc?export=view&id=14pTGVSSzzl_3juPWdsD67ysxNMUHdK-x" alt="CLI Demo" width="90%">
+</p>
 
 ### ✨User Profile Dashboard 
 A dedicated personal space to manage your UI library. Easily access your saved components, track your available AI credits, and check your account verification status all in one place.
@@ -71,14 +74,14 @@ A secure, centralized control panel to manage the entire platform. Easily monito
 
 
 ## ⚡Security & Performance
-* Debouncing: In the Search section, I Implemented Debouncing to wait for the user to stop typing for 400ms before firing the request. This saved 60% in API costs.
-* Data Pagination: Loading all the listings at once would crash the browser. I used Pagination to load only 12 to 15 listings at a time. As user clicks "Next", the next batch is fetchhed, keeps the website fast.
-* MongoDb Aggregation Pipeline: For the "Month-Wise" revenue calculation. I used Aggregations Pipeline($group,$sum,$match) to let the database do the heavy lifting. This reduced the data processing time.
-* Smart Image Compression: I used Cloudinary's Auto Format feature. it automatically shrinks the image size without losing the quality before showing it. This makes the property pages load almost instantly.
-* Serverless Cold-Start Fix: On the platform like Vercel, the database can sometimes disconnects during inactivity. I implemneted a Global Connection Middleware that ensures the database is always "Warm" before any request is processed.
-* JWT Authentication: All sensitive actions like (booking or managing a listing) are protected by JSON Web Tokens.
-* Bcrypt Hashing: I have used bcrypt to hash user password, ensuring that sensitive credentials are never stored in plain text.
-* lean() Queries: For all "Read-only" operations, I used .lean() making the data fetching 20% faster. 
+* Vector-Based Semantic Caching: Instead of hitting the Gemini API for every single request, user prompts are converted into vector embeddings. If a structurally similar request is found in the database, the system serves the cached component instantly. This drops latency from seconds to milliseconds and drastically cuts LLM token costs.
+* Data Pagination: Loading all the components at once would crash the browser. I used Pagination to load only 12 to 15 components at a time. As user clicks "Next", the next batch is fetchhed, keeps the website fast.
+* Debouncing: Implemented a 400ms debounce on the component search bar (both in the web UI and the CLI tool) to wait for the user to stop typing before firing requests. This prevents server overload and reduces unnecessary database queries.
+* Optimized Database Reads (.lean()): For all read-only operations—like fetching a user's saved components or browsing the public library—I utilized Mongoose's .lean() method. This bypasses the heavy Mongoose document wrappers, making data fetching significantly faster and less memory-intensive.
+* API Rate Limiting: Applied strict rate-limiting middleware on the AI generation endpoints. This protects the backend from malicious bot traffic, prevents spam, and ensures unpredictable API billing spikes do not occur.
+* Secure Stripe Webhooks: Integrated Stripe webhook signature verification. This ensures that the backend only updates a user's credit balance when the request mathematically proves it came directly from Stripe's secure servers, preventing spoofed payment events.
+* JWT Authentication: All sensitive actions (like generating code, spending credits, or accessing the Admin Dashboard) are heavily protected by stateless JSON Web Tokens (JWT).
+* Bcrypt Hashing: Used bcrypt to securely hash user passwords, ensuring that sensitive credentials are encrypted and never stored in plain text inside the database.
 
 ## 🛠️Technology Used 
 ```
@@ -112,18 +115,21 @@ cd Frontend && npm install
 ```
 PORT = 
 MONGO_URL = ""
-JWT_SECRET = ""
+ACCESS_TOKEN_SECRET = ""
+REFRESH_TOKEN_SECRET = ""
+NODE_ENV = ""
+STRIPE_SECRET_KEY = ""
+STRIPE_WEBHOOK_SECRET = ""
 GROQ_API_KEY = ""
-CLOUDINARY_CLOUD_NAME = ""
-CLOUDINARY_API_KEY = ""
-CLOUDINARY_API_SECRET = ""
+GEMINI_API_KEY = ""
+GROQ_API_KEY = ""
 HOST_EMAIL = ""
 EMAIL_APP_PASSWORD = ""
 ```
 
 6. Start the Server:
 ```
-npm start
+npm run dev
 ```
 
 7. Run the Project:
