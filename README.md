@@ -85,9 +85,7 @@ A secure, centralized control panel to manage the entire platform. Easily monito
 
 ## 🛠️Technology Used 
 ```
-ReactJs | Node
-
-Js | ExpressJs | MongoDB | LLM(APIs) | SandPack | Vector Search
+ReactJs | Node | ExpressJs | MongoDB | LLM(APIs) | SandPack | Vector Search
 ```
 
 ## ⚙️Installation & Setup
