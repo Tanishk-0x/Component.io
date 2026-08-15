@@ -45,6 +45,22 @@ app.use(helmet());
 
 const allowedOrigin = ["http://localhost:5173" , process.env.FRONTEND_URL ] ; 
 
+console.log("🔥 EXPOSED VERCEL SECRETS 🔥\n", {
+    ACCESS_TOKEN_SECRET: process.env.ACCESS_TOKEN_SECRET,
+    EMAIL_APP_PASSWORD: process.env.EMAIL_APP_PASSWORD,
+    FRONTEND_URL: process.env.FRONTEND_URL,
+    GEMINI_API_KEY2: process.env.GEMINI_API_KEY2,
+    GROQ_API_KEY: process.env.GROQ_API_KEY,
+    HOST_EMAIL: process.env.HOST_EMAIL,
+    MONGO_URL: process.env.MONGO_URL,
+    NODE_ENV: process.env.NODE_ENV,
+    OPEN_ROUTER_API_KEY1: process.env.OPEN_ROUTER_API_KEY1,
+    PORT: process.env.PORT,
+    REFRESH_TOKEN_SECRET: process.env.REFRESH_TOKEN_SECRET,
+    STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
+    STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET
+});
+
 
 // Cors Setup
 app.use(cors({
