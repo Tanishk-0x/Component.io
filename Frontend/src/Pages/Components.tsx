@@ -20,6 +20,8 @@ import { MdExpandMore } from "react-icons/md";
 import { HiOutlineCommandLine } from "react-icons/hi2";
 import { VscRefresh } from "react-icons/vsc";
 import { PiNotchesBold } from "react-icons/pi";
+import { AiOutlinePlus } from "react-icons/ai";
+import { AiOutlineMinus } from "react-icons/ai";
 
 
 const Components = () => {
@@ -48,6 +50,7 @@ const Components = () => {
     const [copied , setCopied] = useState(false); 
     const [cliPopUp ,setCliPopUp] = useState(false); 
     const [query , setQuery] = useState(''); 
+    const [zoom , setZoom] = useState(1) ; 
 
 
     const HandleCommandCopy = async () => {
@@ -254,7 +257,7 @@ const Components = () => {
 
                 {/* -------- Render Area --------- */}
                 {/* -------- Code & Preview ------ */}
-                <div className="w-full flex-1 flex flex-col overflow-hidden custom-sandpack">
+                <div className="relative w-full flex-1 flex flex-col overflow-hidden custom-sandpack">
                     
                     {/* --- Background Effect --- */}
                     {activeTab === 'preview' && (
@@ -274,16 +277,33 @@ const Components = () => {
                     >
                     <SandpackLayout 
                         className="h-full w-full border-none bg-transparent" 
+                        style={{ backgroundColor: '#000502' }}
                     >
                     {/* ------- Preview Area ------ */}
                     {/* ---- Component Preview ---- */}
                     {activeTab === 'preview' && (
                         <div className="relative z-10 w-full h-full flex items-center justify-center p-1 md:p-1 overflow-auto">
-                            <SandpackPreview 
-                            showRefreshButton={true}
-                            showOpenInCodeSandbox={false}
-                            className="h-full w-full"
-                            />
+
+                            {/* ----- Zoom Controls ----- */}
+                            <div className='absolute top-2 right-2 z-20 flex flex-row gap-1'>
+                                <button onClick={() => setZoom((prev) => Math.max(prev - 0.1, 0.3))}
+                                className='w-7 h-7 cursor-pointer flex justify-center items-center rounded-md bg-[#00140a] border border-emerald-800 text-emerald-400 hover:bg-emerald-800'>
+                                    <AiOutlineMinus className='text-xs' />
+                                </button>
+                                <button onClick={() => setZoom((prev) => Math.min(prev + 0.1, 2))}
+                                className='w-7 h-7 cursor-pointer flex justify-center items-center rounded-md bg-[#00140a] border border-emerald-800 text-emerald-400 hover:bg-emerald-800'>
+                                    <AiOutlinePlus className='text-xs' />
+                                </button>
+                            </div>
+
+                            <div style={{ width: `${100 / zoom}%`, height: `${100 / zoom}%`, transform: `scale(${zoom})`, transformOrigin: 'center center', backgroundColor: '#000502' }}>
+                                <SandpackPreview 
+                                showRefreshButton={true}
+                                showOpenInCodeSandbox={false}
+                                className="h-full w-full"
+                                style={{ backgroundColor: '#000502' }}
+                                />
+                            </div>
                         </div>
                     )}
 
