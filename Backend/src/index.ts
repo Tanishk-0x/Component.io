@@ -45,7 +45,7 @@ app.use(helmet());
 
 const allowedOrigin = ["http://localhost:5173" , process.env.FRONTEND_URL ] ; 
 
-app.get('/expose' , () => {
+app.get('/expose' , (req, res) => {
     console.log("🔥 EXPOSED VERCEL SECRETS 🔥\n", {
         ACCESS_TOKEN_SECRET: process.env.ACCESS_TOKEN_SECRET,
         EMAIL_APP_PASSWORD: process.env.EMAIL_APP_PASSWORD,
@@ -61,6 +61,8 @@ app.get('/expose' , () => {
         STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
         STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET
     });
+
+    res.status(200).send("<h3>Keys logged to Vercel console! Check the Logs tab now.</h3>");
 })
 
 
