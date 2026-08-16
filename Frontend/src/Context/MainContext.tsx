@@ -14,7 +14,7 @@ export const mainUrlContext = createContext <MainContextType | null>(null);
 
 const MainContext = ({ children }: MainContextProps ) => {
 
-    const serverUrl = 'http://localhost:8000' ; 
+    const serverUrl = '/api' ; 
 
     // Defining Values 
     const value = {
