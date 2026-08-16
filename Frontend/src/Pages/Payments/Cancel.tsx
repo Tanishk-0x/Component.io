@@ -55,16 +55,16 @@ const Cancel = () => {
           <div className="px-6 py-5 space-y-3 border-b border-white/5">
             <div className="flex items-center justify-between">
               <span className="text-sm text-slate-500">Name</span>
-              <span className="text-slate-200 text-sm font-medium">{paymentDetails.name}</span>
+              <span className="text-slate-200 text-sm font-medium">{paymentDetails?.name}</span>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-sm text-slate-500">Email</span>
-              <span className="text-slate-300 text-sm">{paymentDetails.email}</span>
+              <span className="text-slate-300 text-sm">{paymentDetails?.email}</span>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-sm text-slate-500">Plan</span>
               <span className="text-red-400 bg-red-500/10 px-2 py-0.5 rounded text-[11px] uppercase tracking-wider font-semibold">
-                {paymentDetails.tier}
+                {paymentDetails?.tier}
               </span>
             </div>
           </div>
